@@ -1,0 +1,62 @@
+name: crypto_benefit
+description: Crypto.com benefit calculator
+version: 1.0.0+1
+
+publish_to: 'none'
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # iOS Icon
+  cupertino_icons: ^1.0.0
+
+  # Intl (String format and internationalization)
+  intl: ^0.16.1
+
+  # Moor (database)
+  moor: ^3.3.1
+  encrypted_moor:
+    git:
+     url: https://github.com/simolus3/moor.git
+     path: extras/encryption
+    
+  # Sqlite 3 (latest versions)
+  sqlite3_flutter_libs: ^0.2.0 
+
+  # GetIt (dependency injection)
+  get_it: ^4.0.0
+
+  # MobX (ease the state managment)
+  mobx: ^1.2.1+1
+  flutter_mobx: ^1.1.0+1
+
+  # App preferences for both iOS and Android
+  shared_preferences: ^0.5.12
+
+  # Read CSV content
+  csv: ^4.0.3
+
+  # Path provider and path (Acess file on the system)
+  path_provider: ^1.6.18
+  path: ^1.6.4
+
+  # Let the user pick a document (in our case import csv files)
+  flutter_document_picker: ^4.0.0
+
+  # Better UI grid view
+  flutter_staggered_grid_view: ^0.3.2
+  
+dev_dependencies:
+  moor_generator: ^3.3.1
+  mobx_codegen: ^1.1.0+1
+  build_runner: ^1.10.0
+  flutter_test:
+    sdk: flutter
+
+# The following section is specific to Flutter.
+flutter:
+  uses-material-design: true

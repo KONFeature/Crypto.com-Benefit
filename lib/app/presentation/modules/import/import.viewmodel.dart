@@ -1,0 +1,49 @@
+import 'package:crypto_benefit/app/domain/usecases/import/clear_imports.usecase.dart';
+import 'package:crypto_benefit/app/domain/usecases/import/get_imported_file.usecase.dart';
+import 'package:crypto_benefit/app/domain/usecases/import/import_file.usecase.dart';
+import 'package:crypto_benefit/core/di/injector_provider.dart';
+import 'package:flutter_document_picker/flutter_document_picker.dart';
+import 'package:mobx/mobx.dart';
+
+part 'import.viewmodel.g.dart';
+
+class ImportViewModel = _ImportViewModelBase with _$ImportViewModel;
+
+/// The view model for our import file view.
+abstract class _ImportViewModelBase with Store {
+  /// Our use cases for this view model
+  final _importFileUseCase = inject<ImportFileUseCase>();
+  final _clearImportUseCase = inject<ClearImportsUseCase>();
+  final _getImportedFileUseCase = inject<GetImportedFileUseCase>();
+  @observable
+  ObservableStream<List> importedFilesStream;
+
+  @action
+  Future<void> listenToImportedFile() async {
+    // Listen to our imported file stream
+    importedFilesStream =
+        (await _getImportedFileUseCase.execute(null)).asObservable();
+  }
+
+  @action
+  import() async {
+    // TODO : Try catch or onError ?
+    // Launch file picking actions
+    FlutterDocumentPickerParams filePickerParams = FlutterDocumentPickerParams(
+      allowedFileExtensions: ['csv'],
+      allowedMimeTypes: ['text/csv'],
+    );
+    final csvFilePath =
+        await FlutterDocumentPicker.openDocument(params: filePickerParams);
+
+    // Import the picked file in the app
+    await _importFileUseCase.execute(ImportFileParams(filePath: csvFilePath));
+  }
+
+  @action
+  clearImports() async {
+    // TODO : Try catch or onError ?
+    // Launch the clear import use case
+    await _clearImportUseCase.execute(null);
+  }
+}
