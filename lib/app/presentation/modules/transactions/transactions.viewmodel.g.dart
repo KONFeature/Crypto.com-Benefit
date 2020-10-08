@@ -28,13 +28,13 @@ mixin _$TransactionsViewModel on _TransactionsViewModelBase, Store {
       Atom(name: '_TransactionsViewModelBase._transactions');
 
   @override
-  ObservableFuture<List<dynamic>> get _transactions {
+  ObservableStream<List<dynamic>> get _transactions {
     _$_transactionsAtom.reportRead();
     return super._transactions;
   }
 
   @override
-  set _transactions(ObservableFuture<List<dynamic>> value) {
+  set _transactions(ObservableStream<List<dynamic>> value) {
     _$_transactionsAtom.reportWrite(value, super._transactions, () {
       super._transactions = value;
     });

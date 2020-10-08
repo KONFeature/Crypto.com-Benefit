@@ -11,9 +11,11 @@ import 'package:crypto_benefit/app/data/sources/database/daos/transactions.dao.d
 import 'package:crypto_benefit/app/domain/repositories/import_file.repository.dart';
 import 'package:crypto_benefit/app/domain/repositories/transaction.repository.dart';
 import 'package:crypto_benefit/app/domain/repositories/transaction_kind.repository.dart';
+import 'package:crypto_benefit/app/domain/usecases/dashboard/compute_kind_stats.usecase.dart';
 import 'package:crypto_benefit/app/domain/usecases/import/clear_imports.usecase.dart';
-import 'package:crypto_benefit/app/domain/usecases/import/get_imported_file.usecase.dart';
+import 'package:crypto_benefit/app/domain/usecases/import/get_imported_files.usecase.dart';
 import 'package:crypto_benefit/app/domain/usecases/import/import_file.usecase.dart';
+import 'package:crypto_benefit/app/domain/usecases/transactions/get_transactions.usecase.dart';
 import 'package:crypto_benefit/app/presentation/modules/dashboard/dashboard.viewmodel.dart';
 import 'package:crypto_benefit/app/presentation/modules/home/home.viewmodel.dart';
 import 'package:crypto_benefit/app/presentation/modules/import/import.viewmodel.dart';
@@ -46,13 +48,24 @@ Future<void> setupInjection() async {
       () => new TransactionKindRepository());
 
   // Use Cases
-  inject.registerLazySingleton(() => new ImportFileUseCase());
-  inject.registerLazySingleton(() => new ClearImportsUseCase());
-  inject.registerLazySingleton(() => new GetImportedFileUseCase());
+  await setupUseCases();
 
   // ViewModels
   inject.registerLazySingleton(() => new HomeViewModel());
   inject.registerLazySingleton(() => new ImportViewModel());
   inject.registerLazySingleton(() => new TransactionsViewModel());
   inject.registerLazySingleton(() => new DashboardViewModel());
+}
+
+Future<void> setupUseCases() async {
+  // Import Use Cases
+  inject.registerLazySingleton(() => new ImportFileUseCase());
+  inject.registerLazySingleton(() => new ClearImportsUseCase());
+  inject.registerLazySingleton(() => new GetImportedFileUseCase());
+
+  // Transaction Use Cases
+  inject.registerLazySingleton(() => new GetTransactionsUseCase());
+
+  // Dashboard use case
+  inject.registerLazySingleton(() => new ComputeKindStatsUseCase());
 }

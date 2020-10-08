@@ -1,4 +1,4 @@
-import 'package:crypto_benefit/app/domain/repositories/transaction_kind.repository.dart';
+import 'package:crypto_benefit/app/domain/usecases/dashboard/compute_kind_stats.usecase.dart';
 import 'package:crypto_benefit/core/di/injector_provider.dart';
 import 'package:mobx/mobx.dart';
 
@@ -8,25 +8,25 @@ class DashboardViewModel = _DashboardViewModelBase with _$DashboardViewModel;
 
 /// The view model for our transactions page.
 abstract class _DashboardViewModelBase with Store {
-  /// Our transaction kind repository
-  final _transactionKindRepository = inject<ITransactionKindRepository>();
+  /// Our use cases
+  final _computeKindsStateUseCase = inject<ComputeKindStatsUseCase>();
 
   @observable
-  ObservableFuture<List<dynamic>> _transactionStats;
+  ObservableFuture<List<dynamic>> _kindStats;
 
   @computed
-  bool get isLoading => _transactionStats.status == FutureStatus.pending;
+  bool get isLoading => _kindStats.status == FutureStatus.pending;
 
   @computed
-  List<dynamic> get transactionStats =>
-      _transactionStats.status == FutureStatus.fulfilled
-          ? _transactionStats.value
-          : List();
+  List<dynamic> get kindStats =>
+      _kindStats.status == FutureStatus.fulfilled ? _kindStats.value : List();
 
   @action
   Future<void> loadStats() async {
-    // Compute our stats
-    _transactionStats =
-        _transactionKindRepository.computeTransactionKindStats().asObservable();
+    // Compute kind stats
+    _kindStats = _computeKindsStateUseCase.execute(null).asObservable();
+    // TODO : Also files stats ?
+    // TODO : Option to merge kind stat
+    // TODO : After stat computed save them in the database
   }
 }

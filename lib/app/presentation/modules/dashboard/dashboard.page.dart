@@ -26,7 +26,7 @@ class _DashboardPageState extends State<DashboardPage> with DashboardWidget {
           Observer(builder: (observerContext) {
             return vm.isLoading
                 ? loading(observerContext)
-                : stats(observerContext, vm.transactionStats);
+                : stats(observerContext, vm.kindStats);
           }),
         ],
       );

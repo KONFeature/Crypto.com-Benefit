@@ -16,27 +16,26 @@ mixin _$DashboardViewModel on _DashboardViewModelBase, Store {
       (_$isLoadingComputed ??= Computed<bool>(() => super.isLoading,
               name: '_DashboardViewModelBase.isLoading'))
           .value;
-  Computed<List<dynamic>> _$transactionStatsComputed;
+  Computed<List<dynamic>> _$kindStatsComputed;
 
   @override
-  List<dynamic> get transactionStats => (_$transactionStatsComputed ??=
-          Computed<List<dynamic>>(() => super.transactionStats,
-              name: '_DashboardViewModelBase.transactionStats'))
-      .value;
+  List<dynamic> get kindStats =>
+      (_$kindStatsComputed ??= Computed<List<dynamic>>(() => super.kindStats,
+              name: '_DashboardViewModelBase.kindStats'))
+          .value;
 
-  final _$_transactionStatsAtom =
-      Atom(name: '_DashboardViewModelBase._transactionStats');
+  final _$_kindStatsAtom = Atom(name: '_DashboardViewModelBase._kindStats');
 
   @override
-  ObservableFuture<List<dynamic>> get _transactionStats {
-    _$_transactionStatsAtom.reportRead();
-    return super._transactionStats;
+  ObservableFuture<List<dynamic>> get _kindStats {
+    _$_kindStatsAtom.reportRead();
+    return super._kindStats;
   }
 
   @override
-  set _transactionStats(ObservableFuture<List<dynamic>> value) {
-    _$_transactionStatsAtom.reportWrite(value, super._transactionStats, () {
-      super._transactionStats = value;
+  set _kindStats(ObservableFuture<List<dynamic>> value) {
+    _$_kindStatsAtom.reportWrite(value, super._kindStats, () {
+      super._kindStats = value;
     });
   }
 
@@ -52,7 +51,7 @@ mixin _$DashboardViewModel on _DashboardViewModelBase, Store {
   String toString() {
     return '''
 isLoading: ${isLoading},
-transactionStats: ${transactionStats}
+kindStats: ${kindStats}
     ''';
   }
 }

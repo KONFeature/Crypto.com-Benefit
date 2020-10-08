@@ -47,4 +47,10 @@ class TransactionRepository implements ITransactionRepository {
     int deleteCount = await _transactionsDao.removeAll();
     print('Successfully deleted $deleteCount transactions from the database');
   }
+
+  @override
+  Stream<List<Transaction>> transactionsStream() => _transactionsDao
+      .getTransactionsStream()
+      .asyncMap((transactionEntities) async =>
+          _transactionMapper.fromEntities(transactionEntities));
 }

@@ -1,5 +1,5 @@
 import 'package:crypto_benefit/app/domain/usecases/import/clear_imports.usecase.dart';
-import 'package:crypto_benefit/app/domain/usecases/import/get_imported_file.usecase.dart';
+import 'package:crypto_benefit/app/domain/usecases/import/get_imported_files.usecase.dart';
 import 'package:crypto_benefit/app/domain/usecases/import/import_file.usecase.dart';
 import 'package:crypto_benefit/core/di/injector_provider.dart';
 import 'package:flutter_document_picker/flutter_document_picker.dart';
@@ -21,8 +21,7 @@ abstract class _ImportViewModelBase with Store {
   @action
   Future<void> listenToImportedFile() async {
     // Listen to our imported file stream
-    importedFilesStream =
-        (await _getImportedFileUseCase.execute(null)).asObservable();
+    importedFilesStream = _getImportedFileUseCase.get(null).asObservable();
   }
 
   @action

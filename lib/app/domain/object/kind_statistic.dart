@@ -1,16 +1,14 @@
-import 'package:crypto_benefit/app/domain/object/transaction_kind.dart';
-
 /// Simple class representing a the stats of transactions for a specific kinds
-class TransactionStatistic {
-  final TransactionKind transactionKind;
+class KindStatistic {
+  final String kindName;
   final int transactionsCount;
   final double totalNativeAmount;
   final double totalUsdAmount;
   final double positiveUsdAmount;
   final double negativeUsdAmount;
 
-  TransactionStatistic({
-    this.transactionKind,
+  KindStatistic({
+    this.kindName,
     this.transactionsCount,
     this.totalNativeAmount,
     this.totalUsdAmount,

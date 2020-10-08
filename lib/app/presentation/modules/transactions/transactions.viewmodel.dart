@@ -1,4 +1,4 @@
-import 'package:crypto_benefit/app/domain/repositories/transaction.repository.dart';
+import 'package:crypto_benefit/app/domain/usecases/transactions/get_transactions.usecase.dart';
 import 'package:crypto_benefit/core/di/injector_provider.dart';
 import 'package:mobx/mobx.dart';
 
@@ -10,19 +10,19 @@ class TransactionsViewModel = _TransactionsViewModelBase
 /// The view model for our transactions page.
 abstract class _TransactionsViewModelBase with Store {
   /// Our transaction repository
-  final _transactionRepository = inject<ITransactionRepository>();
+  final _getTransactionsUseCase = inject<GetTransactionsUseCase>();
 
   @observable
-  ObservableFuture<List<dynamic>> _transactions;
+  ObservableStream<List> _transactions;
 
   @computed
-  bool get isLoading => _transactions.status == FutureStatus.pending;
+  bool get isLoading => _transactions.status == StreamStatus.waiting;
 
   @computed
   List<dynamic> get transactions => _transactions.value;
 
   @action
   Future<void> loadTransactions() async {
-    _transactions = _transactionRepository.getTransactions().asObservable();
+    _transactions = _getTransactionsUseCase.get(null).asObservable();
   }
 }

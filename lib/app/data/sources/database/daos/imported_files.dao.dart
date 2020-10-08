@@ -26,24 +26,24 @@ class ImportedFilesDao {
 
   /// Retreive an imported file id from it's filename
   Future<int> _getIdByFilename(String filename) async {
-    final getByFilenameQuery = _db.select(_db.importedFilesTable);
-    getByFilenameQuery.where((table) => table.filename.equals(filename));
+    final getByFilenameQuery = _db.select(_importedFilesTable);
+    getByFilenameQuery.where((tbl) => tbl.filename.equals(filename));
     final retreivedFile = await getByFilenameQuery.getSingle();
     return retreivedFile?.id ?? null;
   }
 
   /// Retreive an imported file from it's id
   Future<ImportedFileEntity> getById(int id) async {
-    final getByIdQuery = _db.select(_db.importedFilesTable);
-    getByIdQuery.where((table) => table.id.equals(id));
+    final getByIdQuery = _db.select(_importedFilesTable);
+    getByIdQuery.where((tbl) => tbl.id.equals(id));
     final retreivedFile = await getByIdQuery.getSingle();
     return retreivedFile;
   }
 
   /// Remove all the file entries
-  Future<int> removeAll() async => _db.delete(_db.importedFilesTable).go();
+  Future<int> removeAll() async => _db.delete(_importedFilesTable).go();
 
   /// Get a Stream of al the current files we got in the database
   Stream<List<ImportedFileEntity>> getImportedFilesStream() =>
-      _db.select(_db.importedFilesTable).watch();
+      _db.select(_importedFilesTable).watch();
 }

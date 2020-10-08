@@ -11,4 +11,7 @@ abstract class ITransactionRepository {
 
   /// Get the transactions
   Future<List<Transaction>> getTransactions();
+
+  /// Get the transactions streams
+  Stream<List<Transaction>> transactionsStream();
 }

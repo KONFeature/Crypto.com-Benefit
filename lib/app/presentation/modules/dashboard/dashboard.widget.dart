@@ -1,4 +1,4 @@
-import 'package:crypto_benefit/app/domain/object/transaction_kind_stat.dart';
+import 'package:crypto_benefit/app/domain/object/kind_statistic.dart';
 import 'package:crypto_benefit/app/presentation/widget/transactions_kind_stat_card.widget.dart';
 import 'package:crypto_benefit/core/di/injector_provider.dart';
 import 'package:crypto_benefit/app/presentation/modules/dashboard/dashboard.viewmodel.dart';
@@ -20,23 +20,23 @@ class DashboardWidget {
       ));
 
   /// List of transactions
-  Widget stats(BuildContext context, List<TransactionStatistic> stats) =>
-      stats != null && stats.length > 0
-          ? transactionStats(context, stats)
+  Widget stats(BuildContext context, List<KindStatistic> kindStats) =>
+      kindStats != null && kindStats.length > 0
+          ? transactionKindStats(context, kindStats)
           : _noStats(context);
 
   /// Widget containing the list of stats imported
-  Widget transactionStats(
-          BuildContext context, List<TransactionStatistic> stats) =>
+  Widget transactionKindStats(
+          BuildContext context, List<KindStatistic> kindStats) =>
       StaggeredGridView.countBuilder(
-        itemCount: stats.length,
+        itemCount: kindStats.length,
         crossAxisCount: 2,
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
         physics: BouncingScrollPhysics(),
         itemBuilder: (_, index) => Container(
-            child: StatCardWidget(
-          transactionKindStats: stats[index],
+            child: KindStatCardWidget(
+          transactionKindStats: kindStats[index],
         )),
         staggeredTileBuilder: (_) => StaggeredTile.fit(1),
       );
