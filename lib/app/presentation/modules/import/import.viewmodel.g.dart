@@ -25,15 +25,6 @@ mixin _$ImportViewModel on _ImportViewModelBase, Store {
     });
   }
 
-  final _$listenToImportedFileAsyncAction =
-      AsyncAction('_ImportViewModelBase.listenToImportedFile');
-
-  @override
-  Future<void> listenToImportedFile() {
-    return _$listenToImportedFileAsyncAction
-        .run(() => super.listenToImportedFile());
-  }
-
   final _$importAsyncAction = AsyncAction('_ImportViewModelBase.import');
 
   @override

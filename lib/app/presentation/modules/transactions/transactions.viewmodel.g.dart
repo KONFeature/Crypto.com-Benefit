@@ -40,14 +40,6 @@ mixin _$TransactionsViewModel on _TransactionsViewModelBase, Store {
     });
   }
 
-  final _$loadTransactionsAsyncAction =
-      AsyncAction('_TransactionsViewModelBase.loadTransactions');
-
-  @override
-  Future<void> loadTransactions() {
-    return _$loadTransactionsAsyncAction.run(() => super.loadTransactions());
-  }
-
   @override
   String toString() {
     return '''

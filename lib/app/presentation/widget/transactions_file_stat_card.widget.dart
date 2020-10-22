@@ -2,7 +2,6 @@ import 'package:crypto_benefit/app/domain/object/statistic/file_statistic.dart';
 import 'package:crypto_benefit/app/presentation/widget/transaction_amount_text.widget.dart';
 import 'package:crypto_benefit/core/values/dimens.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class FileStatCardWidget extends StatelessWidget {
   final FileStatistic transactionFileStats;
@@ -12,7 +11,7 @@ class FileStatCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Card(
-        elevation: smallElevation,
+        elevation: noElevation,
         child: Container(
           padding: EdgeInsets.all(margin),
           decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),

@@ -14,12 +14,6 @@ class _ImportPageState extends State<ImportPage> with ImportWidget {
   final vm = inject<ImportViewModel>();
 
   @override
-  void initState() {
-    vm.listenToImportedFile();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) => ListView(
         children: [
           title(context),

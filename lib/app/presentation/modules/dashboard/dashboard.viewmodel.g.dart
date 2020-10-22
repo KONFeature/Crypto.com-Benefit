@@ -61,14 +61,6 @@ mixin _$DashboardViewModel on _DashboardViewModelBase, Store {
     });
   }
 
-  final _$loadStatsAsyncAction =
-      AsyncAction('_DashboardViewModelBase.loadStats');
-
-  @override
-  Future<void> loadStats() {
-    return _$loadStatsAsyncAction.run(() => super.loadStats());
-  }
-
   @override
   String toString() {
     return '''

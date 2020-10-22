@@ -15,11 +15,11 @@ abstract class _ImportViewModelBase with Store {
   final _importFileUseCase = inject<ImportFileUseCase>();
   final _clearImportUseCase = inject<ClearImportsUseCase>();
   final _getImportedFileUseCase = inject<GetImportedFileUseCase>();
+
   @observable
   ObservableStream<List> importedFilesStream;
 
-  @action
-  Future<void> listenToImportedFile() async {
+  _ImportViewModelBase() {
     // Listen to our imported file stream
     importedFilesStream = _getImportedFileUseCase.get(null).asObservable();
   }

@@ -21,8 +21,7 @@ abstract class _TransactionsViewModelBase with Store {
   @computed
   List<dynamic> get transactions => _transactions.value;
 
-  @action
-  Future<void> loadTransactions() async {
+  _TransactionsViewModelBase() {
     _transactions = _getTransactionsUseCase.get(null).asObservable();
   }
 }

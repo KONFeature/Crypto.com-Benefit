@@ -14,12 +14,6 @@ class _DashboardPageState extends State<DashboardPage> with DashboardWidget {
   final vm = inject<DashboardViewModel>();
 
   @override
-  void initState() {
-    vm.loadStats();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) => Observer(
         builder: (observerContext) => ListView(children: [
           title(context),

@@ -31,8 +31,7 @@ abstract class _DashboardViewModelBase with Store {
   List<dynamic> get fileStats =>
       _fileStats.status == FutureStatus.fulfilled ? _fileStats.value : List();
 
-  @action
-  Future<void> loadStats() async {
+  _DashboardViewModelBase() {
     // Compute kind stats
     _kindStats = _computeKindsStateUseCase.execute(null).asObservable();
     _fileStats = _computeFilesStateUseCase.execute(null).asObservable();

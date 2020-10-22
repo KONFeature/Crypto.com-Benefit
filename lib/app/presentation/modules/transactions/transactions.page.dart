@@ -15,12 +15,6 @@ class _TransactionsPageState extends State<TransactionsPage>
   final vm = inject<TransactionsViewModel>();
 
   @override
-  void initState() {
-    vm.loadTransactions();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return ListView(
       children: [

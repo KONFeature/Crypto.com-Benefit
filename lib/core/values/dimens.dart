@@ -6,6 +6,7 @@ const double notchMargin = 4.0;
 const double padding = 8.0;
 
 // elevation
+const double noElevation = 0.0;
 const double smallElevation = 4.0;
 
 // fonts sizes
