@@ -11,6 +11,7 @@ import 'package:crypto_benefit/app/data/sources/database/daos/transactions.dao.d
 import 'package:crypto_benefit/app/domain/repositories/import_file.repository.dart';
 import 'package:crypto_benefit/app/domain/repositories/transaction.repository.dart';
 import 'package:crypto_benefit/app/domain/repositories/transaction_kind.repository.dart';
+import 'package:crypto_benefit/app/domain/usecases/dashboard/compute_file_stats.usecase.dart';
 import 'package:crypto_benefit/app/domain/usecases/dashboard/compute_kind_stats.usecase.dart';
 import 'package:crypto_benefit/app/domain/usecases/import/clear_imports.usecase.dart';
 import 'package:crypto_benefit/app/domain/usecases/import/get_imported_files.usecase.dart';
@@ -68,4 +69,5 @@ Future<void> setupUseCases() async {
 
   // Dashboard use case
   inject.registerLazySingleton(() => new ComputeKindStatsUseCase());
+  inject.registerLazySingleton(() => new ComputeFileStatsUseCase());
 }

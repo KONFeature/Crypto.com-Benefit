@@ -1,18 +1,18 @@
-import 'package:crypto_benefit/app/domain/object/statistic/kind_statistic.dart';
+import 'package:crypto_benefit/app/domain/object/statistic/file_statistic.dart';
 import 'package:crypto_benefit/app/domain/object/transaction.dart';
 import 'package:crypto_benefit/app/domain/repositories/transaction.repository.dart';
 import 'package:crypto_benefit/app/domain/usecases/usecase.dart';
 import 'package:crypto_benefit/core/di/injector_provider.dart';
 
 /// Use case used to clear all the imports done on the app
-class ComputeKindStatsUseCase
-    implements BaseUseCase<List<KindStatistic>, void> {
+class ComputeFileStatsUseCase
+    implements BaseUseCase<List<FileStatistic>, void> {
   final _transactionRepository = inject<ITransactionRepository>();
 
   @override
-  Future<List<KindStatistic>> execute(void params) async {
+  Future<List<FileStatistic>> execute(void params) async {
     // The list that contains our stats
-    List<KindStatistic> stats = List();
+    List<FileStatistic> stats = List();
 
     // Get all the transactions
     List<Transaction> transactions =
@@ -22,20 +22,20 @@ class ComputeKindStatsUseCase
     stats.add(_computeStats('All', transactions));
 
     // Map our transactions with their kind
-    Map<String, List<Transaction>> transactionsByKindMap = Map();
+    Map<int, List<Transaction>> transactionsByFileIdMap = Map();
     for (final transaction in transactions) {
-      // If we don't got a list for this kind we create it
-      if (!transactionsByKindMap.containsKey(transaction.kind.name))
-        transactionsByKindMap[transaction.kind.name] = List();
+      // If we don't got a list for this kind we create
+      if (!transactionsByFileIdMap.containsKey(transaction.fileId))
+        transactionsByFileIdMap[transaction.fileId] = List();
 
       // Add the transaction to the list
-      transactionsByKindMap[transaction.kind.name].add(transaction);
+      transactionsByFileIdMap[transaction.fileId].add(transaction);
     }
 
     // Compute the stat for the mapped item
-    for (final transactionsByKind in transactionsByKindMap.entries) {
-      stats
-          .add(_computeStats(transactionsByKind.key, transactionsByKind.value));
+    for (final transactionsByKind in transactionsByFileIdMap.entries) {
+      stats.add(_computeStats(
+          transactionsByKind.key.toString(), transactionsByKind.value));
     }
 
     // Order the stat by total amount
@@ -47,7 +47,7 @@ class ComputeKindStatsUseCase
   }
 
   /// Compute the stat object for a given kind and list of transactions
-  KindStatistic _computeStats(String kindName, List<Transaction> transactions) {
+  FileStatistic _computeStats(String fileType, List<Transaction> transactions) {
     var totalNative = 0.0;
     var totalUsd = 0.0;
     var positiveUsd = 0.0;
@@ -63,8 +63,8 @@ class ComputeKindStatsUseCase
       }
     }
 
-    return KindStatistic(
-        kindName: kindName,
+    return FileStatistic(
+        filetype: fileType,
         transactionsCount: transactions.length,
         totalUsdAmount: totalUsd,
         totalNativeAmount: totalNative,

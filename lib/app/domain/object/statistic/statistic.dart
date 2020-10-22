@@ -1,14 +1,12 @@
-/// Simple class representing a the stats of transactions for a specific kinds
-class KindStatistic {
-  final String kindName;
+/// Simple class representing a the stats of transactions
+class Statistic {
   final int transactionsCount;
   final double totalNativeAmount;
   final double totalUsdAmount;
   final double positiveUsdAmount;
   final double negativeUsdAmount;
 
-  KindStatistic({
-    this.kindName,
+  Statistic({
     this.transactionsCount,
     this.totalNativeAmount,
     this.totalUsdAmount,

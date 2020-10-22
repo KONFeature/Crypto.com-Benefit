@@ -20,14 +20,17 @@ class _DashboardPageState extends State<DashboardPage> with DashboardWidget {
   }
 
   @override
-  Widget build(BuildContext context) => ListView(
-        children: [
+  Widget build(BuildContext context) => Observer(
+        builder: (observerContext) => ListView(children: [
           title(context),
-          Observer(builder: (observerContext) {
-            return vm.isLoading
-                ? loading(observerContext)
-                : stats(observerContext, vm.kindStats);
-          }),
-        ],
+          partTitle(context, 'Kind statistics'),
+          vm.isLoading
+              ? loading(observerContext)
+              : kindStats(observerContext, vm.kindStats),
+          partTitle(context, 'File statistics'),
+          vm.isLoading
+              ? loading(observerContext)
+              : fileStats(observerContext, vm.fileStats),
+        ]),
       );
 }

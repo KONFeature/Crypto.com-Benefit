@@ -23,6 +23,13 @@ mixin _$DashboardViewModel on _DashboardViewModelBase, Store {
       (_$kindStatsComputed ??= Computed<List<dynamic>>(() => super.kindStats,
               name: '_DashboardViewModelBase.kindStats'))
           .value;
+  Computed<List<dynamic>> _$fileStatsComputed;
+
+  @override
+  List<dynamic> get fileStats =>
+      (_$fileStatsComputed ??= Computed<List<dynamic>>(() => super.fileStats,
+              name: '_DashboardViewModelBase.fileStats'))
+          .value;
 
   final _$_kindStatsAtom = Atom(name: '_DashboardViewModelBase._kindStats');
 
@@ -39,6 +46,21 @@ mixin _$DashboardViewModel on _DashboardViewModelBase, Store {
     });
   }
 
+  final _$_fileStatsAtom = Atom(name: '_DashboardViewModelBase._fileStats');
+
+  @override
+  ObservableFuture<List<dynamic>> get _fileStats {
+    _$_fileStatsAtom.reportRead();
+    return super._fileStats;
+  }
+
+  @override
+  set _fileStats(ObservableFuture<List<dynamic>> value) {
+    _$_fileStatsAtom.reportWrite(value, super._fileStats, () {
+      super._fileStats = value;
+    });
+  }
+
   final _$loadStatsAsyncAction =
       AsyncAction('_DashboardViewModelBase.loadStats');
 
@@ -51,7 +73,8 @@ mixin _$DashboardViewModel on _DashboardViewModelBase, Store {
   String toString() {
     return '''
 isLoading: ${isLoading},
-kindStats: ${kindStats}
+kindStats: ${kindStats},
+fileStats: ${fileStats}
     ''';
   }
 }
