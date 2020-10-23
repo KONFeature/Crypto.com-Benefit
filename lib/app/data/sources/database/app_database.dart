@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:crypto_benefit/app/data/sources/database/daos/statistics.dao.dart';
 import 'package:crypto_benefit/app/data/sources/database/tables/imported_files.table.dart';
 import 'package:crypto_benefit/app/data/sources/database/tables/statistics.table.dart';
 import 'package:crypto_benefit/app/data/sources/database/tables/transaction_kinds.table.dart';
@@ -37,9 +38,17 @@ LazyDatabase _openConnection() {
   StatisticTable,
   StatisticKindsTable,
   StatisticFilesTable
+], daos: [
+  StatisticsDao
 ])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
+
+  @override
+  MigrationStrategy get migration =>
+      MigrationStrategy(beforeOpen: (details) async {
+        await customStatement('PRAGMA foreign_keys = ON;');
+      });
 
   @override
   int get schemaVersion => 1;

@@ -1032,11 +1032,8 @@ class $TransactionsTableTable extends TransactionsTable
   @override
   GeneratedIntColumn get fileId => _fileId ??= _constructFileId();
   GeneratedIntColumn _constructFileId() {
-    return GeneratedIntColumn(
-      'file_id',
-      $tableName,
-      false,
-    );
+    return GeneratedIntColumn('file_id', $tableName, false,
+        $customConstraints: 'REFERENCES imported_files_table(id)');
   }
 
   final VerificationMeta _timestampMeta = const VerificationMeta('timestamp');
@@ -1174,11 +1171,8 @@ class $TransactionsTableTable extends TransactionsTable
   @override
   GeneratedIntColumn get kindId => _kindId ??= _constructKindId();
   GeneratedIntColumn _constructKindId() {
-    return GeneratedIntColumn(
-      'kind_id',
-      $tableName,
-      true,
-    );
+    return GeneratedIntColumn('kind_id', $tableName, true,
+        $customConstraints: 'REFERENCES transaction_kinds_table(id)');
   }
 
   @override
@@ -1312,7 +1306,7 @@ class StatisticEntity extends DataClass implements Insertable<StatisticEntity> {
   StatisticEntity(
       {@required this.id,
       @required this.name,
-      @required this.priority,
+      this.priority,
       @required this.createdTimestamp});
   factory StatisticEntity.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
@@ -1430,10 +1424,9 @@ class StatisticTableCompanion extends UpdateCompanion<StatisticEntity> {
   StatisticTableCompanion.insert({
     this.id = const Value.absent(),
     @required String name,
-    @required int priority,
+    this.priority = const Value.absent(),
     @required DateTime createdTimestamp,
   })  : name = Value(name),
-        priority = Value(priority),
         createdTimestamp = Value(createdTimestamp);
   static Insertable<StatisticEntity> custom({
     Expression<int> id,
@@ -1523,7 +1516,7 @@ class $StatisticTableTable extends StatisticTable
     return GeneratedIntColumn(
       'priority',
       $tableName,
-      false,
+      true,
     );
   }
 
@@ -1566,8 +1559,6 @@ class $StatisticTableTable extends StatisticTable
     if (data.containsKey('priority')) {
       context.handle(_priorityMeta,
           priority.isAcceptableOrUnknown(data['priority'], _priorityMeta));
-    } else if (isInserting) {
-      context.missing(_priorityMeta);
     }
     if (data.containsKey('created_timestamp')) {
       context.handle(
@@ -1739,11 +1730,8 @@ class $StatisticKindsTableTable extends StatisticKindsTable
   GeneratedIntColumn get statisticId =>
       _statisticId ??= _constructStatisticId();
   GeneratedIntColumn _constructStatisticId() {
-    return GeneratedIntColumn(
-      'statistic_id',
-      $tableName,
-      false,
-    );
+    return GeneratedIntColumn('statistic_id', $tableName, false,
+        $customConstraints: 'NOT NULL REFERENCES statistic_table(id)');
   }
 
   final VerificationMeta _kindIdMeta = const VerificationMeta('kindId');
@@ -1751,11 +1739,8 @@ class $StatisticKindsTableTable extends StatisticKindsTable
   @override
   GeneratedIntColumn get kindId => _kindId ??= _constructKindId();
   GeneratedIntColumn _constructKindId() {
-    return GeneratedIntColumn(
-      'kind_id',
-      $tableName,
-      false,
-    );
+    return GeneratedIntColumn('kind_id', $tableName, false,
+        $customConstraints: 'NOT NULL REFERENCES transaction_kinds_table(id)');
   }
 
   @override
@@ -1790,7 +1775,7 @@ class $StatisticKindsTableTable extends StatisticKindsTable
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  Set<GeneratedColumn> get $primaryKey => {statisticId, kindId};
   @override
   StatisticKindEntity map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
@@ -1806,8 +1791,8 @@ class $StatisticKindsTableTable extends StatisticKindsTable
 class StatisticFileEntity extends DataClass
     implements Insertable<StatisticFileEntity> {
   final int statisticId;
-  final int fileId;
-  StatisticFileEntity({@required this.statisticId, @required this.fileId});
+  final FileType fileType;
+  StatisticFileEntity({@required this.statisticId, @required this.fileType});
   factory StatisticFileEntity.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -1816,8 +1801,8 @@ class StatisticFileEntity extends DataClass
     return StatisticFileEntity(
       statisticId: intType
           .mapFromDatabaseResponse(data['${effectivePrefix}statistic_id']),
-      fileId:
-          intType.mapFromDatabaseResponse(data['${effectivePrefix}file_id']),
+      fileType: $StatisticFilesTableTable.$converter0.mapToDart(
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}file_type'])),
     );
   }
   @override
@@ -1826,8 +1811,9 @@ class StatisticFileEntity extends DataClass
     if (!nullToAbsent || statisticId != null) {
       map['statistic_id'] = Variable<int>(statisticId);
     }
-    if (!nullToAbsent || fileId != null) {
-      map['file_id'] = Variable<int>(fileId);
+    if (!nullToAbsent || fileType != null) {
+      final converter = $StatisticFilesTableTable.$converter0;
+      map['file_type'] = Variable<int>(converter.mapToSql(fileType));
     }
     return map;
   }
@@ -1837,8 +1823,9 @@ class StatisticFileEntity extends DataClass
       statisticId: statisticId == null && nullToAbsent
           ? const Value.absent()
           : Value(statisticId),
-      fileId:
-          fileId == null && nullToAbsent ? const Value.absent() : Value(fileId),
+      fileType: fileType == null && nullToAbsent
+          ? const Value.absent()
+          : Value(fileType),
     );
   }
 
@@ -1847,7 +1834,7 @@ class StatisticFileEntity extends DataClass
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return StatisticFileEntity(
       statisticId: serializer.fromJson<int>(json['statisticId']),
-      fileId: serializer.fromJson<int>(json['fileId']),
+      fileType: serializer.fromJson<FileType>(json['fileType']),
     );
   }
   @override
@@ -1855,62 +1842,62 @@ class StatisticFileEntity extends DataClass
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'statisticId': serializer.toJson<int>(statisticId),
-      'fileId': serializer.toJson<int>(fileId),
+      'fileType': serializer.toJson<FileType>(fileType),
     };
   }
 
-  StatisticFileEntity copyWith({int statisticId, int fileId}) =>
+  StatisticFileEntity copyWith({int statisticId, FileType fileType}) =>
       StatisticFileEntity(
         statisticId: statisticId ?? this.statisticId,
-        fileId: fileId ?? this.fileId,
+        fileType: fileType ?? this.fileType,
       );
   @override
   String toString() {
     return (StringBuffer('StatisticFileEntity(')
           ..write('statisticId: $statisticId, ')
-          ..write('fileId: $fileId')
+          ..write('fileType: $fileType')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(statisticId.hashCode, fileId.hashCode));
+  int get hashCode => $mrjf($mrjc(statisticId.hashCode, fileType.hashCode));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
       (other is StatisticFileEntity &&
           other.statisticId == this.statisticId &&
-          other.fileId == this.fileId);
+          other.fileType == this.fileType);
 }
 
 class StatisticFilesTableCompanion
     extends UpdateCompanion<StatisticFileEntity> {
   final Value<int> statisticId;
-  final Value<int> fileId;
+  final Value<FileType> fileType;
   const StatisticFilesTableCompanion({
     this.statisticId = const Value.absent(),
-    this.fileId = const Value.absent(),
+    this.fileType = const Value.absent(),
   });
   StatisticFilesTableCompanion.insert({
     @required int statisticId,
-    @required int fileId,
+    @required FileType fileType,
   })  : statisticId = Value(statisticId),
-        fileId = Value(fileId);
+        fileType = Value(fileType);
   static Insertable<StatisticFileEntity> custom({
     Expression<int> statisticId,
-    Expression<int> fileId,
+    Expression<int> fileType,
   }) {
     return RawValuesInsertable({
       if (statisticId != null) 'statistic_id': statisticId,
-      if (fileId != null) 'file_id': fileId,
+      if (fileType != null) 'file_type': fileType,
     });
   }
 
   StatisticFilesTableCompanion copyWith(
-      {Value<int> statisticId, Value<int> fileId}) {
+      {Value<int> statisticId, Value<FileType> fileType}) {
     return StatisticFilesTableCompanion(
       statisticId: statisticId ?? this.statisticId,
-      fileId: fileId ?? this.fileId,
+      fileType: fileType ?? this.fileType,
     );
   }
 
@@ -1920,8 +1907,9 @@ class StatisticFilesTableCompanion
     if (statisticId.present) {
       map['statistic_id'] = Variable<int>(statisticId.value);
     }
-    if (fileId.present) {
-      map['file_id'] = Variable<int>(fileId.value);
+    if (fileType.present) {
+      final converter = $StatisticFilesTableTable.$converter0;
+      map['file_type'] = Variable<int>(converter.mapToSql(fileType.value));
     }
     return map;
   }
@@ -1930,7 +1918,7 @@ class StatisticFilesTableCompanion
   String toString() {
     return (StringBuffer('StatisticFilesTableCompanion(')
           ..write('statisticId: $statisticId, ')
-          ..write('fileId: $fileId')
+          ..write('fileType: $fileType')
           ..write(')'))
         .toString();
   }
@@ -1948,27 +1936,24 @@ class $StatisticFilesTableTable extends StatisticFilesTable
   GeneratedIntColumn get statisticId =>
       _statisticId ??= _constructStatisticId();
   GeneratedIntColumn _constructStatisticId() {
-    return GeneratedIntColumn(
-      'statistic_id',
-      $tableName,
-      false,
-    );
+    return GeneratedIntColumn('statistic_id', $tableName, false,
+        $customConstraints: 'NOT NULL REFERENCES statistic_table(id)');
   }
 
-  final VerificationMeta _fileIdMeta = const VerificationMeta('fileId');
-  GeneratedIntColumn _fileId;
+  final VerificationMeta _fileTypeMeta = const VerificationMeta('fileType');
+  GeneratedIntColumn _fileType;
   @override
-  GeneratedIntColumn get fileId => _fileId ??= _constructFileId();
-  GeneratedIntColumn _constructFileId() {
+  GeneratedIntColumn get fileType => _fileType ??= _constructFileType();
+  GeneratedIntColumn _constructFileType() {
     return GeneratedIntColumn(
-      'file_id',
+      'file_type',
       $tableName,
       false,
     );
   }
 
   @override
-  List<GeneratedColumn> get $columns => [statisticId, fileId];
+  List<GeneratedColumn> get $columns => [statisticId, fileType];
   @override
   $StatisticFilesTableTable get asDslTable => this;
   @override
@@ -1989,17 +1974,12 @@ class $StatisticFilesTableTable extends StatisticFilesTable
     } else if (isInserting) {
       context.missing(_statisticIdMeta);
     }
-    if (data.containsKey('file_id')) {
-      context.handle(_fileIdMeta,
-          fileId.isAcceptableOrUnknown(data['file_id'], _fileIdMeta));
-    } else if (isInserting) {
-      context.missing(_fileIdMeta);
-    }
+    context.handle(_fileTypeMeta, const VerificationResult.success());
     return context;
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  Set<GeneratedColumn> get $primaryKey => {statisticId, fileType};
   @override
   StatisticFileEntity map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
@@ -2010,6 +1990,9 @@ class $StatisticFilesTableTable extends StatisticFilesTable
   $StatisticFilesTableTable createAlias(String alias) {
     return $StatisticFilesTableTable(_db, alias);
   }
+
+  static TypeConverter<FileType, int> $converter0 =
+      const EnumIndexConverter<FileType>(FileType.values);
 }
 
 abstract class _$AppDatabase extends GeneratedDatabase {
@@ -2032,6 +2015,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   $StatisticFilesTableTable _statisticFilesTable;
   $StatisticFilesTableTable get statisticFilesTable =>
       _statisticFilesTable ??= $StatisticFilesTableTable(this);
+  StatisticsDao _statisticsDao;
+  StatisticsDao get statisticsDao =>
+      _statisticsDao ??= StatisticsDao(this as AppDatabase);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override

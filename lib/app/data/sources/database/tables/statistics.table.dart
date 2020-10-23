@@ -1,3 +1,4 @@
+import 'package:crypto_benefit/app/domain/object/imported_file.dart';
 import 'package:moor/moor.dart';
 
 /// Represent the statistics table
@@ -5,34 +6,29 @@ import 'package:moor/moor.dart';
 class StatisticTable extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get name => text().customConstraint('UNIQUE')();
-  IntColumn get priority => integer()();
+  IntColumn get priority => integer().nullable()();
   DateTimeColumn get createdTimestamp => dateTime()();
 }
 
 /// Represent the join table between statistic and kind
 @DataClassName("StatisticKindEntity")
 class StatisticKindsTable extends Table {
-  IntColumn get statisticId => integer()();
-  IntColumn get kindId => integer()();
+  IntColumn get statisticId =>
+      integer().customConstraint("NOT NULL REFERENCES statistic_table(id)")();
+  IntColumn get kindId => integer()
+      .customConstraint("NOT NULL REFERENCES transaction_kinds_table(id)")();
 
-  /// Custon constraints on the table level for composite unique constraint
   @override
-  List<String> get customConstraints => [
-        'FOREIGN KEY (statistic_id) REFERENCES statistic_table (id)', // Foreign key on the statistics table
-        'FOREIGN KEY (kind_id) REFERENCES transaction_kinds_table (id)' // Foreign key on the transaction kinds table
-      ];
+  Set<Column> get primaryKey => {statisticId, kindId};
 }
 
 /// Represent the join table between statistic and imported file
 @DataClassName("StatisticFileEntity")
 class StatisticFilesTable extends Table {
-  IntColumn get statisticId => integer()();
-  IntColumn get fileId => integer()();
+  IntColumn get statisticId =>
+      integer().customConstraint("NOT NULL REFERENCES statistic_table(id)")();
+  IntColumn get fileType => intEnum<FileType>()();
 
-  /// Custon constraints on the table level for composite unique constraint
   @override
-  List<String> get customConstraints => [
-        'FOREIGN KEY (statistic_id) REFERENCES statistic_table (id)', // Foreign key on the statistics table
-        'FOREIGN KEY (file_id) REFERENCES imported_files_table (id)' // Foreign key on the imported files table
-      ];
+  Set<Column> get primaryKey => {statisticId, fileType};
 }
