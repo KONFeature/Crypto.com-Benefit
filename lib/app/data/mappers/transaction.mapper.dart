@@ -7,7 +7,7 @@ import 'package:crypto_benefit/core/di/injector_provider.dart';
 /// Call helping us with the mapping of transaction
 class TransactionMapper {
   /// Access to the transaction kinds dao (for the mapping of the kind of each transactions)
-  TransactionKindsDao _transactionKindsDao = inject<TransactionKindsDao>();
+  final _transactionKindsDao = inject<TransactionKindsDao>();
 
   /// Map a single csv row to a CsvTransaction
   TransactionEntity fromCsvRowToEntity(

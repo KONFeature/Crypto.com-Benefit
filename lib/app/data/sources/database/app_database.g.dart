@@ -2018,6 +2018,15 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   StatisticsDao _statisticsDao;
   StatisticsDao get statisticsDao =>
       _statisticsDao ??= StatisticsDao(this as AppDatabase);
+  ImportedFilesDao _importedFilesDao;
+  ImportedFilesDao get importedFilesDao =>
+      _importedFilesDao ??= ImportedFilesDao(this as AppDatabase);
+  TransactionKindsDao _transactionKindsDao;
+  TransactionKindsDao get transactionKindsDao =>
+      _transactionKindsDao ??= TransactionKindsDao(this as AppDatabase);
+  TransactionsDao _transactionsDao;
+  TransactionsDao get transactionsDao =>
+      _transactionsDao ??= TransactionsDao(this as AppDatabase);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override

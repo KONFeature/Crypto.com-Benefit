@@ -7,6 +7,7 @@ import 'package:crypto_benefit/app/data/repositories/transaction.repository.dart
 import 'package:crypto_benefit/app/data/repositories/transaction_kind.repository.dart';
 import 'package:crypto_benefit/app/data/sources/database/app_database.dart';
 import 'package:crypto_benefit/app/data/sources/database/daos/imported_files.dao.dart';
+import 'package:crypto_benefit/app/data/sources/database/daos/statistics.dao.dart';
 import 'package:crypto_benefit/app/data/sources/database/daos/transaction_kinds.dao.dart';
 import 'package:crypto_benefit/app/data/sources/database/daos/transactions.dao.dart';
 import 'package:crypto_benefit/app/domain/repositories/import_file.repository.dart';
@@ -25,7 +26,10 @@ import 'package:crypto_benefit/app/presentation/modules/import/import.viewmodel.
 import 'package:crypto_benefit/app/presentation/modules/transactions/transactions.viewmodel.dart';
 import 'package:get_it/get_it.dart';
 
+/// Static access to the current get it instance
 final GetIt inject = GetIt.I;
+
+// TODO : Setup scope for better performance ??
 
 Future<void> setupInjection() async {
   // Database
@@ -35,6 +39,7 @@ Future<void> setupInjection() async {
   inject.registerLazySingleton(() => new TransactionsDao());
   inject.registerLazySingleton(() => new ImportedFilesDao());
   inject.registerLazySingleton(() => new TransactionKindsDao());
+  inject.registerLazySingleton(() => new StatisticsDao());
 
   // Mappers
   inject.registerLazySingleton<ImportedFileMapper>(

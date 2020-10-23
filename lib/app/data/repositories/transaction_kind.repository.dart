@@ -11,11 +11,10 @@ class TransactionKindRepository implements ITransactionKindRepository {
   static const String TRANSACTION_KIND_UNKNOWN = 'unknown';
 
   /// DAO
-  TransactionKindsDao _transactionKindsDao = inject<TransactionKindsDao>();
+  final _transactionKindsDao = inject<TransactionKindsDao>();
 
   /// Mapper
-  TransactionKindMapper _transactionKindMapper =
-      inject<TransactionKindMapper>();
+  final _transactionKindMapper = inject<TransactionKindMapper>();
 
   @override
   Future<List<TransactionKind>> getTransactionKinds() async =>

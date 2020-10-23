@@ -1,6 +1,9 @@
 import 'dart:io';
 
+import 'package:crypto_benefit/app/data/sources/database/daos/imported_files.dao.dart';
 import 'package:crypto_benefit/app/data/sources/database/daos/statistics.dao.dart';
+import 'package:crypto_benefit/app/data/sources/database/daos/transaction_kinds.dao.dart';
+import 'package:crypto_benefit/app/data/sources/database/daos/transactions.dao.dart';
 import 'package:crypto_benefit/app/data/sources/database/tables/imported_files.table.dart';
 import 'package:crypto_benefit/app/data/sources/database/tables/statistics.table.dart';
 import 'package:crypto_benefit/app/data/sources/database/tables/transaction_kinds.table.dart';
@@ -39,7 +42,10 @@ LazyDatabase _openConnection() {
   StatisticKindsTable,
   StatisticFilesTable
 ], daos: [
-  StatisticsDao
+  StatisticsDao,
+  ImportedFilesDao,
+  TransactionKindsDao,
+  TransactionsDao
 ])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());

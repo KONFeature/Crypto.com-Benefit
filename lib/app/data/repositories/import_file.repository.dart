@@ -21,10 +21,10 @@ class ImportFileRepository implements IImportFileRepository {
   static const REGEX_GENERATED_TIME_FILENAME = '\\w+_(\\d{8}_\\d{6}).csv';
 
   /// DAO we will use
-  ImportedFilesDao _importedFilesDao = inject<ImportedFilesDao>();
+  final _importedFilesDao = inject<ImportedFilesDao>();
 
   /// Mapper
-  ImportedFileMapper _importedfileMapper = inject<ImportedFileMapper>();
+  final _importedfileMapper = inject<ImportedFileMapper>();
 
   @override
   Future<int> importFile(File file) async {

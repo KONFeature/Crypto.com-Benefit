@@ -9,10 +9,10 @@ import 'package:crypto_benefit/core/di/injector_provider.dart';
 /// Implementation of the transaction repository
 class TransactionRepository implements ITransactionRepository {
   /// DAO we will use
-  TransactionsDao _transactionsDao = inject<TransactionsDao>();
+  final _transactionsDao = inject<TransactionsDao>();
 
   /// Mappers
-  TransactionMapper _transactionMapper = inject<TransactionMapper>();
+  final _transactionMapper = inject<TransactionMapper>();
 
   /// Import CSV rows from imported file to transaction entity
   Future<void> importFromCsv(List<List<dynamic>> csvRows, int fileId,
