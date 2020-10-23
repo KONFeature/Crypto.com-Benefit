@@ -1,6 +1,7 @@
 import 'package:crypto_benefit/app/domain/object/statistic/file_statistic.dart';
 import 'package:crypto_benefit/app/domain/object/statistic/kind_statistic.dart';
 import 'package:crypto_benefit/app/presentation/widget/transactions_file_stat_card.widget.dart';
+import 'package:crypto_benefit/app/presentation/widget/loading_stat_card.widget.dart';
 import 'package:crypto_benefit/app/presentation/widget/transactions_kind_stat_card.widget.dart';
 import 'package:crypto_benefit/core/di/injector_provider.dart';
 import 'package:crypto_benefit/app/presentation/modules/dashboard/dashboard.viewmodel.dart';
@@ -81,23 +82,13 @@ class DashboardWidget {
         textAlign: TextAlign.center,
       );
 
-  Widget loading(BuildContext context) => Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Padding(
-            padding: EdgeInsets.all(margin),
-            child: Text(
-              'Computing transactions statistics',
-              style: Theme.of(context).textTheme.headline6,
-              textAlign: TextAlign.center,
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(margin),
-            child: CircularProgressIndicator(),
-          )
-        ],
+  Widget loading(BuildContext context) => StaggeredGridView.countBuilder(
+        itemCount: 5,
+        crossAxisCount: 2,
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        physics: BouncingScrollPhysics(),
+        itemBuilder: (_, index) => Container(child: LoadingStatCardWidget()),
+        staggeredTileBuilder: (_) => StaggeredTile.fit(1),
       );
 }

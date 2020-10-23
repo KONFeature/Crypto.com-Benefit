@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:crypto_benefit/app/domain/object/imported_file.dart';
 
-/// Interface for the transaction repository
+/// Interface for the import file repository
 abstract class IImportFileRepository {
   /// Import a new csv file (return the imported file id)
   Future<int> importFile(File path);
@@ -12,4 +12,7 @@ abstract class IImportFileRepository {
 
   /// Stream used to get all of our files with their associated transactions
   Stream<List<ImportedFile>> importedFilesStream();
+
+  /// Get a file name from it's id
+  Future<ImportedFile> getFileById(int fileId);
 }

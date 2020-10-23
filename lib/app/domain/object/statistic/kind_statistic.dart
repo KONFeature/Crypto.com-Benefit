@@ -4,8 +4,8 @@ import 'package:crypto_benefit/app/domain/object/statistic/statistic.dart';
 class KindStatistic extends Statistic {
   final String kindName;
 
-  KindStatistic({
-    this.kindName,
+  KindStatistic(
+    this.kindName, {
     transactionsCount,
     totalNativeAmount,
     totalUsdAmount,
@@ -17,4 +17,11 @@ class KindStatistic extends Statistic {
           positiveUsdAmount: positiveUsdAmount,
           negativeUsdAmount: negativeUsdAmount,
         );
+
+  KindStatistic.fromStatistic(this.kindName, Statistic stat)
+      : super(
+            transactionsCount: stat.transactionsCount,
+            totalUsdAmount: stat.totalUsdAmount,
+            positiveUsdAmount: stat.positiveUsdAmount,
+            negativeUsdAmount: stat.negativeUsdAmount);
 }

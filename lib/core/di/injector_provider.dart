@@ -2,6 +2,7 @@ import 'package:crypto_benefit/app/data/mappers/imported_file.mapper.dart';
 import 'package:crypto_benefit/app/data/mappers/transaction.mapper.dart';
 import 'package:crypto_benefit/app/data/mappers/transaction_kind.mapper.dart';
 import 'package:crypto_benefit/app/data/repositories/import_file.repository.dart';
+import 'package:crypto_benefit/app/data/repositories/statistic.repository.dart';
 import 'package:crypto_benefit/app/data/repositories/transaction.repository.dart';
 import 'package:crypto_benefit/app/data/repositories/transaction_kind.repository.dart';
 import 'package:crypto_benefit/app/data/sources/database/app_database.dart';
@@ -9,6 +10,7 @@ import 'package:crypto_benefit/app/data/sources/database/daos/imported_files.dao
 import 'package:crypto_benefit/app/data/sources/database/daos/transaction_kinds.dao.dart';
 import 'package:crypto_benefit/app/data/sources/database/daos/transactions.dao.dart';
 import 'package:crypto_benefit/app/domain/repositories/import_file.repository.dart';
+import 'package:crypto_benefit/app/domain/repositories/statistic.repository.dart';
 import 'package:crypto_benefit/app/domain/repositories/transaction.repository.dart';
 import 'package:crypto_benefit/app/domain/repositories/transaction_kind.repository.dart';
 import 'package:crypto_benefit/app/domain/usecases/dashboard/compute_file_stats.usecase.dart';
@@ -47,6 +49,8 @@ Future<void> setupInjection() async {
       () => new ImportFileRepository());
   inject.registerLazySingleton<ITransactionKindRepository>(
       () => new TransactionKindRepository());
+  inject.registerLazySingleton<IStatisticRepository>(
+      () => new StatisticRepository());
 
   // Use Cases
   await setupUseCases();

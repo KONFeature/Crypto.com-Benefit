@@ -1,22 +1,20 @@
-import 'package:crypto_benefit/app/domain/object/statistic/file_statistic.dart';
 import 'package:crypto_benefit/app/presentation/widget/base_card.widget.dart';
 import 'package:crypto_benefit/app/presentation/widget/transaction_amount_text.widget.dart';
 import 'package:crypto_benefit/core/values/dimens.dart';
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 
-class FileStatCardWidget extends StatelessWidget {
-  final FileStatistic transactionFileStats;
-
-  const FileStatCardWidget({Key key, this.transactionFileStats})
-      : super(key: key);
+class LoadingStatCardWidget extends StatelessWidget {
+  const LoadingStatCardWidget({Key key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => BaseCardWidget(
+  Widget build(BuildContext context) => Shimmer.fromColors(
+      child: BaseCardWidget(
         children: [
           Padding(
             padding: EdgeInsets.symmetric(vertical: padding),
             child: Text(
-              '${transactionFileStats.filetype}',
+              '',
               style: Theme.of(context).textTheme.bodyText1,
             ),
           ),
@@ -26,27 +24,28 @@ class FileStatCardWidget extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(vertical: padding),
             child: Text(
-              '${transactionFileStats.transactionsCount} transactions',
+              '',
               style: Theme.of(context).textTheme.bodyText1,
             ),
           ),
           TransactionAmountTextWidget(
-            text: 'Native',
-            amount: transactionFileStats.totalNativeAmount,
-            symbol: '€',
+            text: '',
+            amount: 0,
           ),
           TransactionAmountTextWidget(
-            text: 'total usd',
-            amount: transactionFileStats.totalUsdAmount,
+            text: '',
+            amount: 0,
           ),
           TransactionAmountTextWidget(
-            text: 'positive usd',
-            amount: transactionFileStats.positiveUsdAmount,
+            text: '',
+            amount: 0,
           ),
           TransactionAmountTextWidget(
-            text: 'negative usd',
-            amount: transactionFileStats.negativeUsdAmount,
+            text: '',
+            amount: 0,
           ),
         ],
-      );
+      ),
+      baseColor: Theme.of(context).cardColor,
+      highlightColor: Theme.of(context).backgroundColor);
 }

@@ -4,8 +4,8 @@ import 'package:crypto_benefit/app/domain/object/statistic/statistic.dart';
 class FileStatistic extends Statistic {
   final String filetype;
 
-  FileStatistic({
-    this.filetype,
+  FileStatistic(
+    this.filetype, {
     var transactionsCount,
     var totalNativeAmount,
     var totalUsdAmount,
@@ -17,4 +17,11 @@ class FileStatistic extends Statistic {
           positiveUsdAmount: positiveUsdAmount,
           negativeUsdAmount: negativeUsdAmount,
         );
+
+  FileStatistic.fromStatistic(this.filetype, Statistic stat)
+      : super(
+            transactionsCount: stat.transactionsCount,
+            totalUsdAmount: stat.totalUsdAmount,
+            positiveUsdAmount: stat.positiveUsdAmount,
+            negativeUsdAmount: stat.negativeUsdAmount);
 }

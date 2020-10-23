@@ -93,4 +93,10 @@ class ImportFileRepository implements IImportFileRepository {
       .getImportedFilesStream()
       .asyncMap((importedFilesEntities) async =>
           _importedfileMapper.fromEntities(importedFilesEntities));
+
+  @override
+  Future<ImportedFile> getFileById(int fileId) async {
+    final fileEntity = await _importedFilesDao.getById(fileId);
+    return _importedfileMapper.fromEntity(fileEntity);
+  }
 }

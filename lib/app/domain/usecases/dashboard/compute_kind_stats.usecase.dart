@@ -1,5 +1,6 @@
 import 'package:crypto_benefit/app/domain/object/statistic/kind_statistic.dart';
 import 'package:crypto_benefit/app/domain/object/transaction.dart';
+import 'package:crypto_benefit/app/domain/repositories/statistic.repository.dart';
 import 'package:crypto_benefit/app/domain/repositories/transaction.repository.dart';
 import 'package:crypto_benefit/app/domain/usecases/usecase.dart';
 import 'package:crypto_benefit/core/di/injector_provider.dart';
@@ -8,6 +9,7 @@ import 'package:crypto_benefit/core/di/injector_provider.dart';
 class ComputeKindStatsUseCase
     implements BaseUseCase<List<KindStatistic>, void> {
   final _transactionRepository = inject<ITransactionRepository>();
+  final _statisticRepository = inject<IStatisticRepository>();
 
   @override
   Future<List<KindStatistic>> execute(void params) async {
@@ -19,7 +21,9 @@ class ComputeKindStatsUseCase
         await _transactionRepository.getTransactions();
 
     // Compute stats for all the transactions
-    stats.add(_computeStats('All', transactions));
+    final allStat =
+        await _statisticRepository.computeStatisticForTransaction(transactions);
+    stats.add(KindStatistic.fromStatistic('All', allStat));
 
     // Map our transactions with their kind
     Map<String, List<Transaction>> transactionsByKindMap = Map();
@@ -34,8 +38,10 @@ class ComputeKindStatsUseCase
 
     // Compute the stat for the mapped item
     for (final transactionsByKind in transactionsByKindMap.entries) {
-      stats
-          .add(_computeStats(transactionsByKind.key, transactionsByKind.value));
+      final stat = await _statisticRepository
+          .computeStatisticForTransaction(transactionsByKind.value);
+
+      stats.add(KindStatistic.fromStatistic(transactionsByKind.key, stat));
     }
 
     // Order the stat by total amount
@@ -44,31 +50,5 @@ class ComputeKindStatsUseCase
 
     // Return the computed stat
     return stats.reversed.toList();
-  }
-
-  /// Compute the stat object for a given kind and list of transactions
-  KindStatistic _computeStats(String kindName, List<Transaction> transactions) {
-    var totalNative = 0.0;
-    var totalUsd = 0.0;
-    var positiveUsd = 0.0;
-    var negativeUsd = 0.0;
-
-    for (Transaction transaction in transactions) {
-      totalNative += transaction.nativeAmount;
-      totalUsd += transaction.usdAmount;
-      if (transaction.usdAmount.isNegative) {
-        negativeUsd += transaction.usdAmount;
-      } else {
-        positiveUsd += transaction.usdAmount;
-      }
-    }
-
-    return KindStatistic(
-        kindName: kindName,
-        transactionsCount: transactions.length,
-        totalUsdAmount: totalUsd,
-        totalNativeAmount: totalNative,
-        positiveUsdAmount: positiveUsd,
-        negativeUsdAmount: negativeUsd);
   }
 }

@@ -49,6 +49,9 @@ dependencies:
 
   # Better UI grid view
   flutter_staggered_grid_view: ^0.3.2
+
+  # Shimmer (for some loading views)
+  shimmer: ^1.1.2
   
 dev_dependencies:
   moor_generator: ^3.4.0
