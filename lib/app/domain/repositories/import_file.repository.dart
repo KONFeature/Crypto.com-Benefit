@@ -11,7 +11,7 @@ abstract class IImportFileRepository {
   Future<void> clearImports();
 
   /// Stream used to get all of our files with their associated transactions
-  Stream<List<ImportedFile>> importedFilesStream();
+  Stream<List<ImportedFile>> watchImportedFiles();
 
   /// Get a file name from it's id
   Future<ImportedFile> getFileById(int fileId);

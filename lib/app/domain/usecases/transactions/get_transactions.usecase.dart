@@ -4,10 +4,11 @@ import 'package:crypto_benefit/app/domain/usecases/usecase.dart';
 import 'package:crypto_benefit/core/di/injector_provider.dart';
 
 /// Use case used to fetch all the imported file
-class GetTransactionsUseCase implements StreamUseCase<List<Transaction>, void> {
+class WatchTransactionsUseCase
+    implements StreamUseCase<List<Transaction>, void> {
   final _transactionRepository = inject<ITransactionRepository>();
 
   @override
   Stream<List<Transaction>> get(void params) =>
-      _transactionRepository.transactionsStream();
+      _transactionRepository.watchTransactions();
 }

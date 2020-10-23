@@ -1304,6 +1304,714 @@ class $TransactionsTableTable extends TransactionsTable
   }
 }
 
+class StatisticEntity extends DataClass implements Insertable<StatisticEntity> {
+  final int id;
+  final String name;
+  final int priority;
+  final DateTime createdTimestamp;
+  StatisticEntity(
+      {@required this.id,
+      @required this.name,
+      @required this.priority,
+      @required this.createdTimestamp});
+  factory StatisticEntity.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
+    final stringType = db.typeSystem.forDartType<String>();
+    final dateTimeType = db.typeSystem.forDartType<DateTime>();
+    return StatisticEntity(
+      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name']),
+      priority:
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}priority']),
+      createdTimestamp: dateTimeType
+          .mapFromDatabaseResponse(data['${effectivePrefix}created_timestamp']),
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<int>(id);
+    }
+    if (!nullToAbsent || name != null) {
+      map['name'] = Variable<String>(name);
+    }
+    if (!nullToAbsent || priority != null) {
+      map['priority'] = Variable<int>(priority);
+    }
+    if (!nullToAbsent || createdTimestamp != null) {
+      map['created_timestamp'] = Variable<DateTime>(createdTimestamp);
+    }
+    return map;
+  }
+
+  StatisticTableCompanion toCompanion(bool nullToAbsent) {
+    return StatisticTableCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      name: name == null && nullToAbsent ? const Value.absent() : Value(name),
+      priority: priority == null && nullToAbsent
+          ? const Value.absent()
+          : Value(priority),
+      createdTimestamp: createdTimestamp == null && nullToAbsent
+          ? const Value.absent()
+          : Value(createdTimestamp),
+    );
+  }
+
+  factory StatisticEntity.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return StatisticEntity(
+      id: serializer.fromJson<int>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+      priority: serializer.fromJson<int>(json['priority']),
+      createdTimestamp: serializer.fromJson<DateTime>(json['createdTimestamp']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'name': serializer.toJson<String>(name),
+      'priority': serializer.toJson<int>(priority),
+      'createdTimestamp': serializer.toJson<DateTime>(createdTimestamp),
+    };
+  }
+
+  StatisticEntity copyWith(
+          {int id, String name, int priority, DateTime createdTimestamp}) =>
+      StatisticEntity(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        priority: priority ?? this.priority,
+        createdTimestamp: createdTimestamp ?? this.createdTimestamp,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('StatisticEntity(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('priority: $priority, ')
+          ..write('createdTimestamp: $createdTimestamp')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(
+      id.hashCode,
+      $mrjc(
+          name.hashCode, $mrjc(priority.hashCode, createdTimestamp.hashCode))));
+  @override
+  bool operator ==(dynamic other) =>
+      identical(this, other) ||
+      (other is StatisticEntity &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.priority == this.priority &&
+          other.createdTimestamp == this.createdTimestamp);
+}
+
+class StatisticTableCompanion extends UpdateCompanion<StatisticEntity> {
+  final Value<int> id;
+  final Value<String> name;
+  final Value<int> priority;
+  final Value<DateTime> createdTimestamp;
+  const StatisticTableCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.priority = const Value.absent(),
+    this.createdTimestamp = const Value.absent(),
+  });
+  StatisticTableCompanion.insert({
+    this.id = const Value.absent(),
+    @required String name,
+    @required int priority,
+    @required DateTime createdTimestamp,
+  })  : name = Value(name),
+        priority = Value(priority),
+        createdTimestamp = Value(createdTimestamp);
+  static Insertable<StatisticEntity> custom({
+    Expression<int> id,
+    Expression<String> name,
+    Expression<int> priority,
+    Expression<DateTime> createdTimestamp,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+      if (priority != null) 'priority': priority,
+      if (createdTimestamp != null) 'created_timestamp': createdTimestamp,
+    });
+  }
+
+  StatisticTableCompanion copyWith(
+      {Value<int> id,
+      Value<String> name,
+      Value<int> priority,
+      Value<DateTime> createdTimestamp}) {
+    return StatisticTableCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      priority: priority ?? this.priority,
+      createdTimestamp: createdTimestamp ?? this.createdTimestamp,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (priority.present) {
+      map['priority'] = Variable<int>(priority.value);
+    }
+    if (createdTimestamp.present) {
+      map['created_timestamp'] = Variable<DateTime>(createdTimestamp.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('StatisticTableCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('priority: $priority, ')
+          ..write('createdTimestamp: $createdTimestamp')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $StatisticTableTable extends StatisticTable
+    with TableInfo<$StatisticTableTable, StatisticEntity> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $StatisticTableTable(this._db, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  GeneratedIntColumn _id;
+  @override
+  GeneratedIntColumn get id => _id ??= _constructId();
+  GeneratedIntColumn _constructId() {
+    return GeneratedIntColumn('id', $tableName, false,
+        hasAutoIncrement: true, declaredAsPrimaryKey: true);
+  }
+
+  final VerificationMeta _nameMeta = const VerificationMeta('name');
+  GeneratedTextColumn _name;
+  @override
+  GeneratedTextColumn get name => _name ??= _constructName();
+  GeneratedTextColumn _constructName() {
+    return GeneratedTextColumn('name', $tableName, false,
+        $customConstraints: 'UNIQUE');
+  }
+
+  final VerificationMeta _priorityMeta = const VerificationMeta('priority');
+  GeneratedIntColumn _priority;
+  @override
+  GeneratedIntColumn get priority => _priority ??= _constructPriority();
+  GeneratedIntColumn _constructPriority() {
+    return GeneratedIntColumn(
+      'priority',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _createdTimestampMeta =
+      const VerificationMeta('createdTimestamp');
+  GeneratedDateTimeColumn _createdTimestamp;
+  @override
+  GeneratedDateTimeColumn get createdTimestamp =>
+      _createdTimestamp ??= _constructCreatedTimestamp();
+  GeneratedDateTimeColumn _constructCreatedTimestamp() {
+    return GeneratedDateTimeColumn(
+      'created_timestamp',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [id, name, priority, createdTimestamp];
+  @override
+  $StatisticTableTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'statistic_table';
+  @override
+  final String actualTableName = 'statistic_table';
+  @override
+  VerificationContext validateIntegrity(Insertable<StatisticEntity> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name'], _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('priority')) {
+      context.handle(_priorityMeta,
+          priority.isAcceptableOrUnknown(data['priority'], _priorityMeta));
+    } else if (isInserting) {
+      context.missing(_priorityMeta);
+    }
+    if (data.containsKey('created_timestamp')) {
+      context.handle(
+          _createdTimestampMeta,
+          createdTimestamp.isAcceptableOrUnknown(
+              data['created_timestamp'], _createdTimestampMeta));
+    } else if (isInserting) {
+      context.missing(_createdTimestampMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  StatisticEntity map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return StatisticEntity.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  $StatisticTableTable createAlias(String alias) {
+    return $StatisticTableTable(_db, alias);
+  }
+}
+
+class StatisticKindEntity extends DataClass
+    implements Insertable<StatisticKindEntity> {
+  final int statisticId;
+  final int kindId;
+  StatisticKindEntity({@required this.statisticId, @required this.kindId});
+  factory StatisticKindEntity.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
+    return StatisticKindEntity(
+      statisticId: intType
+          .mapFromDatabaseResponse(data['${effectivePrefix}statistic_id']),
+      kindId:
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}kind_id']),
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || statisticId != null) {
+      map['statistic_id'] = Variable<int>(statisticId);
+    }
+    if (!nullToAbsent || kindId != null) {
+      map['kind_id'] = Variable<int>(kindId);
+    }
+    return map;
+  }
+
+  StatisticKindsTableCompanion toCompanion(bool nullToAbsent) {
+    return StatisticKindsTableCompanion(
+      statisticId: statisticId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(statisticId),
+      kindId:
+          kindId == null && nullToAbsent ? const Value.absent() : Value(kindId),
+    );
+  }
+
+  factory StatisticKindEntity.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return StatisticKindEntity(
+      statisticId: serializer.fromJson<int>(json['statisticId']),
+      kindId: serializer.fromJson<int>(json['kindId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'statisticId': serializer.toJson<int>(statisticId),
+      'kindId': serializer.toJson<int>(kindId),
+    };
+  }
+
+  StatisticKindEntity copyWith({int statisticId, int kindId}) =>
+      StatisticKindEntity(
+        statisticId: statisticId ?? this.statisticId,
+        kindId: kindId ?? this.kindId,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('StatisticKindEntity(')
+          ..write('statisticId: $statisticId, ')
+          ..write('kindId: $kindId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(statisticId.hashCode, kindId.hashCode));
+  @override
+  bool operator ==(dynamic other) =>
+      identical(this, other) ||
+      (other is StatisticKindEntity &&
+          other.statisticId == this.statisticId &&
+          other.kindId == this.kindId);
+}
+
+class StatisticKindsTableCompanion
+    extends UpdateCompanion<StatisticKindEntity> {
+  final Value<int> statisticId;
+  final Value<int> kindId;
+  const StatisticKindsTableCompanion({
+    this.statisticId = const Value.absent(),
+    this.kindId = const Value.absent(),
+  });
+  StatisticKindsTableCompanion.insert({
+    @required int statisticId,
+    @required int kindId,
+  })  : statisticId = Value(statisticId),
+        kindId = Value(kindId);
+  static Insertable<StatisticKindEntity> custom({
+    Expression<int> statisticId,
+    Expression<int> kindId,
+  }) {
+    return RawValuesInsertable({
+      if (statisticId != null) 'statistic_id': statisticId,
+      if (kindId != null) 'kind_id': kindId,
+    });
+  }
+
+  StatisticKindsTableCompanion copyWith(
+      {Value<int> statisticId, Value<int> kindId}) {
+    return StatisticKindsTableCompanion(
+      statisticId: statisticId ?? this.statisticId,
+      kindId: kindId ?? this.kindId,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (statisticId.present) {
+      map['statistic_id'] = Variable<int>(statisticId.value);
+    }
+    if (kindId.present) {
+      map['kind_id'] = Variable<int>(kindId.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('StatisticKindsTableCompanion(')
+          ..write('statisticId: $statisticId, ')
+          ..write('kindId: $kindId')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $StatisticKindsTableTable extends StatisticKindsTable
+    with TableInfo<$StatisticKindsTableTable, StatisticKindEntity> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $StatisticKindsTableTable(this._db, [this._alias]);
+  final VerificationMeta _statisticIdMeta =
+      const VerificationMeta('statisticId');
+  GeneratedIntColumn _statisticId;
+  @override
+  GeneratedIntColumn get statisticId =>
+      _statisticId ??= _constructStatisticId();
+  GeneratedIntColumn _constructStatisticId() {
+    return GeneratedIntColumn(
+      'statistic_id',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _kindIdMeta = const VerificationMeta('kindId');
+  GeneratedIntColumn _kindId;
+  @override
+  GeneratedIntColumn get kindId => _kindId ??= _constructKindId();
+  GeneratedIntColumn _constructKindId() {
+    return GeneratedIntColumn(
+      'kind_id',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [statisticId, kindId];
+  @override
+  $StatisticKindsTableTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'statistic_kinds_table';
+  @override
+  final String actualTableName = 'statistic_kinds_table';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<StatisticKindEntity> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('statistic_id')) {
+      context.handle(
+          _statisticIdMeta,
+          statisticId.isAcceptableOrUnknown(
+              data['statistic_id'], _statisticIdMeta));
+    } else if (isInserting) {
+      context.missing(_statisticIdMeta);
+    }
+    if (data.containsKey('kind_id')) {
+      context.handle(_kindIdMeta,
+          kindId.isAcceptableOrUnknown(data['kind_id'], _kindIdMeta));
+    } else if (isInserting) {
+      context.missing(_kindIdMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  @override
+  StatisticKindEntity map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return StatisticKindEntity.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  $StatisticKindsTableTable createAlias(String alias) {
+    return $StatisticKindsTableTable(_db, alias);
+  }
+}
+
+class StatisticFileEntity extends DataClass
+    implements Insertable<StatisticFileEntity> {
+  final int statisticId;
+  final int fileId;
+  StatisticFileEntity({@required this.statisticId, @required this.fileId});
+  factory StatisticFileEntity.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
+    return StatisticFileEntity(
+      statisticId: intType
+          .mapFromDatabaseResponse(data['${effectivePrefix}statistic_id']),
+      fileId:
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}file_id']),
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || statisticId != null) {
+      map['statistic_id'] = Variable<int>(statisticId);
+    }
+    if (!nullToAbsent || fileId != null) {
+      map['file_id'] = Variable<int>(fileId);
+    }
+    return map;
+  }
+
+  StatisticFilesTableCompanion toCompanion(bool nullToAbsent) {
+    return StatisticFilesTableCompanion(
+      statisticId: statisticId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(statisticId),
+      fileId:
+          fileId == null && nullToAbsent ? const Value.absent() : Value(fileId),
+    );
+  }
+
+  factory StatisticFileEntity.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return StatisticFileEntity(
+      statisticId: serializer.fromJson<int>(json['statisticId']),
+      fileId: serializer.fromJson<int>(json['fileId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'statisticId': serializer.toJson<int>(statisticId),
+      'fileId': serializer.toJson<int>(fileId),
+    };
+  }
+
+  StatisticFileEntity copyWith({int statisticId, int fileId}) =>
+      StatisticFileEntity(
+        statisticId: statisticId ?? this.statisticId,
+        fileId: fileId ?? this.fileId,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('StatisticFileEntity(')
+          ..write('statisticId: $statisticId, ')
+          ..write('fileId: $fileId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(statisticId.hashCode, fileId.hashCode));
+  @override
+  bool operator ==(dynamic other) =>
+      identical(this, other) ||
+      (other is StatisticFileEntity &&
+          other.statisticId == this.statisticId &&
+          other.fileId == this.fileId);
+}
+
+class StatisticFilesTableCompanion
+    extends UpdateCompanion<StatisticFileEntity> {
+  final Value<int> statisticId;
+  final Value<int> fileId;
+  const StatisticFilesTableCompanion({
+    this.statisticId = const Value.absent(),
+    this.fileId = const Value.absent(),
+  });
+  StatisticFilesTableCompanion.insert({
+    @required int statisticId,
+    @required int fileId,
+  })  : statisticId = Value(statisticId),
+        fileId = Value(fileId);
+  static Insertable<StatisticFileEntity> custom({
+    Expression<int> statisticId,
+    Expression<int> fileId,
+  }) {
+    return RawValuesInsertable({
+      if (statisticId != null) 'statistic_id': statisticId,
+      if (fileId != null) 'file_id': fileId,
+    });
+  }
+
+  StatisticFilesTableCompanion copyWith(
+      {Value<int> statisticId, Value<int> fileId}) {
+    return StatisticFilesTableCompanion(
+      statisticId: statisticId ?? this.statisticId,
+      fileId: fileId ?? this.fileId,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (statisticId.present) {
+      map['statistic_id'] = Variable<int>(statisticId.value);
+    }
+    if (fileId.present) {
+      map['file_id'] = Variable<int>(fileId.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('StatisticFilesTableCompanion(')
+          ..write('statisticId: $statisticId, ')
+          ..write('fileId: $fileId')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $StatisticFilesTableTable extends StatisticFilesTable
+    with TableInfo<$StatisticFilesTableTable, StatisticFileEntity> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $StatisticFilesTableTable(this._db, [this._alias]);
+  final VerificationMeta _statisticIdMeta =
+      const VerificationMeta('statisticId');
+  GeneratedIntColumn _statisticId;
+  @override
+  GeneratedIntColumn get statisticId =>
+      _statisticId ??= _constructStatisticId();
+  GeneratedIntColumn _constructStatisticId() {
+    return GeneratedIntColumn(
+      'statistic_id',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _fileIdMeta = const VerificationMeta('fileId');
+  GeneratedIntColumn _fileId;
+  @override
+  GeneratedIntColumn get fileId => _fileId ??= _constructFileId();
+  GeneratedIntColumn _constructFileId() {
+    return GeneratedIntColumn(
+      'file_id',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [statisticId, fileId];
+  @override
+  $StatisticFilesTableTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'statistic_files_table';
+  @override
+  final String actualTableName = 'statistic_files_table';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<StatisticFileEntity> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('statistic_id')) {
+      context.handle(
+          _statisticIdMeta,
+          statisticId.isAcceptableOrUnknown(
+              data['statistic_id'], _statisticIdMeta));
+    } else if (isInserting) {
+      context.missing(_statisticIdMeta);
+    }
+    if (data.containsKey('file_id')) {
+      context.handle(_fileIdMeta,
+          fileId.isAcceptableOrUnknown(data['file_id'], _fileIdMeta));
+    } else if (isInserting) {
+      context.missing(_fileIdMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  @override
+  StatisticFileEntity map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return StatisticFileEntity.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  $StatisticFilesTableTable createAlias(String alias) {
+    return $StatisticFilesTableTable(_db, alias);
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   $ImportedFilesTableTable _importedFilesTable;
@@ -1315,9 +2023,24 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   $TransactionsTableTable _transactionsTable;
   $TransactionsTableTable get transactionsTable =>
       _transactionsTable ??= $TransactionsTableTable(this);
+  $StatisticTableTable _statisticTable;
+  $StatisticTableTable get statisticTable =>
+      _statisticTable ??= $StatisticTableTable(this);
+  $StatisticKindsTableTable _statisticKindsTable;
+  $StatisticKindsTableTable get statisticKindsTable =>
+      _statisticKindsTable ??= $StatisticKindsTableTable(this);
+  $StatisticFilesTableTable _statisticFilesTable;
+  $StatisticFilesTableTable get statisticFilesTable =>
+      _statisticFilesTable ??= $StatisticFilesTableTable(this);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [importedFilesTable, transactionKindsTable, transactionsTable];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [
+        importedFilesTable,
+        transactionKindsTable,
+        transactionsTable,
+        statisticTable,
+        statisticKindsTable,
+        statisticFilesTable
+      ];
 }

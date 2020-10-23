@@ -44,6 +44,6 @@ class ImportedFilesDao {
   Future<int> removeAll() async => _db.delete(_importedFilesTable).go();
 
   /// Get a Stream of al the current files we got in the database
-  Stream<List<ImportedFileEntity>> getImportedFilesStream() =>
+  Stream<List<ImportedFileEntity>> watchImportedFiles() =>
       _db.select(_importedFilesTable).watch();
 }

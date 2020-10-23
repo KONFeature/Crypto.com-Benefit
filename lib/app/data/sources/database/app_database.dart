@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:crypto_benefit/app/data/sources/database/tables/imported_files.table.dart';
+import 'package:crypto_benefit/app/data/sources/database/tables/statistics.table.dart';
 import 'package:crypto_benefit/app/data/sources/database/tables/transaction_kinds.table.dart';
 import 'package:crypto_benefit/app/data/sources/database/tables/transactions.table.dart';
 import 'package:encrypted_moor/encrypted_moor.dart';
@@ -29,8 +30,14 @@ LazyDatabase _openConnection() {
 }
 
 // The application database (link to entity and some helpful method)
-@UseMoor(
-    tables: [ImportedFilesTable, TransactionKindsTable, TransactionsTable])
+@UseMoor(tables: [
+  ImportedFilesTable,
+  TransactionKindsTable,
+  TransactionsTable,
+  StatisticTable,
+  StatisticKindsTable,
+  StatisticFilesTable
+])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 

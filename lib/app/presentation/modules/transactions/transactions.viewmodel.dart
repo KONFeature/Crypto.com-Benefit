@@ -10,7 +10,7 @@ class TransactionsViewModel = _TransactionsViewModelBase
 /// The view model for our transactions page.
 abstract class _TransactionsViewModelBase with Store {
   /// Our transaction repository
-  final _getTransactionsUseCase = inject<GetTransactionsUseCase>();
+  final _watchTransactionsUseCase = inject<WatchTransactionsUseCase>();
 
   @observable
   ObservableStream<List> _transactions;
@@ -22,6 +22,6 @@ abstract class _TransactionsViewModelBase with Store {
   List<dynamic> get transactions => _transactions.value;
 
   _TransactionsViewModelBase() {
-    _transactions = _getTransactionsUseCase.get(null).asObservable();
+    _transactions = _watchTransactionsUseCase.get(null).asObservable();
   }
 }

@@ -89,8 +89,8 @@ class ImportFileRepository implements IImportFileRepository {
   }
 
   @override
-  Stream<List<ImportedFile>> importedFilesStream() => _importedFilesDao
-      .getImportedFilesStream()
+  Stream<List<ImportedFile>> watchImportedFiles() => _importedFilesDao
+      .watchImportedFiles()
       .asyncMap((importedFilesEntities) async =>
           _importedfileMapper.fromEntities(importedFilesEntities));
 

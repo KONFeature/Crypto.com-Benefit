@@ -1,5 +1,5 @@
 import 'package:crypto_benefit/app/domain/usecases/import/clear_imports.usecase.dart';
-import 'package:crypto_benefit/app/domain/usecases/import/get_imported_files.usecase.dart';
+import 'package:crypto_benefit/app/domain/usecases/import/watch_imported_files.usecase.dart';
 import 'package:crypto_benefit/app/domain/usecases/import/import_file.usecase.dart';
 import 'package:crypto_benefit/core/di/injector_provider.dart';
 import 'package:flutter_document_picker/flutter_document_picker.dart';
@@ -14,14 +14,14 @@ abstract class _ImportViewModelBase with Store {
   /// Our use cases for this view model
   final _importFileUseCase = inject<ImportFileUseCase>();
   final _clearImportUseCase = inject<ClearImportsUseCase>();
-  final _getImportedFileUseCase = inject<GetImportedFileUseCase>();
+  final _watchImportedFileUseCase = inject<WatchImportedFileUseCase>();
 
   @observable
   ObservableStream<List> importedFilesStream;
 
   _ImportViewModelBase() {
     // Listen to our imported file stream
-    importedFilesStream = _getImportedFileUseCase.get(null).asObservable();
+    importedFilesStream = _watchImportedFileUseCase.get(null).asObservable();
   }
 
   @action

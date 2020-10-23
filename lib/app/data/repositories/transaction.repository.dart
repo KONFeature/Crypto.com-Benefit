@@ -49,8 +49,8 @@ class TransactionRepository implements ITransactionRepository {
   }
 
   @override
-  Stream<List<Transaction>> transactionsStream() => _transactionsDao
-      .getTransactionsStream()
+  Stream<List<Transaction>> watchTransactions() => _transactionsDao
+      .watchTransactions()
       .asyncMap((transactionEntities) async =>
           _transactionMapper.fromEntities(transactionEntities));
 }

@@ -13,5 +13,5 @@ abstract class ITransactionRepository {
   Future<List<Transaction>> getTransactions();
 
   /// Get the transactions streams
-  Stream<List<Transaction>> transactionsStream();
+  Stream<List<Transaction>> watchTransactions();
 }

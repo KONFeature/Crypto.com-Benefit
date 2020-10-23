@@ -61,6 +61,6 @@ class TransactionsDao {
   Future<int> removeAll() async => _db.delete(_db.transactionsTable).go();
 
   /// Get a Stream of al the current transactions we got in the database
-  Stream<List<TransactionEntity>> getTransactionsStream() =>
+  Stream<List<TransactionEntity>> watchTransactions() =>
       _db.select(_db.transactionsTable).watch();
 }
