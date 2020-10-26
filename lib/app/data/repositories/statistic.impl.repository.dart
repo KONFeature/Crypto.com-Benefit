@@ -1,5 +1,7 @@
 import 'package:crypto_benefit/app/data/mappers/statistic.mapper.dart';
+import 'package:crypto_benefit/app/data/sources/database/app_database.dart';
 import 'package:crypto_benefit/app/data/sources/database/daos/statistics.dao.dart';
+import 'package:crypto_benefit/app/domain/object/imported_file.dart';
 import 'package:crypto_benefit/app/domain/object/statistic/computed_statistic.dart';
 import 'package:crypto_benefit/app/domain/object/transaction.dart';
 import 'package:crypto_benefit/app/domain/object/statistic/statistic.dart';
@@ -47,5 +49,24 @@ class StatisticRepository implements IStatisticRepository {
   @override
   Stream<List<Statistic>> watchStatistics() => _statisticDao
       .watchAllStatistics()
-      .map((stats) => _statisticMapper.fromEntities(stats));
+      .asyncMap((stats) => _statisticMapper.fromEntities(stats));
+
+  @override
+  Future<int> createStatistic(String name) async {
+    var newStatId = await _statisticDao.insert(StatisticEntity(
+        id: null, name: name, createdTimestamp: DateTime.now()));
+    print(
+        'Successfully inserted the new statistic \'$name\' with the id $newStatId');
+    return newStatId;
+  }
+
+  @override
+  Future<void> updateStatisticFilter(
+      int statId, List<int> kindIds, List<FileType> types) async {
+    // Update the kind of the statistics
+    await _statisticDao.updateKindsForStat(statId, kindIds);
+    // Update the types of the statistic
+    await _statisticDao.updateFileTypesForStat(statId, types);
+    print('Successfully updated the statistic with id $statId');
+  }
 }

@@ -22,7 +22,7 @@ class _SettingsPageState extends State<SettingsPage> with SettingsWidget {
         Observer(builder: (observerContext) {
           return vm.isLoading
               ? loading(observerContext)
-              : statistics(observerContext, vm.transactions);
+              : statistics(observerContext, vm.statistics);
         }),
         addStatisticsButton(context)
       ],

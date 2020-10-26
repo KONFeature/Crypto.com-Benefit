@@ -21,8 +21,6 @@ class _HomePageState extends State<HomePage> with HomeWidget {
   Widget build(BuildContext context) => Scaffold(
       key: _scaffoldKey,
       extendBody: false,
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: fab(context),
       bottomNavigationBar: bottomBar(context),
       body: _body);
 

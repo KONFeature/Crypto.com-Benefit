@@ -23,5 +23,6 @@ abstract class _DashboardViewModelBase with Store {
   _DashboardViewModelBase() {
     // Compute kind stats
     _stats = _computeKindsStateUseCase.watch(null).asObservable();
+    _stats.handleError((exception) => print('Erreur survenue $exception'));
   }
 }

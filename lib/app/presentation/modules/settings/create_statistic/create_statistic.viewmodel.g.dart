@@ -30,6 +30,15 @@ mixin _$CreateStatisticViewModel on _CreateStatisticViewModelBase, Store {
           Computed<ObservableMap<FileType, bool>>(() => super.typeSelected,
               name: '_CreateStatisticViewModelBase.typeSelected'))
       .value;
+  Computed<ObservableMap<TransactionKind, bool>> _$kindSelectedComputed;
+
+  @override
+  ObservableMap<TransactionKind, bool> get kindSelected =>
+      (_$kindSelectedComputed ??=
+              Computed<ObservableMap<TransactionKind, bool>>(
+                  () => super.kindSelected,
+                  name: '_CreateStatisticViewModelBase.kindSelected'))
+          .value;
 
   final _$_kindsAtom = Atom(name: '_CreateStatisticViewModelBase._kinds');
 
@@ -62,6 +71,22 @@ mixin _$CreateStatisticViewModel on _CreateStatisticViewModelBase, Store {
     });
   }
 
+  final _$_kindSelectedAtom =
+      Atom(name: '_CreateStatisticViewModelBase._kindSelected');
+
+  @override
+  ObservableMap<TransactionKind, bool> get _kindSelected {
+    _$_kindSelectedAtom.reportRead();
+    return super._kindSelected;
+  }
+
+  @override
+  set _kindSelected(ObservableMap<TransactionKind, bool> value) {
+    _$_kindSelectedAtom.reportWrite(value, super._kindSelected, () {
+      super._kindSelected = value;
+    });
+  }
+
   final _$_CreateStatisticViewModelBaseActionController =
       ActionController(name: '_CreateStatisticViewModelBase');
 
@@ -77,11 +102,23 @@ mixin _$CreateStatisticViewModel on _CreateStatisticViewModelBase, Store {
   }
 
   @override
+  dynamic updateKindSelection(TransactionKind kind, bool isSelected) {
+    final _$actionInfo = _$_CreateStatisticViewModelBaseActionController
+        .startAction(name: '_CreateStatisticViewModelBase.updateKindSelection');
+    try {
+      return super.updateKindSelection(kind, isSelected);
+    } finally {
+      _$_CreateStatisticViewModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 isLoading: ${isLoading},
 kinds: ${kinds},
-typeSelected: ${typeSelected}
+typeSelected: ${typeSelected},
+kindSelected: ${kindSelected}
     ''';
   }
 }

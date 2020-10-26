@@ -54,12 +54,13 @@ class StatisticsDao extends DatabaseAccessor<AppDatabase>
             idToFileType.putIfAbsent(id, () => []).add(item);
           }
 
+          List<FullStatisticEntity> fullStatisticEntities = List();
+          for (var statId in statIds) {
+            fullStatisticEntities.add(FullStatisticEntity.fromStat(
+                idToStat[statId], idToKind[statId], idToFileType[statId]));
+          }
           // Then build and return our completed object for the 3 map
-          return [
-            for (var id in statIds)
-              FullStatisticEntity.fromStat(
-                  idToStat[id], idToKind[id], idToFileType[id])
-          ];
+          return fullStatisticEntities;
         });
       });
     });
@@ -77,6 +78,10 @@ class StatisticsDao extends DatabaseAccessor<AppDatabase>
   Future<int> deleteStat(int statId) =>
       (delete(statisticTable)..where((tbl) => tbl.id.equals(statId))).go();
 
+  /// Retreive a statistic entity from it's id
+  Future<StatisticEntity> getById(int id) =>
+      (select(statisticTable)..where((tbl) => tbl.id.equals(id))).getSingle();
+
   /// Retreive a statistic entity from it's name
   Future<StatisticEntity> _getByName(String name) =>
       (select(statisticTable)..where((tbl) => tbl.name.equals(name)))
@@ -84,6 +89,10 @@ class StatisticsDao extends DatabaseAccessor<AppDatabase>
 
   /// Update the list of transactions kinds for a stat
   Future<void> updateKindsForStat(int statId, List<int> kindIds) async {
+    // Clear all the previously associated kind
+    (delete(statisticKindsTable)
+          ..where((tbl) => tbl.statisticId.equals(statId)))
+        .go();
     // For each kinds id
     for (var kindId in kindIds) {
       // Build our stat kind entities
@@ -96,6 +105,10 @@ class StatisticsDao extends DatabaseAccessor<AppDatabase>
 
   /// Update the list of transactions kinds for a stat
   Future<void> updateFileTypesForStat(int statId, List<FileType> types) async {
+    // Clear all the previously associated types
+    (delete(statisticFilesTable)
+          ..where((tbl) => tbl.statisticId.equals(statId)))
+        .go();
     // For each kinds id
     for (var type in types) {
       // Build our stat kind entities

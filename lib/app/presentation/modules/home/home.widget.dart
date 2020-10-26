@@ -3,6 +3,7 @@ import 'package:crypto_benefit/core/values/animations.dart';
 import 'package:crypto_benefit/core/values/dimens.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto_benefit/app/presentation/modules/home/home.viewmodel.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 /// The widget of the import pages
 mixin HomeWidget {
@@ -12,26 +13,17 @@ mixin HomeWidget {
   // Build our bottom nav bar
   BottomAppBar bottomBar(BuildContext context) => BottomAppBar(
         notchMargin: notchMargin,
-        child: new Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: _appBarButtons(context),
-        ),
+        child: Observer(
+            builder: (observableContext) => Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: _appBarButtons(observableContext),
+                )),
       );
-
-  // Build our fab to access the dashboard
-  FloatingActionButton fab(BuildContext context) =>
-      FloatingActionButton.extended(
-          icon: const Icon(Icons.dashboard),
-          label: const Text('Dashboard'),
-          backgroundColor: Theme.of(context).primaryColor,
-          onPressed: () {
-            vm.onTabPageClicked(TabPages.dashboard);
-          });
 
   /// Get our app bars buttons
   List<Widget> _appBarButtons(BuildContext context) =>
-      List.of([TabPages.import, TabPages.settings])
+      List.of([TabPages.import, TabPages.dashboard, TabPages.settings])
           .map((tabPage) => _buttonForPage(context, tabPage))
           .toList();
 
@@ -43,7 +35,7 @@ mixin HomeWidget {
         vm.onTabPageClicked(page);
       },
       child: AnimatedOpacity(
-        opacity: vm.isCurrentPage(page) ? 1.0 : 0.3,
+        opacity: vm.currentPage == page ? 1.0 : 0.3,
         duration: baseAnimationDuration,
         child: _buttonContentForPage(context, page),
       ));

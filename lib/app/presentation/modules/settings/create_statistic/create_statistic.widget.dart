@@ -5,6 +5,7 @@ import 'package:crypto_benefit/core/di/injector_provider.dart';
 import 'package:crypto_benefit/core/values/dimens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:shimmer/shimmer.dart';
 
 /// The widget of the list of transactions pages
 class CreateStatisticWidget {
@@ -29,13 +30,7 @@ class CreateStatisticWidget {
       padding: EdgeInsets.all(margin),
       child: TextFormField(
         decoration: InputDecoration(labelText: 'Statistic name'),
-        // TODO : Validator in vm
-        validator: (value) {
-          if (value.isEmpty) {
-            return 'Please enter a statistic name';
-          }
-          return null;
-        },
+        validator: (value) => vm.validateStatName(value),
       ));
 
   /// Widget use to let the user select types for his statistics
@@ -60,27 +55,43 @@ class CreateStatisticWidget {
 
   /// Widget use to let the user select the kinds for his statistics
   Widget kindsSelection(BuildContext context) =>
-      vm.isLoading || vm.kinds == null || vm.kinds.isEmpty
-          ? _noKindsYet(context)
-          : _kindsCheckboxes(context, vm.kinds);
+      vm.isLoading || vm.kindSelected.isEmpty
+          ? _kindsLoading(context)
+          : _kindsCheckboxes(context);
 
-  Widget _noKindsYet(BuildContext context) =>
-      Text('All the kinds are currently loading');
-
-  Widget _kindsCheckboxes(BuildContext context, List<TransactionKind> kinds) =>
-      StaggeredGridView.countBuilder(
-        itemCount: kinds.length,
+  Widget _kindsLoading(BuildContext context) => StaggeredGridView.countBuilder(
+        itemCount: 10,
         crossAxisCount: 2,
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
         physics: BouncingScrollPhysics(),
         itemBuilder: (BuildContext context, int index) {
-          final kind = kinds.elementAt(index);
+          return Shimmer.fromColors(
+              baseColor: Theme.of(context).cardColor,
+              highlightColor: Theme.of(context).backgroundColor,
+              child: SelectableItemWidget(
+                text: '',
+                isSelected: false,
+                onChanged: (isSelected) {},
+              ));
+        },
+        staggeredTileBuilder: (_) => StaggeredTile.fit(1),
+      );
+
+  Widget _kindsCheckboxes(BuildContext context) =>
+      StaggeredGridView.countBuilder(
+        itemCount: vm.kindSelected.length,
+        crossAxisCount: 2,
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        physics: BouncingScrollPhysics(),
+        itemBuilder: (BuildContext context, int index) {
+          final kind = vm.kindSelected.keys.elementAt(index);
           return SelectableItemWidget(
             text: kind.name,
-            isSelected: false,
+            isSelected: vm.kindSelected[kind],
             onChanged: (isSelected) {
-              // vm.updateTypeSelection(type, isSelected);
+              vm.updateKindSelection(kind, isSelected);
             },
           );
         },

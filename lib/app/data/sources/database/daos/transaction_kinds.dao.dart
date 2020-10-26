@@ -14,14 +14,16 @@ class TransactionKindsDao extends DatabaseAccessor<AppDatabase>
   /// Create or get a transaction kind
   Future<TransactionKindEntity> createOrGet(String name) async {
     // Try to find a transaction kind with that name
-    final foundedTransactionKind = (select(transactionKindsTable)
+    final foundedTransactionKind = await (select(transactionKindsTable)
           ..where((tbl) => tbl.name.equals(name)))
         .getSingle();
 
     if (foundedTransactionKind != null) {
+      print(
+          'A transaction kind already exist for the name $name, returning it');
       return foundedTransactionKind;
     } else {
-      print('No entity founded for the name $name');
+      print('No transaction kind founded for the name $name, creating it');
     }
 
     // Create a new one if we havn't founded it

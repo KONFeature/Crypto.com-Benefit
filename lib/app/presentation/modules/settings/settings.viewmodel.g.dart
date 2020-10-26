@@ -16,34 +16,36 @@ mixin _$SettingsViewModel on _SettingsViewModelBase, Store {
       (_$isLoadingComputed ??= Computed<bool>(() => super.isLoading,
               name: '_SettingsViewModelBase.isLoading'))
           .value;
-  Computed<List<dynamic>> _$transactionsComputed;
+  Computed<List<dynamic>> _$statisticsComputed;
 
   @override
-  List<dynamic> get transactions => (_$transactionsComputed ??=
-          Computed<List<dynamic>>(() => super.transactions,
-              name: '_SettingsViewModelBase.transactions'))
-      .value;
+  List<dynamic> get statistics =>
+      (_$statisticsComputed ??= Computed<List<dynamic>>(() => super.statistics,
+              name: '_SettingsViewModelBase.statistics'))
+          .value;
 
-  final _$_statisticsAtom = Atom(name: '_SettingsViewModelBase._statistics');
+  final _$statisticsStreamAtom =
+      Atom(name: '_SettingsViewModelBase.statisticsStream');
 
   @override
-  ObservableStream<List<dynamic>> get _statistics {
-    _$_statisticsAtom.reportRead();
-    return super._statistics;
+  ObservableStream<List<dynamic>> get statisticsStream {
+    _$statisticsStreamAtom.reportRead();
+    return super.statisticsStream;
   }
 
   @override
-  set _statistics(ObservableStream<List<dynamic>> value) {
-    _$_statisticsAtom.reportWrite(value, super._statistics, () {
-      super._statistics = value;
+  set statisticsStream(ObservableStream<List<dynamic>> value) {
+    _$statisticsStreamAtom.reportWrite(value, super.statisticsStream, () {
+      super.statisticsStream = value;
     });
   }
 
   @override
   String toString() {
     return '''
+statisticsStream: ${statisticsStream},
 isLoading: ${isLoading},
-transactions: ${transactions}
+statistics: ${statistics}
     ''';
   }
 }

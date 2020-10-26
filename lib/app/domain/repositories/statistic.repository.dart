@@ -1,3 +1,4 @@
+import 'package:crypto_benefit/app/domain/object/imported_file.dart';
 import 'package:crypto_benefit/app/domain/object/statistic/computed_statistic.dart';
 import 'package:crypto_benefit/app/domain/object/statistic/statistic.dart';
 import 'package:crypto_benefit/app/domain/object/transaction.dart';
@@ -10,4 +11,11 @@ abstract class IStatisticRepository {
 
   // Watch all the statistics
   Stream<List<Statistic>> watchStatistics();
+
+  // Create a new statistic
+  Future<int> createStatistic(String name);
+
+  // Update the statistic filter
+  Future<void> updateStatisticFilter(
+      int statId, List<int> kindIds, List<FileType> types);
 }

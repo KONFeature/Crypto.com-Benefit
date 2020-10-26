@@ -12,15 +12,15 @@ abstract class _SettingsViewModelBase with Store {
   final _watchStatisticsUseCase = inject<WatchStatisticsUseCase>();
 
   @observable
-  ObservableStream<List> _statistics;
+  ObservableStream<List> statisticsStream;
 
   @computed
-  bool get isLoading => _statistics.status == StreamStatus.waiting;
+  bool get isLoading => statisticsStream.status == StreamStatus.waiting;
 
   @computed
-  List get transactions => _statistics.value;
+  List get statistics => statisticsStream.value;
 
   _SettingsViewModelBase() {
-    _statistics = _watchStatisticsUseCase.watch(null).asObservable();
+    statisticsStream = _watchStatisticsUseCase.watch(null).asObservable();
   }
 }

@@ -39,7 +39,7 @@ class SettingsWidget {
   Widget _statisticsListView(
           BuildContext context, List<Statistic> statistics) =>
       StaggeredGridView.countBuilder(
-        itemCount: 5,
+        itemCount: statistics.length,
         crossAxisCount: 2,
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
@@ -82,6 +82,7 @@ class SettingsWidget {
   /// Widget used to add a new statistics
   Widget addStatisticsButton(BuildContext context) => RaisedButton(
         onPressed: () {
+          print(vm.statisticsStream.status);
           _showAddStatisticModal(context);
         },
         color: Theme.of(context).primaryColor,
@@ -95,6 +96,8 @@ class SettingsWidget {
   void _showAddStatisticModal(context) {
     showModalBottomSheet(
         context: context,
+        isDismissible: false,
+        elevation: 16,
         builder: (BuildContext bc) {
           return CreateStatisticModal();
         });

@@ -22,7 +22,17 @@ class _CreateStatisticModalState extends State<CreateStatisticModal>
     return Container(
         child: ListView(
       children: [
-        title(context),
+        Row(
+          children: [
+            title(context),
+            IconButton(
+              icon: Icon(Icons.cancel),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            )
+          ],
+        ),
         Form(
             key: _formKey,
             child: Observer(
@@ -41,7 +51,11 @@ class _CreateStatisticModalState extends State<CreateStatisticModal>
           typesSelection(context),
           // List of available kinds
           partTitle(context, 'Transaction kinds for your statistic'),
-          kindsSelection(context),
+          // Text(vm.kindSelected.length.toString()),
+          Observer(
+            builder: (observerContext) => kindsSelection(context),
+          ),
+          // kindsSelection(context),
           // Button to submit the statistic creation
           _submitButton(context),
         ],
@@ -49,11 +63,11 @@ class _CreateStatisticModalState extends State<CreateStatisticModal>
 
   /// Button used to submit the statistic creation
   Widget _submitButton(BuildContext context) => RaisedButton(
-        onPressed: () {
+        onPressed: () async {
           if (_formKey.currentState.validate()) {
-            // TODO : View model, create the stat
-            Scaffold.of(context)
-                .showSnackBar(SnackBar(content: Text('Processing Data')));
+            // Perform the creation and then popup the model
+            await vm.launchStatisticCreation();
+            Navigator.pop(context);
           }
         },
         color: Theme.of(context).primaryColor,

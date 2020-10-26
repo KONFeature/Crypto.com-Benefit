@@ -1,5 +1,6 @@
 import 'package:crypto_benefit/app/domain/object/imported_file.dart';
 import 'package:crypto_benefit/app/domain/object/statistic/computed_statistic.dart';
+import 'package:crypto_benefit/app/domain/object/statistic/statistic.dart';
 import 'package:crypto_benefit/app/domain/object/transaction.dart';
 import 'package:crypto_benefit/app/domain/repositories/statistic.repository.dart';
 import 'package:crypto_benefit/app/domain/repositories/transaction.repository.dart';
@@ -7,6 +8,7 @@ import 'package:crypto_benefit/app/domain/usecases/usecase.dart';
 import 'package:crypto_benefit/core/di/injector_provider.dart';
 
 /// Use case used to compute all the user statistics
+// TODO : Rework this fucking mess
 class WatchComputedStatsUseCase
     implements StreamUseCase<List<ComputedStatistic>, void> {
   final _transactionRepository = inject<ITransactionRepository>();
@@ -15,15 +17,16 @@ class WatchComputedStatsUseCase
   @override
   Stream<List<ComputedStatistic>> watch(void params) =>
       _statisticRepository.watchStatistics().asyncMap((statistics) async {
-        // Get all the transactions
-        List<Transaction> transactions =
-            await _transactionRepository.getTransactions();
+        print('Start computing for ${statistics.length} statistics');
 
         // Get the list of all kinds and types concerned by our stats
         Set<int> kindsId = Set();
+        Map<Statistic, List<int>> kindsIdByStat = Map();
         Set<FileType> types = Set();
         statistics.forEach((stat) {
           kindsId.addAll(stat.kinds.map((kind) => kind.id));
+          kindsIdByStat.putIfAbsent(
+              stat, () => stat.kinds.map((kind) => kind.id).toList());
           types.addAll(stat.fileTypes);
         });
 
@@ -39,17 +42,23 @@ class WatchComputedStatsUseCase
         for (var stat in statistics) {
           // Get the transactions set for our stat
           Set<Transaction> transactionsForStat = Set();
-          transactionsForStat.addAll(transactionsForKind.takeWhile(
-              (transaction) => stat.kinds.contains(transaction.kind.id)));
-          transactionsForStat.addAll(transactionsForTypes.entries
-              .takeWhile((entry) => stat.fileTypes.contains(entry.key))
-              .map((entry) => entry.value
-                  .first)); // TODO, why can't map the entries to list of of transactions ???
+          for (var transaction in transactionsForKind) {
+            if (kindsIdByStat[stat].contains(transaction.kind.id))
+              transactionsForStat.add(transaction);
+          }
+          for (var typeEntry in transactionsForTypes.entries) {
+            if (stat.fileTypes.contains(typeEntry.key))
+              transactionsForStat.addAll(typeEntry.value);
+          }
+          print(
+              'Total transactions for this stats ${transactionsForStat.length} from ${transactionsForKind.length} and ${transactionsForTypes.length}');
           // Compute the stat for the founded transactions
-          computedStats.add(await _statisticRepository
-              .computeStatisticForTransaction(transactions, stat));
+          computedStats.add(
+              await _statisticRepository.computeStatisticForTransaction(
+                  transactionsForStat.toList(), stat));
         }
 
+        print('Finish computing statistics');
         // Return the computed stat
         return computedStats;
       });

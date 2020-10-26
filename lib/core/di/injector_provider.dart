@@ -19,6 +19,7 @@ import 'package:crypto_benefit/app/domain/usecases/dashboard/compute_stats.useca
 import 'package:crypto_benefit/app/domain/usecases/import/clear_imports.usecase.dart';
 import 'package:crypto_benefit/app/domain/usecases/import/watch_imported_files.usecase.dart';
 import 'package:crypto_benefit/app/domain/usecases/import/import_file.usecase.dart';
+import 'package:crypto_benefit/app/domain/usecases/settings/create_statistic.usecase.dart';
 import 'package:crypto_benefit/app/domain/usecases/settings/get_transaction_kinds.usecase.dart';
 import 'package:crypto_benefit/app/domain/usecases/settings/watch_statistics.usecase.dart';
 import 'package:crypto_benefit/app/presentation/modules/dashboard/dashboard.viewmodel.dart';
@@ -83,6 +84,7 @@ Future<void> setupUseCases() async {
   // Settings Use Cases
   inject.registerLazySingleton(() => new WatchStatisticsUseCase());
   inject.registerLazySingleton(() => new GetTransactionKindsUseCase());
+  inject.registerLazySingleton(() => new CreateStatisticUseCase());
 
   // Dashboard use case
   inject.registerLazySingleton(() => new WatchComputedStatsUseCase());
