@@ -5,5 +5,5 @@
 class CryptoBenefitRoutes {
   static const home = '/';
   static const import = 'import';
-  static const transactions = 'transactions';
+  static const settings = 'settings';
 }

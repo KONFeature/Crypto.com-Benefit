@@ -16,48 +16,26 @@ mixin _$DashboardViewModel on _DashboardViewModelBase, Store {
       (_$isLoadingComputed ??= Computed<bool>(() => super.isLoading,
               name: '_DashboardViewModelBase.isLoading'))
           .value;
-  Computed<List<dynamic>> _$kindStatsComputed;
+  Computed<List<dynamic>> _$statsComputed;
 
   @override
-  List<dynamic> get kindStats =>
-      (_$kindStatsComputed ??= Computed<List<dynamic>>(() => super.kindStats,
-              name: '_DashboardViewModelBase.kindStats'))
-          .value;
-  Computed<List<dynamic>> _$fileStatsComputed;
-
-  @override
-  List<dynamic> get fileStats =>
-      (_$fileStatsComputed ??= Computed<List<dynamic>>(() => super.fileStats,
-              name: '_DashboardViewModelBase.fileStats'))
+  List<dynamic> get stats =>
+      (_$statsComputed ??= Computed<List<dynamic>>(() => super.stats,
+              name: '_DashboardViewModelBase.stats'))
           .value;
 
-  final _$_kindStatsAtom = Atom(name: '_DashboardViewModelBase._kindStats');
+  final _$_statsAtom = Atom(name: '_DashboardViewModelBase._stats');
 
   @override
-  ObservableFuture<List<dynamic>> get _kindStats {
-    _$_kindStatsAtom.reportRead();
-    return super._kindStats;
+  ObservableStream<List<dynamic>> get _stats {
+    _$_statsAtom.reportRead();
+    return super._stats;
   }
 
   @override
-  set _kindStats(ObservableFuture<List<dynamic>> value) {
-    _$_kindStatsAtom.reportWrite(value, super._kindStats, () {
-      super._kindStats = value;
-    });
-  }
-
-  final _$_fileStatsAtom = Atom(name: '_DashboardViewModelBase._fileStats');
-
-  @override
-  ObservableFuture<List<dynamic>> get _fileStats {
-    _$_fileStatsAtom.reportRead();
-    return super._fileStats;
-  }
-
-  @override
-  set _fileStats(ObservableFuture<List<dynamic>> value) {
-    _$_fileStatsAtom.reportWrite(value, super._fileStats, () {
-      super._fileStats = value;
+  set _stats(ObservableStream<List<dynamic>> value) {
+    _$_statsAtom.reportWrite(value, super._stats, () {
+      super._stats = value;
     });
   }
 
@@ -65,8 +43,7 @@ mixin _$DashboardViewModel on _DashboardViewModelBase, Store {
   String toString() {
     return '''
 isLoading: ${isLoading},
-kindStats: ${kindStats},
-fileStats: ${fileStats}
+stats: ${stats}
     ''';
   }
 }

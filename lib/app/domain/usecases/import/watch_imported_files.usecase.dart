@@ -9,6 +9,6 @@ class WatchImportedFileUseCase
   final _importFileRepository = inject<IImportFileRepository>();
 
   @override
-  Stream<List<ImportedFile>> get(void params) =>
+  Stream<List<ImportedFile>> watch(void params) =>
       _importFileRepository.watchImportedFiles();
 }

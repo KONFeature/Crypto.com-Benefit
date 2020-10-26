@@ -1,12 +1,12 @@
-import 'package:crypto_benefit/app/domain/object/statistic/kind_statistic.dart';
+import 'package:crypto_benefit/app/domain/object/statistic/computed_statistic.dart';
 import 'package:crypto_benefit/app/presentation/widget/transaction_amount_text.widget.dart';
 import 'package:crypto_benefit/core/values/dimens.dart';
 import 'package:flutter/material.dart';
 
-class KindStatCardWidget extends StatelessWidget {
-  final KindStatistic transactionKindStats;
+class ComputedStatisticCardWidget extends StatelessWidget {
+  final ComputedStatistic computedStat;
 
-  const KindStatCardWidget({Key key, this.transactionKindStats})
+  const ComputedStatisticCardWidget({Key key, this.computedStat})
       : super(key: key);
 
   @override
@@ -20,7 +20,7 @@ class KindStatCardWidget extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.symmetric(vertical: padding),
                 child: Text(
-                  '${transactionKindStats.kindName}',
+                  '${computedStat.name}',
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
               ),
@@ -30,26 +30,26 @@ class KindStatCardWidget extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.symmetric(vertical: padding),
                 child: Text(
-                  '${transactionKindStats.transactionsCount} transactions',
+                  '${computedStat.transactionsCount} transactions',
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
               ),
               TransactionAmountTextWidget(
                 text: 'Native',
-                amount: transactionKindStats.totalNativeAmount,
+                amount: computedStat.totalNativeAmount,
                 symbol: '€',
               ),
               TransactionAmountTextWidget(
                 text: 'total usd',
-                amount: transactionKindStats.totalUsdAmount,
+                amount: computedStat.totalUsdAmount,
               ),
               TransactionAmountTextWidget(
                 text: 'positive usd',
-                amount: transactionKindStats.positiveUsdAmount,
+                amount: computedStat.positiveUsdAmount,
               ),
               TransactionAmountTextWidget(
                 text: 'negative usd',
-                amount: transactionKindStats.negativeUsdAmount,
+                amount: computedStat.negativeUsdAmount,
               ),
             ],
           ),

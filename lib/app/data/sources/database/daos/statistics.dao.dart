@@ -2,7 +2,6 @@ import 'package:crypto_benefit/app/data/sources/database/app_database.dart';
 import 'package:crypto_benefit/app/data/sources/database/entities/full_statistic.entity.dart';
 import 'package:crypto_benefit/app/data/sources/database/tables/statistics.table.dart';
 import 'package:crypto_benefit/app/domain/object/imported_file.dart';
-import 'package:crypto_benefit/core/di/injector_provider.dart';
 import 'package:moor/moor.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -13,10 +12,10 @@ part 'statistics.dao.g.dart';
 class StatisticsDao extends DatabaseAccessor<AppDatabase>
     with _$StatisticsDaoMixin {
   /// Constructor that fetch the database
-  StatisticsDao() : super(inject());
+  StatisticsDao(AppDatabase db) : super(db);
 
   /// Retreive all the statistic we got in the database
-  Future<Stream<List<FullStatisticEntity>>> watchAllStatistics() async {
+  Stream<List<FullStatisticEntity>> watchAllStatistics() {
     final statsStream = select(statisticTable).watch();
 
     return statsStream.switchMap((stats) {
@@ -26,8 +25,8 @@ class StatisticsDao extends DatabaseAccessor<AppDatabase>
 
       // Query to get the associated kinds
       final kindEntriesQuery = select(statisticKindsTable).join([
-        innerJoin(statisticKindsTable,
-            statisticKindsTable.kindId.equalsExp(statisticKindsTable.kindId))
+        innerJoin(db.transactionKindsTable,
+            db.transactionKindsTable.id.equalsExp(statisticKindsTable.kindId))
       ])
         ..where(statisticKindsTable.statisticId.isIn(statIds));
 

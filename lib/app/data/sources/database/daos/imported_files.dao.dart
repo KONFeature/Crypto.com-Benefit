@@ -1,6 +1,5 @@
 import 'package:crypto_benefit/app/data/sources/database/app_database.dart';
 import 'package:crypto_benefit/app/data/sources/database/tables/imported_files.table.dart';
-import 'package:crypto_benefit/core/di/injector_provider.dart';
 import 'package:moor/moor.dart';
 
 part 'imported_files.dao.g.dart';
@@ -10,7 +9,7 @@ part 'imported_files.dao.g.dart';
 class ImportedFilesDao extends DatabaseAccessor<AppDatabase>
     with _$ImportedFilesDaoMixin {
   /// Constructor that fetch the database
-  ImportedFilesDao() : super(inject());
+  ImportedFilesDao(AppDatabase db) : super(db);
 
   /// Check if a filename is already present in our imported files table
   Future<bool> isFilenameAlreadyPresent(String filename) async {

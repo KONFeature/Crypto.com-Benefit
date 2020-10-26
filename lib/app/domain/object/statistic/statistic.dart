@@ -1,16 +1,20 @@
+import 'package:crypto_benefit/app/domain/object/imported_file.dart';
+import 'package:crypto_benefit/app/domain/object/transaction_kind.dart';
+
 /// Simple class representing a the stats of transactions
 class Statistic {
-  final int transactionsCount;
-  final double totalNativeAmount;
-  final double totalUsdAmount;
-  final double positiveUsdAmount;
-  final double negativeUsdAmount;
+  /// Name of this stats
+  final String name;
+
+  /// Kind linked to this statistic
+  final List<TransactionKind> kinds;
+
+  /// Types linked to this statistic
+  final List<FileType> fileTypes;
 
   Statistic({
-    this.transactionsCount,
-    this.totalNativeAmount,
-    this.totalUsdAmount,
-    this.positiveUsdAmount,
-    this.negativeUsdAmount,
+    this.name,
+    this.kinds,
+    this.fileTypes,
   });
 }

@@ -4,18 +4,11 @@ import 'package:crypto_benefit/app/domain/object/transaction_kind.dart';
 /// Call helping us with the mapping of transaction kind
 class TransactionKindMapper {
   /// Map list of transactions kind from entities
-  Future<List<TransactionKind>> fromEntities(
-      List<TransactionKindEntity> transactionKindEntities) async {
-    final List<TransactionKind> result = new List();
-    for (var transactionKindEntity in transactionKindEntities) {
-      result.add(await fromEntity(transactionKindEntity));
-    }
-    return result;
-  }
+  List<TransactionKind> fromEntities(List<TransactionKindEntity> entities) =>
+      entities.map((e) => fromEntity(e));
 
   /// Map a transaction kind from entity
-  Future<TransactionKind> fromEntity(
-      TransactionKindEntity transactionKindEntity) async {
+  TransactionKind fromEntity(TransactionKindEntity transactionKindEntity) {
     if (transactionKindEntity == null) return null;
     return new TransactionKind(
         id: transactionKindEntity.id, name: transactionKindEntity.name);

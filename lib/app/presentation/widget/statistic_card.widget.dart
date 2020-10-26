@@ -1,11 +1,11 @@
-import 'package:crypto_benefit/app/domain/object/transaction.dart';
+import 'package:crypto_benefit/app/domain/object/statistic/statistic.dart';
 import 'package:crypto_benefit/core/values/dimens.dart';
 import 'package:flutter/material.dart';
 
-class TransactionCardWidget extends StatelessWidget {
-  final Transaction transaction;
+class StatisticCardWidget extends StatelessWidget {
+  final Statistic statistic;
 
-  const TransactionCardWidget({Key key, this.transaction}) : super(key: key);
+  const StatisticCardWidget({Key key, this.statistic}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Card(
@@ -18,7 +18,7 @@ class TransactionCardWidget extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.symmetric(vertical: padding),
                 child: Text(
-                  '${transaction.nativeAmount} ${transaction.nativeCurrency} (${transaction.usdAmount} \$)',
+                  statistic.name,
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
               ),
@@ -28,14 +28,14 @@ class TransactionCardWidget extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.symmetric(vertical: padding),
                 child: Text(
-                  '${transaction.kind.name} - ${transaction.description}',
+                  statistic.kinds.toString(),
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
               ),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: padding),
                 child: Text(
-                  '${transaction.timestamp.toString()}',
+                  statistic.fileTypes.toString(),
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
               ),

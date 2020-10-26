@@ -21,7 +21,7 @@ abstract class _ImportViewModelBase with Store {
 
   _ImportViewModelBase() {
     // Listen to our imported file stream
-    importedFilesStream = _watchImportedFileUseCase.get(null).asObservable();
+    importedFilesStream = _watchImportedFileUseCase.watch(null).asObservable();
   }
 
   @action

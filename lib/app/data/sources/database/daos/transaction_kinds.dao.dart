@@ -1,6 +1,5 @@
 import 'package:crypto_benefit/app/data/sources/database/app_database.dart';
 import 'package:crypto_benefit/app/data/sources/database/tables/transaction_kinds.table.dart';
-import 'package:crypto_benefit/core/di/injector_provider.dart';
 import 'package:moor/moor.dart';
 
 part 'transaction_kinds.dao.g.dart';
@@ -10,7 +9,7 @@ part 'transaction_kinds.dao.g.dart';
 class TransactionKindsDao extends DatabaseAccessor<AppDatabase>
     with _$TransactionKindsDaoMixin {
   /// Constructor that fetch the database
-  TransactionKindsDao() : super(inject());
+  TransactionKindsDao(AppDatabase db) : super(db);
 
   /// Create or get a transaction kind
   Future<TransactionKindEntity> createOrGet(String name) async {

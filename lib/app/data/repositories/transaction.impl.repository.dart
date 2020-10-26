@@ -2,6 +2,7 @@ import 'package:crypto_benefit/app/data/mappers/transaction.mapper.dart';
 import 'package:crypto_benefit/app/data/sources/database/app_database.dart';
 import 'package:crypto_benefit/app/data/sources/database/daos/transactions.dao.dart';
 import 'package:crypto_benefit/app/domain/exceptions/import_file.exceptions.dart';
+import 'package:crypto_benefit/app/domain/object/imported_file.dart';
 import 'package:crypto_benefit/app/domain/object/transaction.dart';
 import 'package:crypto_benefit/app/domain/repositories/transaction.repository.dart';
 import 'package:crypto_benefit/core/di/injector_provider.dart';
@@ -53,4 +54,21 @@ class TransactionRepository implements ITransactionRepository {
       .watchTransactions()
       .asyncMap((transactionEntities) async =>
           _transactionMapper.fromEntities(transactionEntities));
+
+  @override
+  Future<List<Transaction>> getTransactionsForKinds(Set<int> kindIds) async =>
+      _transactionMapper
+          .fromEntities(await _transactionsDao.getTransactionsByKinds(kindIds));
+
+  @override
+  Future<Map<FileType, List<Transaction>>> getTransactionsForTypes(
+      Set<FileType> types) async {
+    Map<FileType, List<Transaction>> transactionsByType = Map();
+    for (var type in types) {
+      List<Transaction> transactions = await _transactionMapper
+          .fromEntities(await _transactionsDao.getTransactionsByType(type));
+      transactionsByType.putIfAbsent(type, () => transactions);
+    }
+    return transactionsByType;
+  }
 }

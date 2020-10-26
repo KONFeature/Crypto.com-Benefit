@@ -1,3 +1,4 @@
+import 'package:crypto_benefit/app/domain/object/imported_file.dart';
 import 'package:crypto_benefit/app/domain/object/transaction.dart';
 
 /// Interface for the transaction repository
@@ -14,4 +15,10 @@ abstract class ITransactionRepository {
 
   /// Get the transactions streams
   Stream<List<Transaction>> watchTransactions();
+
+  /// Get the transactions matchings some kinds
+  Future<List<Transaction>> getTransactionsForKinds(Set<int> kindIds);
+
+  /// Get the transactions matching some types
+  Future<Map<FileType, List<Transaction>>> getTransactionsForTypes(Set<FileType> types);
 }

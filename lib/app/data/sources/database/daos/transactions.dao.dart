@@ -1,6 +1,6 @@
 import 'package:crypto_benefit/app/data/sources/database/app_database.dart';
 import 'package:crypto_benefit/app/data/sources/database/tables/transactions.table.dart';
-import 'package:crypto_benefit/core/di/injector_provider.dart';
+import 'package:crypto_benefit/app/domain/object/imported_file.dart';
 import 'package:moor/moor.dart';
 
 part 'transactions.dao.g.dart';
@@ -10,7 +10,7 @@ part 'transactions.dao.g.dart';
 class TransactionsDao extends DatabaseAccessor<AppDatabase>
     with _$TransactionsDaoMixin {
   /// Constructor that fetch the database
-  TransactionsDao() : super(inject());
+  TransactionsDao(AppDatabase db) : super(db);
 
   /// Insert a list of transactions entity
   Future<void> insertTransactions(List<TransactionEntity> transactions) {
@@ -66,4 +66,21 @@ class TransactionsDao extends DatabaseAccessor<AppDatabase>
   /// Get a Stream of al the current transactions we got in the database
   Stream<List<TransactionEntity>> watchTransactions() =>
       select(transactionsTable).watch();
+
+  /// Get all of our transactions in a list of kinds
+  Future<List<TransactionEntity>> getTransactionsByKinds(
+          Iterable<int> kindIds) =>
+      (select(transactionsTable)..where((tbl) => tbl.kindId.isIn(kindIds)))
+          .get();
+
+  /// Get all of our transactions in a list of kinds
+  Future<List<TransactionEntity>> getTransactionsByType(FileType type) =>
+      (select(transactionsTable)
+            ..join([
+              leftOuterJoin(db.importedFilesTable,
+                  db.importedFilesTable.id.equalsExp(transactionsTable.fileId))
+            ])
+            ..where((tbl) => tbl.fileId.equals(
+                0))) // TODO : Do this (filter on the imported file type)
+          .get();
 }

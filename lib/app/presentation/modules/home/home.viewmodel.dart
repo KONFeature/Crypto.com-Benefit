@@ -20,9 +20,9 @@ abstract class _HomeViewModelBase with Store {
     switch (page) {
       case TabPages.import:
         return Icons.file_upload;
-      case TabPages.transactions:
+      case TabPages.settings:
       default:
-        return Icons.credit_card;
+        return Icons.settings;
     }
   }
 
@@ -31,9 +31,9 @@ abstract class _HomeViewModelBase with Store {
     switch (page) {
       case TabPages.import:
         return 'Import';
-      case TabPages.transactions:
+      case TabPages.settings:
       default:
-        return 'Transactions';
+        return 'Settings';
     }
   }
 
@@ -57,8 +57,8 @@ abstract class _HomeViewModelBase with Store {
     switch (page) {
       case TabPages.import:
         return CryptoBenefitRoutes.import;
-      case TabPages.transactions:
-        return CryptoBenefitRoutes.transactions;
+      case TabPages.settings:
+        return CryptoBenefitRoutes.settings;
       case TabPages.dashboard:
       default:
         return CryptoBenefitRoutes.home;
@@ -70,5 +70,5 @@ abstract class _HomeViewModelBase with Store {
 enum TabPages {
   dashboard,
   import,
-  transactions,
+  settings,
 }

@@ -5,5 +5,5 @@ abstract class BaseUseCase<TResult, TParams> {
 
 /// Abtrsact class representing a use case returning a stream
 abstract class StreamUseCase<TResult, TParams> {
-  Stream<TResult> get(TParams params);
+  Stream<TResult> watch(TParams params);
 }

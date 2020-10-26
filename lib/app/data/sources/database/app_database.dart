@@ -8,6 +8,7 @@ import 'package:crypto_benefit/app/data/sources/database/tables/imported_files.t
 import 'package:crypto_benefit/app/data/sources/database/tables/statistics.table.dart';
 import 'package:crypto_benefit/app/data/sources/database/tables/transaction_kinds.table.dart';
 import 'package:crypto_benefit/app/data/sources/database/tables/transactions.table.dart';
+import 'package:crypto_benefit/app/domain/object/imported_file.dart';
 import 'package:encrypted_moor/encrypted_moor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:moor/moor.dart';

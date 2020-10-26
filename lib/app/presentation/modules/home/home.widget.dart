@@ -1,7 +1,3 @@
-import 'package:crypto_benefit/app/presentation/modules/dashboard/dashboard.page.dart';
-import 'package:crypto_benefit/app/presentation/modules/import/import.page.dart';
-import 'package:crypto_benefit/app/presentation/modules/transactions/transactions.page.dart';
-import 'package:crypto_benefit/core/config/routes.dart';
 import 'package:crypto_benefit/core/di/injector_provider.dart';
 import 'package:crypto_benefit/core/values/animations.dart';
 import 'package:crypto_benefit/core/values/dimens.dart';
@@ -35,7 +31,7 @@ mixin HomeWidget {
 
   /// Get our app bars buttons
   List<Widget> _appBarButtons(BuildContext context) =>
-      List.of([TabPages.import, TabPages.transactions])
+      List.of([TabPages.import, TabPages.settings])
           .map((tabPage) => _buttonForPage(context, tabPage))
           .toList();
 
@@ -63,25 +59,4 @@ mixin HomeWidget {
               style: Theme.of(context).textTheme.button,
             )
           ]);
-
-  // Create the page for a given route
-  PageRoute generateRoute(BuildContext context, RouteSettings settings) {
-    WidgetBuilder builder;
-
-    switch (settings.name) {
-      case CryptoBenefitRoutes.home:
-        builder = (context) => DashboardPage();
-        break;
-      case CryptoBenefitRoutes.import:
-        builder = (context) => ImportPage();
-        break;
-      case CryptoBenefitRoutes.transactions:
-        builder = (context) => TransactionsPage();
-        break;
-      default:
-        throw Exception('Invalid route: ${settings.name}');
-    }
-
-    return MaterialPageRoute(builder: builder, settings: settings);
-  }
 }

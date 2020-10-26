@@ -17,14 +17,9 @@ class _DashboardPageState extends State<DashboardPage> with DashboardWidget {
   Widget build(BuildContext context) => Observer(
         builder: (observerContext) => ListView(children: [
           title(context),
-          partTitle(context, 'Kind statistics'),
           vm.isLoading
               ? loading(observerContext)
-              : kindStats(observerContext, vm.kindStats),
-          partTitle(context, 'File statistics'),
-          vm.isLoading
-              ? loading(observerContext)
-              : fileStats(observerContext, vm.fileStats),
+              : statistics(observerContext, vm.stats),
         ]),
       );
 }
