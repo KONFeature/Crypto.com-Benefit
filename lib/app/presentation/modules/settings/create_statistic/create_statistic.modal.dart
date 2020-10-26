@@ -23,52 +23,43 @@ class _CreateStatisticModalState extends State<CreateStatisticModal>
         child: ListView(
       children: [
         title(context),
-        Observer(
-            builder: (observerContext) => Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      // Input for the name of the statistic
-                      // List of available types
-                      statisticNameInput(observerContext),
-                      // TODO : Wrap in an observer
-                      ListView.builder(
-                        itemCount: vm.kinds != null ? vm.kinds.length : 0,
-                        shrinkWrap: true,
-                        itemBuilder: (BuildContext context, int index) {
-                          var kind = vm.kinds[index];
-                          return CheckboxListTile(
-                            title: Text(kind.name),
-                            value: true,
-                            onChanged: (newValue) {
-                              setState(() {
-                                // TODO : View model
-                              });
-                            },
-                            controlAffinity: ListTileControlAffinity
-                                .leading, //  <-- leading Checkbox
-                          );
-                        },
-                      ),
-                      // Button to submit the statistic creation
-                      RaisedButton(
-                        onPressed: () {
-                          if (_formKey.currentState.validate()) {
-                            // TODO : View model, create the stat
-                            Scaffold.of(observerContext).showSnackBar(
-                                SnackBar(content: Text('Processing Data')));
-                          }
-                        },
-                        color: Theme.of(observerContext).primaryColor,
-                        child: Text(
-                          'Create',
-                          style: Theme.of(observerContext).textTheme.button,
-                        ),
-                      )
-                    ],
-                  ),
-                )),
+        Form(
+            key: _formKey,
+            child: Observer(
+                builder: (observerContext) => _formContent(observerContext))),
       ],
     ));
   }
+
+  /// Get the content for our form
+  Widget _formContent(BuildContext context) => Column(
+        children: [
+          // Input for the name of the statistic
+          statisticNameInput(context),
+          // List of available types
+          partTitle(context, 'File types for your statistic'),
+          typesSelection(context),
+          // List of available kinds
+          partTitle(context, 'Transaction kinds for your statistic'),
+          kindsSelection(context),
+          // Button to submit the statistic creation
+          _submitButton(context),
+        ],
+      );
+
+  /// Button used to submit the statistic creation
+  Widget _submitButton(BuildContext context) => RaisedButton(
+        onPressed: () {
+          if (_formKey.currentState.validate()) {
+            // TODO : View model, create the stat
+            Scaffold.of(context)
+                .showSnackBar(SnackBar(content: Text('Processing Data')));
+          }
+        },
+        color: Theme.of(context).primaryColor,
+        child: Text(
+          'Create',
+          style: Theme.of(context).textTheme.button,
+        ),
+      );
 }

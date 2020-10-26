@@ -55,6 +55,9 @@ dependencies:
 
   # Shimmer (for some loading views)
   shimmer: ^1.1.2
+
+  # Selectable container (for better selection view to create stats)
+  selectable_container: ^0.1.4
   
 dev_dependencies:
   moor_generator: ^3.4.0

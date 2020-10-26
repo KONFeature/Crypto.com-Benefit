@@ -23,11 +23,11 @@ mixin _$CreateStatisticViewModel on _CreateStatisticViewModelBase, Store {
       (_$kindsComputed ??= Computed<List<dynamic>>(() => super.kinds,
               name: '_CreateStatisticViewModelBase.kinds'))
           .value;
-  Computed<Map<FileType, bool>> _$typeSelectedComputed;
+  Computed<ObservableMap<FileType, bool>> _$typeSelectedComputed;
 
   @override
-  Map<FileType, bool> get typeSelected => (_$typeSelectedComputed ??=
-          Computed<Map<FileType, bool>>(() => super.typeSelected,
+  ObservableMap<FileType, bool> get typeSelected => (_$typeSelectedComputed ??=
+          Computed<ObservableMap<FileType, bool>>(() => super.typeSelected,
               name: '_CreateStatisticViewModelBase.typeSelected'))
       .value;
 
@@ -46,21 +46,34 @@ mixin _$CreateStatisticViewModel on _CreateStatisticViewModelBase, Store {
     });
   }
 
-  final _$_typesSelectionStatusAtom =
-      Atom(name: '_CreateStatisticViewModelBase._typesSelectionStatus');
+  final _$_typeSelectedAtom =
+      Atom(name: '_CreateStatisticViewModelBase._typeSelected');
 
   @override
-  Map<FileType, bool> get _typesSelectionStatus {
-    _$_typesSelectionStatusAtom.reportRead();
-    return super._typesSelectionStatus;
+  ObservableMap<FileType, bool> get _typeSelected {
+    _$_typeSelectedAtom.reportRead();
+    return super._typeSelected;
   }
 
   @override
-  set _typesSelectionStatus(Map<FileType, bool> value) {
-    _$_typesSelectionStatusAtom.reportWrite(value, super._typesSelectionStatus,
-        () {
-      super._typesSelectionStatus = value;
+  set _typeSelected(ObservableMap<FileType, bool> value) {
+    _$_typeSelectedAtom.reportWrite(value, super._typeSelected, () {
+      super._typeSelected = value;
     });
+  }
+
+  final _$_CreateStatisticViewModelBaseActionController =
+      ActionController(name: '_CreateStatisticViewModelBase');
+
+  @override
+  dynamic updateTypeSelection(FileType type, bool isSelected) {
+    final _$actionInfo = _$_CreateStatisticViewModelBaseActionController
+        .startAction(name: '_CreateStatisticViewModelBase.updateTypeSelection');
+    try {
+      return super.updateTypeSelection(type, isSelected);
+    } finally {
+      _$_CreateStatisticViewModelBaseActionController.endAction(_$actionInfo);
+    }
   }
 
   @override

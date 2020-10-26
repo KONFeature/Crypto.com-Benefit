@@ -10,7 +10,7 @@ class StatisticMapper {
 
   /// Map list of statistics from entities
   List<Statistic> fromEntities(List<FullStatisticEntity> entities) =>
-      entities.map((e) => fromEntity(e));
+      entities.map((e) => fromEntity(e)).toList();
 
   // Map a full stat entity to a stat pojo
   Statistic fromEntity(FullStatisticEntity entity) => Statistic(

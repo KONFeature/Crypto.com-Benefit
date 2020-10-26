@@ -26,22 +26,21 @@ abstract class _CreateStatisticViewModelBase with Store {
 
   /// Map telling us if a file type is selected or not
   @observable
-  Map<FileType, bool> _typesSelectionStatus = Map();
+  ObservableMap<FileType, bool> _typeSelected = ObservableMap();
   @computed
-  Map<FileType, bool> get typeSelected => _typesSelectionStatus;
+  ObservableMap<FileType, bool> get typeSelected => _typeSelected;
 
   _CreateStatisticViewModelBase() {
     // Fetch our transaction kinds
     _kinds = _getTransactionKindsUseCase.execute(null).asObservable();
     // Init our types map to false
-    FileType.values.forEach((type) {
-      print('Checking type $type');
-      _typesSelectionStatus.putIfAbsent(type, () => false);
-    });
+    FileType.values
+        .forEach((type) => _typeSelected.putIfAbsent(type, () => false));
   }
 
   /// Update the selection status for a given file type
+  @action
   updateTypeSelection(FileType type, bool isSelected) {
-    _typesSelectionStatus[type] = isSelected;
+    _typeSelected.update(type, (value) => isSelected);
   }
 }

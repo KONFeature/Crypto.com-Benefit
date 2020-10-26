@@ -5,7 +5,7 @@ import 'package:crypto_benefit/app/domain/object/transaction_kind.dart';
 class TransactionKindMapper {
   /// Map list of transactions kind from entities
   List<TransactionKind> fromEntities(List<TransactionKindEntity> entities) =>
-      entities.map((e) => fromEntity(e));
+      entities.map((e) => fromEntity(e)).toList();
 
   /// Map a transaction kind from entity
   TransactionKind fromEntity(TransactionKindEntity transactionKindEntity) {

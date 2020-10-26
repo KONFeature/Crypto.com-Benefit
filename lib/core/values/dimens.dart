@@ -1,4 +1,5 @@
 // margin size
+const double smallMargin = 8.0;
 const double margin = 16.0;
 const double notchMargin = 4.0;
 
