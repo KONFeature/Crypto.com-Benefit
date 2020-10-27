@@ -20,6 +20,7 @@ import 'package:crypto_benefit/app/domain/usecases/import/clear_imports.usecase.
 import 'package:crypto_benefit/app/domain/usecases/import/watch_imported_files.usecase.dart';
 import 'package:crypto_benefit/app/domain/usecases/import/import_file.usecase.dart';
 import 'package:crypto_benefit/app/domain/usecases/settings/create_statistic.usecase.dart';
+import 'package:crypto_benefit/app/domain/usecases/settings/delete_statistic.usecase.dart';
 import 'package:crypto_benefit/app/domain/usecases/settings/get_transaction_kinds.usecase.dart';
 import 'package:crypto_benefit/app/domain/usecases/settings/watch_statistics.usecase.dart';
 import 'package:crypto_benefit/app/presentation/modules/dashboard/dashboard.viewmodel.dart';
@@ -72,7 +73,6 @@ Future<void> setupInjection() async {
   inject.registerLazySingleton(() => new ImportViewModel());
   inject.registerLazySingleton(() => new DashboardViewModel());
   inject.registerLazySingleton(() => new SettingsViewModel());
-  inject.registerLazySingleton(() => new CreateStatisticViewModel());
 }
 
 Future<void> setupUseCases() async {
@@ -85,6 +85,7 @@ Future<void> setupUseCases() async {
   inject.registerLazySingleton(() => new WatchStatisticsUseCase());
   inject.registerLazySingleton(() => new GetTransactionKindsUseCase());
   inject.registerLazySingleton(() => new CreateStatisticUseCase());
+  inject.registerLazySingleton(() => new DeleteStatisticUseCase());
 
   // Dashboard use case
   inject.registerLazySingleton(() => new WatchComputedStatsUseCase());

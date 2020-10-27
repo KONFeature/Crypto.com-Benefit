@@ -1,7 +1,7 @@
 import 'package:crypto_benefit/app/domain/object/statistic/statistic.dart';
 import 'package:crypto_benefit/app/presentation/modules/settings/create_statistic/create_statistic.modal.dart';
 import 'package:crypto_benefit/app/presentation/modules/settings/settings.viewmodel.dart';
-import 'package:crypto_benefit/app/presentation/widget/statistic_card.widget.dart';
+import 'package:crypto_benefit/app/presentation/widget/statistic_setting_card.widget.dart';
 import 'package:crypto_benefit/core/di/injector_provider.dart';
 import 'package:crypto_benefit/core/values/dimens.dart';
 import 'package:flutter/material.dart';
@@ -44,10 +44,16 @@ class SettingsWidget {
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
         physics: BouncingScrollPhysics(),
-        itemBuilder: (_, index) => Container(
-            child: StatisticCardWidget(
-          statistic: statistics[index],
-        )),
+        padding: EdgeInsets.all(padding),
+        itemBuilder: (_, index) {
+          final statistic = statistics[index];
+          return Container(
+              child: StatisticSettingCardWidget(
+            statistic: statistic,
+            onEditClicked: () => _showUpdateStatisticModal(context, statistic),
+            onDeleteClicked: () => vm.deleteStatistic(statistic),
+          ));
+        },
         staggeredTileBuilder: (_) => StaggeredTile.fit(1),
       );
 
@@ -80,7 +86,10 @@ class SettingsWidget {
       );
 
   /// Widget used to add a new statistics
-  Widget createStatisticsButton(BuildContext context) => FlatButton(
+  Widget createStatisticsButton(BuildContext context) => Padding(
+      padding: EdgeInsets.all(padding),
+      child: FlatButton(
+        padding: EdgeInsets.all(padding),
         onPressed: () {
           print(vm.statisticsStream.status);
           _showCreateStatisticModal(context);
@@ -90,7 +99,7 @@ class SettingsWidget {
           'Create a new statistic',
           style: Theme.of(context).textTheme.button,
         ),
-      );
+      ));
 
   /// Method used to build the modal for statistic creation
   void _showCreateStatisticModal(context) {
@@ -100,6 +109,19 @@ class SettingsWidget {
         elevation: 16,
         builder: (BuildContext bc) {
           return CreateStatisticModal();
+        });
+  }
+
+  /// Method used to display the modal for updateing a statistic
+  void _showUpdateStatisticModal(context, statistic) {
+    showModalBottomSheet(
+        context: context,
+        isDismissible: false,
+        elevation: 16,
+        builder: (BuildContext bc) {
+          return CreateStatisticModal(
+            statistic: statistic,
+          );
         });
   }
 }

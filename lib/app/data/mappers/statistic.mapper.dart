@@ -23,6 +23,7 @@ class StatisticMapper {
     final types = entity.fileTypes != null && entity.fileTypes.isNotEmpty
         ? entity.fileTypes
         : List<FileType>();
-    return Statistic(name: entity.name, kinds: kinds, fileTypes: types);
+    return Statistic(
+        id: entity.id, name: entity.name, kinds: kinds, fileTypes: types);
   }
 }

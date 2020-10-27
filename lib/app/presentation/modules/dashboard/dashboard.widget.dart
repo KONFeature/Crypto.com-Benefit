@@ -34,6 +34,7 @@ class DashboardWidget {
         crossAxisCount: 2,
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
+        padding: EdgeInsets.all(padding),
         physics: BouncingScrollPhysics(),
         itemBuilder: (_, index) => Container(
             child: ComputedStatisticCardWidget(

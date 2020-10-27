@@ -4,8 +4,8 @@ import 'package:moor/moor.dart';
 @DataClassName("TransactionEntity")
 class TransactionsTable extends Table {
   IntColumn get id => integer().autoIncrement()();
-  IntColumn get fileId =>
-      integer().customConstraint("REFERENCES imported_files_table(id)")();
+  IntColumn get fileId => integer().customConstraint(
+      "REFERENCES imported_files_table(id)  ON UPDATE CASCADE ON DELETE CASCADE")();
   DateTimeColumn get timestamp => dateTime()();
   TextColumn get description => text()();
   TextColumn get sourceCurrency => text()();

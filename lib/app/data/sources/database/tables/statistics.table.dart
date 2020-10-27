@@ -13,10 +13,10 @@ class StatisticTable extends Table {
 /// Represent the join table between statistic and kind
 @DataClassName("StatisticKindEntity")
 class StatisticKindsTable extends Table {
-  IntColumn get statisticId =>
-      integer().customConstraint("NOT NULL REFERENCES statistic_table(id)")();
-  IntColumn get kindId => integer()
-      .customConstraint("NOT NULL REFERENCES transaction_kinds_table(id)")();
+  IntColumn get statisticId => integer().customConstraint(
+      "NOT NULL REFERENCES statistic_table(id) ON UPDATE CASCADE ON DELETE CASCADE")();
+  IntColumn get kindId => integer().customConstraint(
+      "NOT NULL REFERENCES transaction_kinds_table(id) ON UPDATE CASCADE ON DELETE CASCADE")();
 
   @override
   Set<Column> get primaryKey => {statisticId, kindId};
@@ -25,8 +25,8 @@ class StatisticKindsTable extends Table {
 /// Represent the join table between statistic and imported file
 @DataClassName("StatisticFileEntity")
 class StatisticFilesTable extends Table {
-  IntColumn get statisticId =>
-      integer().customConstraint("NOT NULL REFERENCES statistic_table(id)")();
+  IntColumn get statisticId => integer().customConstraint(
+      "NOT NULL REFERENCES statistic_table(id) ON UPDATE CASCADE ON DELETE CASCADE")();
   IntColumn get fileType => intEnum<FileType>()();
 
   @override

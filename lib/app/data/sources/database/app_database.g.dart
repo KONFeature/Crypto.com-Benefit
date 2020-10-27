@@ -1729,7 +1729,8 @@ class $StatisticKindsTableTable extends StatisticKindsTable
       _statisticId ??= _constructStatisticId();
   GeneratedIntColumn _constructStatisticId() {
     return GeneratedIntColumn('statistic_id', $tableName, false,
-        $customConstraints: 'NOT NULL REFERENCES statistic_table(id)');
+        $customConstraints:
+            'NOT NULL REFERENCES statistic_table(id) ON UPDATE CASCADE ON DELETE CASCADE');
   }
 
   final VerificationMeta _kindIdMeta = const VerificationMeta('kindId');
@@ -1738,7 +1739,8 @@ class $StatisticKindsTableTable extends StatisticKindsTable
   GeneratedIntColumn get kindId => _kindId ??= _constructKindId();
   GeneratedIntColumn _constructKindId() {
     return GeneratedIntColumn('kind_id', $tableName, false,
-        $customConstraints: 'NOT NULL REFERENCES transaction_kinds_table(id)');
+        $customConstraints:
+            'NOT NULL REFERENCES transaction_kinds_table(id) ON UPDATE CASCADE ON DELETE CASCADE');
   }
 
   @override
@@ -1935,7 +1937,8 @@ class $StatisticFilesTableTable extends StatisticFilesTable
       _statisticId ??= _constructStatisticId();
   GeneratedIntColumn _constructStatisticId() {
     return GeneratedIntColumn('statistic_id', $tableName, false,
-        $customConstraints: 'NOT NULL REFERENCES statistic_table(id)');
+        $customConstraints:
+            'NOT NULL REFERENCES statistic_table(id) ON UPDATE CASCADE ON DELETE CASCADE');
   }
 
   final VerificationMeta _fileTypeMeta = const VerificationMeta('fileType');

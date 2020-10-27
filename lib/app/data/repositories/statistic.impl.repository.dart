@@ -69,4 +69,9 @@ class StatisticRepository implements IStatisticRepository {
     await _statisticDao.updateFileTypesForStat(statId, types);
     print('Successfully updated the statistic with id $statId');
   }
+
+  @override
+  Future<void> deleteStatistic(int statId) async {
+    await _statisticDao.deleteStat(statId);
+  }
 }

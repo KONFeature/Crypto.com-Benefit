@@ -6,10 +6,18 @@ import 'package:crypto_benefit/core/values/dimens.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 
+/// A card representing a statistic in the settings page
 class StatisticSettingCardWidget extends StatelessWidget {
+  /// The statistics to display
   final Statistic statistic;
 
-  const StatisticSettingCardWidget({Key key, this.statistic}) : super(key: key);
+  // Callback for the different action that can be performed on this view
+  final void Function() onEditClicked;
+  final void Function() onDeleteClicked;
+
+  const StatisticSettingCardWidget(
+      {Key key, this.statistic, this.onEditClicked, this.onDeleteClicked})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) => BaseCardWidget(children: [
@@ -23,31 +31,50 @@ class StatisticSettingCardWidget extends StatelessWidget {
             statistic.name,
             style: Theme.of(context).textTheme.bodyText1,
           ),
-          expanded: Column(
-            children: [
-              Divider(
-                thickness: 1.0,
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: padding),
-                child: Text(
-                  _kindsText(statistic.kinds),
-                  style: Theme.of(context).textTheme.bodyText2,
-                  textAlign: TextAlign.start,
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: padding),
-                child: Text(
-                  _typesText(statistic.fileTypes),
-                  style: Theme.of(context).textTheme.bodyText2,
-                  textAlign: TextAlign.start,
-                ),
-              ),
-            ],
-          ),
+          expanded: _expandedBody(context),
         ),
       ]);
+
+  /// The expanded body of our statistic (displaying kind and types concerned)
+  Widget _expandedBody(BuildContext context) => Column(
+        children: [
+          Divider(
+            thickness: 1.0,
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: padding),
+            child: Text(
+              _kindsText(statistic.kinds),
+              style: Theme.of(context).textTheme.bodyText2,
+              textAlign: TextAlign.start,
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: padding),
+            child: Text(
+              _typesText(statistic.fileTypes),
+              style: Theme.of(context).textTheme.bodyText2,
+              textAlign: TextAlign.start,
+            ),
+          ),
+          _actionButtons(context)
+        ],
+      );
+
+  /// The action button to be displayed
+  Widget _actionButtons(BuildContext context) => Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          IconButton(
+            icon: Icon(Icons.edit),
+            onPressed: onEditClicked,
+          ),
+          IconButton(
+            icon: Icon(Icons.delete),
+            onPressed: onDeleteClicked,
+          ),
+        ],
+      );
 
   String _kindsText(List<TransactionKind> kinds) =>
       kinds != null && kinds.isNotEmpty

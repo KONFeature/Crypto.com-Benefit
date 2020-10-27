@@ -1,14 +1,15 @@
+import 'package:crypto_benefit/app/domain/object/imported_file.dart';
 import 'package:crypto_benefit/app/presentation/modules/settings/create_statistic/create_statistic.viewmodel.dart';
 import 'package:crypto_benefit/app/presentation/widget/selectable_item.widget.dart';
-import 'package:crypto_benefit/core/di/injector_provider.dart';
 import 'package:crypto_benefit/core/values/dimens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:shimmer/shimmer.dart';
 
 /// The widget of the list of transactions pages
-class CreateStatisticWidget {
-  final vm = inject<CreateStatisticViewModel>();
+abstract class CreateStatisticWidget {
+  /// Find the current view model
+  CreateStatisticViewModel getVm();
 
   /// The title of our page
   Widget title(BuildContext context) => Padding(
@@ -28,24 +29,25 @@ class CreateStatisticWidget {
   Widget statisticNameInput(BuildContext context) => Padding(
       padding: EdgeInsets.all(margin),
       child: TextFormField(
+        initialValue: getVm().initialStatName,
         decoration: InputDecoration(labelText: 'Statistic name'),
-        validator: (value) => vm.validateStatName(value),
+        validator: (value) => getVm().validateStatName(value),
       ));
 
   /// Widget use to let the user select types for his statistics
   Widget typesSelection(BuildContext context) => StaggeredGridView.countBuilder(
-        itemCount: vm.typeSelected.length,
+        itemCount: getVm().typeSelected.length,
         crossAxisCount: 3,
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
         physics: BouncingScrollPhysics(),
         itemBuilder: (BuildContext context, int index) {
-          final type = vm.typeSelected.keys.elementAt(index);
+          final type = getVm().typeSelected.keys.elementAt(index);
           return SelectableItemWidget(
-            text: type.toString(),
-            isSelected: vm.typeSelected[type],
+            text: type.name,
+            isSelected: getVm().typeSelected[type],
             onChanged: (isSelected) {
-              vm.updateTypeSelection(type, isSelected);
+              getVm().updateTypeSelection(type, isSelected);
             },
           );
         },
@@ -54,7 +56,7 @@ class CreateStatisticWidget {
 
   /// Widget use to let the user select the kinds for his statistics
   Widget kindsSelection(BuildContext context) =>
-      vm.isLoading || vm.kindSelected.isEmpty
+      getVm().isLoading || getVm().kindSelected.isEmpty
           ? _kindsLoading(context)
           : _kindsCheckboxes(context);
 
@@ -79,18 +81,18 @@ class CreateStatisticWidget {
 
   Widget _kindsCheckboxes(BuildContext context) =>
       StaggeredGridView.countBuilder(
-        itemCount: vm.kindSelected.length,
+        itemCount: getVm().kindSelected.length,
         crossAxisCount: 2,
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
         physics: BouncingScrollPhysics(),
         itemBuilder: (BuildContext context, int index) {
-          final kind = vm.kindSelected.keys.elementAt(index);
+          final kind = getVm().kindSelected.keys.elementAt(index);
           return SelectableItemWidget(
             text: kind.name,
-            isSelected: vm.kindSelected[kind],
+            isSelected: getVm().kindSelected[kind],
             onChanged: (isSelected) {
-              vm.updateKindSelection(kind, isSelected);
+              getVm().updateKindSelection(kind, isSelected);
             },
           );
         },

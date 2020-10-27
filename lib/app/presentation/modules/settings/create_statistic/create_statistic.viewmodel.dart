@@ -1,4 +1,5 @@
 import 'package:crypto_benefit/app/domain/object/imported_file.dart';
+import 'package:crypto_benefit/app/domain/object/statistic/statistic.dart';
 import 'package:crypto_benefit/app/domain/object/transaction_kind.dart';
 import 'package:crypto_benefit/app/domain/usecases/settings/create_statistic.usecase.dart';
 import 'package:crypto_benefit/app/domain/usecases/settings/get_transaction_kinds.usecase.dart';
@@ -43,8 +44,10 @@ abstract class _CreateStatisticViewModelBase with Store {
   @computed
   ObservableMap<TransactionKind, bool> get kindSelected => _kindSelected;
 
+  // Base statistic
+  Statistic _statisticToUpdate;
+
   /// Last validated statistic name
-  String _statisticName;
 
   _CreateStatisticViewModelBase() {
     // Fetch our transaction kinds
@@ -56,6 +59,26 @@ abstract class _CreateStatisticViewModelBase with Store {
     FileType.values
         .forEach((type) => _typeSelected.putIfAbsent(type, () => false));
   }
+
+  /// Init for a statistic update
+  void initStatisticUpdate(Statistic statistic) {
+    // Backup the statistic object
+    _statisticToUpdate = statistic;
+    // Check the right file types
+    statistic.fileTypes.forEach((type) {
+      _typeSelected.update(type, (value) => true, ifAbsent: () => true);
+    });
+    // Check the right kinds types
+    statistic.kinds.forEach((kind) {
+      _kindSelected.update(kind, (value) => true, ifAbsent: () => true);
+    });
+  }
+
+  String _statisticName;
+
+  /// Retreive the inital stat name
+  String get initialStatName =>
+      _statisticToUpdate != null ? _statisticToUpdate.name : '';
 
   /// Validate a statistic name
   String validateStatName(String currentName) {
@@ -83,7 +106,9 @@ abstract class _CreateStatisticViewModelBase with Store {
   }
 
   /// Launch the statistic creation
-  launchStatisticCreation() async {
+  launchStatisticCreateOrUpdate() async {
+    // TODO : If we have a current statistic object we update it
+    if (_statisticToUpdate != null) return;
     // Extract all the kind selected
     List<TransactionKind> selectedKinds = List();
     for (var kindEntry in _kindSelected.entries) {
@@ -98,4 +123,8 @@ abstract class _CreateStatisticViewModelBase with Store {
     await _createStatisticUseCase.execute(CreateStatisticParams(
         name: _statisticName, kinds: selectedKinds, types: selectedTypes));
   }
+
+  /// The libelle for the go button
+  String get textActionButton =>
+      _statisticToUpdate == null ? 'Create' : 'Update';
 }
