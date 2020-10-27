@@ -43,7 +43,7 @@ class ImportFileRepository implements IImportFileRepository {
     final importedFile = new ImportedFileEntity(
         id: null,
         filename: filename,
-        typeIndex: type.index,
+        type: type,
         generatedTimestamp: generatedTimeStamp,
         importedTimestamp: DateTime.now());
 

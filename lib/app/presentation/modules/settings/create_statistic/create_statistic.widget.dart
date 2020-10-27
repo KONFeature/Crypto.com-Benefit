@@ -1,4 +1,3 @@
-import 'package:crypto_benefit/app/domain/object/transaction_kind.dart';
 import 'package:crypto_benefit/app/presentation/modules/settings/create_statistic/create_statistic.viewmodel.dart';
 import 'package:crypto_benefit/app/presentation/widget/selectable_item.widget.dart';
 import 'package:crypto_benefit/core/di/injector_provider.dart';

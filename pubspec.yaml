@@ -58,6 +58,9 @@ dependencies:
 
   # Selectable container (for better selection view to create stats)
   selectable_container: ^0.1.4
+
+  # Smooth expandable container
+  expandable: ^4.1.4
   
 dev_dependencies:
   moor_generator: ^3.4.0

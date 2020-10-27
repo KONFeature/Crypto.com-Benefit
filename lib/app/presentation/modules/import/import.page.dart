@@ -5,12 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 /// The import page root
-class ImportPage extends StatefulWidget {
-  @override
-  _ImportPageState createState() => _ImportPageState();
-}
-
-class _ImportPageState extends State<ImportPage> with ImportWidget {
+class ImportPage extends StatelessWidget with ImportWidget {
   final vm = inject<ImportViewModel>();
 
   @override

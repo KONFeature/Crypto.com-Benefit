@@ -26,7 +26,7 @@ class ImportWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          RaisedButton(
+          FlatButton(
             // Button to launch the csv import
             onPressed: () => vm.import(),
             color: Theme.of(context).primaryColor,
@@ -38,7 +38,7 @@ class ImportWidget {
           FlatButton(
             // Button to clear all the previous imports
             onPressed: () => vm.clearImports(),
-            color: Theme.of(context).primaryColor,
+            color: Theme.of(context).colorScheme.error,
             child: Text(
               'Clear imports',
               style: Theme.of(context).textTheme.button,

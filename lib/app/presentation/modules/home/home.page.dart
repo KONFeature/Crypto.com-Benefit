@@ -6,15 +6,7 @@ import 'package:crypto_benefit/core/config/routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatefulWidget {
-  HomePage({Key key}) : super(key: key);
-
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> with HomeWidget {
-  /// Key for our scaffold object.
+class HomePage extends StatelessWidget with HomeWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
   @override
@@ -22,10 +14,10 @@ class _HomePageState extends State<HomePage> with HomeWidget {
       key: _scaffoldKey,
       extendBody: false,
       bottomNavigationBar: bottomBar(context),
-      body: _body);
+      body: _body(context));
 
   /// The main body of the app.
-  Widget get _body => SafeArea(
+  Widget _body(BuildContext context) => SafeArea(
           child: Navigator(
         key: vm.navigatorKey,
         initialRoute: CryptoBenefitRoutes.home,

@@ -12,7 +12,7 @@ class ImportedFileMapper {
       ImportedFile(
           id: importedFileEntity.id,
           filename: importedFileEntity.filename,
-          type: FileType.values[importedFileEntity.typeIndex],
+          type: importedFileEntity.type,
           generatedTimestamp: importedFileEntity.generatedTimestamp,
           importedTimestamp: importedFileEntity.importedTimestamp);
 }

@@ -11,13 +11,13 @@ class ImportedFileEntity extends DataClass
     implements Insertable<ImportedFileEntity> {
   final int id;
   final String filename;
-  final int typeIndex;
+  final FileType type;
   final DateTime generatedTimestamp;
   final DateTime importedTimestamp;
   ImportedFileEntity(
       {@required this.id,
       @required this.filename,
-      @required this.typeIndex,
+      @required this.type,
       @required this.generatedTimestamp,
       @required this.importedTimestamp});
   factory ImportedFileEntity.fromData(
@@ -31,8 +31,8 @@ class ImportedFileEntity extends DataClass
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       filename: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}filename']),
-      typeIndex:
-          intType.mapFromDatabaseResponse(data['${effectivePrefix}type_index']),
+      type: $ImportedFilesTableTable.$converter0.mapToDart(
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}type'])),
       generatedTimestamp: dateTimeType.mapFromDatabaseResponse(
           data['${effectivePrefix}generated_timestamp']),
       importedTimestamp: dateTimeType.mapFromDatabaseResponse(
@@ -48,8 +48,9 @@ class ImportedFileEntity extends DataClass
     if (!nullToAbsent || filename != null) {
       map['filename'] = Variable<String>(filename);
     }
-    if (!nullToAbsent || typeIndex != null) {
-      map['type_index'] = Variable<int>(typeIndex);
+    if (!nullToAbsent || type != null) {
+      final converter = $ImportedFilesTableTable.$converter0;
+      map['type'] = Variable<int>(converter.mapToSql(type));
     }
     if (!nullToAbsent || generatedTimestamp != null) {
       map['generated_timestamp'] = Variable<DateTime>(generatedTimestamp);
@@ -66,9 +67,7 @@ class ImportedFileEntity extends DataClass
       filename: filename == null && nullToAbsent
           ? const Value.absent()
           : Value(filename),
-      typeIndex: typeIndex == null && nullToAbsent
-          ? const Value.absent()
-          : Value(typeIndex),
+      type: type == null && nullToAbsent ? const Value.absent() : Value(type),
       generatedTimestamp: generatedTimestamp == null && nullToAbsent
           ? const Value.absent()
           : Value(generatedTimestamp),
@@ -84,7 +83,7 @@ class ImportedFileEntity extends DataClass
     return ImportedFileEntity(
       id: serializer.fromJson<int>(json['id']),
       filename: serializer.fromJson<String>(json['filename']),
-      typeIndex: serializer.fromJson<int>(json['typeIndex']),
+      type: serializer.fromJson<FileType>(json['type']),
       generatedTimestamp:
           serializer.fromJson<DateTime>(json['generatedTimestamp']),
       importedTimestamp:
@@ -97,7 +96,7 @@ class ImportedFileEntity extends DataClass
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'filename': serializer.toJson<String>(filename),
-      'typeIndex': serializer.toJson<int>(typeIndex),
+      'type': serializer.toJson<FileType>(type),
       'generatedTimestamp': serializer.toJson<DateTime>(generatedTimestamp),
       'importedTimestamp': serializer.toJson<DateTime>(importedTimestamp),
     };
@@ -106,13 +105,13 @@ class ImportedFileEntity extends DataClass
   ImportedFileEntity copyWith(
           {int id,
           String filename,
-          int typeIndex,
+          FileType type,
           DateTime generatedTimestamp,
           DateTime importedTimestamp}) =>
       ImportedFileEntity(
         id: id ?? this.id,
         filename: filename ?? this.filename,
-        typeIndex: typeIndex ?? this.typeIndex,
+        type: type ?? this.type,
         generatedTimestamp: generatedTimestamp ?? this.generatedTimestamp,
         importedTimestamp: importedTimestamp ?? this.importedTimestamp,
       );
@@ -121,7 +120,7 @@ class ImportedFileEntity extends DataClass
     return (StringBuffer('ImportedFileEntity(')
           ..write('id: $id, ')
           ..write('filename: $filename, ')
-          ..write('typeIndex: $typeIndex, ')
+          ..write('type: $type, ')
           ..write('generatedTimestamp: $generatedTimestamp, ')
           ..write('importedTimestamp: $importedTimestamp')
           ..write(')'))
@@ -134,7 +133,7 @@ class ImportedFileEntity extends DataClass
       $mrjc(
           filename.hashCode,
           $mrjc(
-              typeIndex.hashCode,
+              type.hashCode,
               $mrjc(
                   generatedTimestamp.hashCode, importedTimestamp.hashCode)))));
   @override
@@ -143,7 +142,7 @@ class ImportedFileEntity extends DataClass
       (other is ImportedFileEntity &&
           other.id == this.id &&
           other.filename == this.filename &&
-          other.typeIndex == this.typeIndex &&
+          other.type == this.type &&
           other.generatedTimestamp == this.generatedTimestamp &&
           other.importedTimestamp == this.importedTimestamp);
 }
@@ -151,37 +150,37 @@ class ImportedFileEntity extends DataClass
 class ImportedFilesTableCompanion extends UpdateCompanion<ImportedFileEntity> {
   final Value<int> id;
   final Value<String> filename;
-  final Value<int> typeIndex;
+  final Value<FileType> type;
   final Value<DateTime> generatedTimestamp;
   final Value<DateTime> importedTimestamp;
   const ImportedFilesTableCompanion({
     this.id = const Value.absent(),
     this.filename = const Value.absent(),
-    this.typeIndex = const Value.absent(),
+    this.type = const Value.absent(),
     this.generatedTimestamp = const Value.absent(),
     this.importedTimestamp = const Value.absent(),
   });
   ImportedFilesTableCompanion.insert({
     this.id = const Value.absent(),
     @required String filename,
-    @required int typeIndex,
+    @required FileType type,
     @required DateTime generatedTimestamp,
     @required DateTime importedTimestamp,
   })  : filename = Value(filename),
-        typeIndex = Value(typeIndex),
+        type = Value(type),
         generatedTimestamp = Value(generatedTimestamp),
         importedTimestamp = Value(importedTimestamp);
   static Insertable<ImportedFileEntity> custom({
     Expression<int> id,
     Expression<String> filename,
-    Expression<int> typeIndex,
+    Expression<int> type,
     Expression<DateTime> generatedTimestamp,
     Expression<DateTime> importedTimestamp,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (filename != null) 'filename': filename,
-      if (typeIndex != null) 'type_index': typeIndex,
+      if (type != null) 'type': type,
       if (generatedTimestamp != null) 'generated_timestamp': generatedTimestamp,
       if (importedTimestamp != null) 'imported_timestamp': importedTimestamp,
     });
@@ -190,13 +189,13 @@ class ImportedFilesTableCompanion extends UpdateCompanion<ImportedFileEntity> {
   ImportedFilesTableCompanion copyWith(
       {Value<int> id,
       Value<String> filename,
-      Value<int> typeIndex,
+      Value<FileType> type,
       Value<DateTime> generatedTimestamp,
       Value<DateTime> importedTimestamp}) {
     return ImportedFilesTableCompanion(
       id: id ?? this.id,
       filename: filename ?? this.filename,
-      typeIndex: typeIndex ?? this.typeIndex,
+      type: type ?? this.type,
       generatedTimestamp: generatedTimestamp ?? this.generatedTimestamp,
       importedTimestamp: importedTimestamp ?? this.importedTimestamp,
     );
@@ -211,8 +210,9 @@ class ImportedFilesTableCompanion extends UpdateCompanion<ImportedFileEntity> {
     if (filename.present) {
       map['filename'] = Variable<String>(filename.value);
     }
-    if (typeIndex.present) {
-      map['type_index'] = Variable<int>(typeIndex.value);
+    if (type.present) {
+      final converter = $ImportedFilesTableTable.$converter0;
+      map['type'] = Variable<int>(converter.mapToSql(type.value));
     }
     if (generatedTimestamp.present) {
       map['generated_timestamp'] = Variable<DateTime>(generatedTimestamp.value);
@@ -228,7 +228,7 @@ class ImportedFilesTableCompanion extends UpdateCompanion<ImportedFileEntity> {
     return (StringBuffer('ImportedFilesTableCompanion(')
           ..write('id: $id, ')
           ..write('filename: $filename, ')
-          ..write('typeIndex: $typeIndex, ')
+          ..write('type: $type, ')
           ..write('generatedTimestamp: $generatedTimestamp, ')
           ..write('importedTimestamp: $importedTimestamp')
           ..write(')'))
@@ -259,13 +259,13 @@ class $ImportedFilesTableTable extends ImportedFilesTable
         $customConstraints: 'UNIQUE');
   }
 
-  final VerificationMeta _typeIndexMeta = const VerificationMeta('typeIndex');
-  GeneratedIntColumn _typeIndex;
+  final VerificationMeta _typeMeta = const VerificationMeta('type');
+  GeneratedIntColumn _type;
   @override
-  GeneratedIntColumn get typeIndex => _typeIndex ??= _constructTypeIndex();
-  GeneratedIntColumn _constructTypeIndex() {
+  GeneratedIntColumn get type => _type ??= _constructType();
+  GeneratedIntColumn _constructType() {
     return GeneratedIntColumn(
-      'type_index',
+      'type',
       $tableName,
       false,
     );
@@ -301,7 +301,7 @@ class $ImportedFilesTableTable extends ImportedFilesTable
 
   @override
   List<GeneratedColumn> get $columns =>
-      [id, filename, typeIndex, generatedTimestamp, importedTimestamp];
+      [id, filename, type, generatedTimestamp, importedTimestamp];
   @override
   $ImportedFilesTableTable get asDslTable => this;
   @override
@@ -322,12 +322,7 @@ class $ImportedFilesTableTable extends ImportedFilesTable
     } else if (isInserting) {
       context.missing(_filenameMeta);
     }
-    if (data.containsKey('type_index')) {
-      context.handle(_typeIndexMeta,
-          typeIndex.isAcceptableOrUnknown(data['type_index'], _typeIndexMeta));
-    } else if (isInserting) {
-      context.missing(_typeIndexMeta);
-    }
+    context.handle(_typeMeta, const VerificationResult.success());
     if (data.containsKey('generated_timestamp')) {
       context.handle(
           _generatedTimestampMeta,
@@ -359,6 +354,9 @@ class $ImportedFilesTableTable extends ImportedFilesTable
   $ImportedFilesTableTable createAlias(String alias) {
     return $ImportedFilesTableTable(_db, alias);
   }
+
+  static TypeConverter<FileType, int> $converter0 =
+      const EnumIndexConverter<FileType>(FileType.values);
 }
 
 class TransactionKindEntity extends DataClass

@@ -18,7 +18,7 @@ class TransactionAmountTextWidget extends StatelessWidget {
           '$text : $_formattedAmount',
           style: Theme.of(context)
               .textTheme
-              .bodyText1
+              .bodyText2
               .apply(color: _colorForAmount(context, amount)),
         ),
       );

@@ -5,12 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 /// The settings page root
-class SettingsPage extends StatefulWidget {
-  @override
-  _SettingsPageState createState() => _SettingsPageState();
-}
-
-class _SettingsPageState extends State<SettingsPage> with SettingsWidget {
+class SettingsPage extends StatelessWidget with SettingsWidget {
   final vm = inject<SettingsViewModel>();
 
   @override
@@ -24,7 +19,7 @@ class _SettingsPageState extends State<SettingsPage> with SettingsWidget {
               ? loading(observerContext)
               : statistics(observerContext, vm.statistics);
         }),
-        addStatisticsButton(context)
+        createStatisticsButton(context)
       ],
     );
   }

@@ -56,19 +56,8 @@ class TransactionRepository implements ITransactionRepository {
           _transactionMapper.fromEntities(transactionEntities));
 
   @override
-  Future<List<Transaction>> getTransactionsForKinds(Set<int> kindIds) async =>
-      _transactionMapper
-          .fromEntities(await _transactionsDao.getTransactionsByKinds(kindIds));
-
-  @override
-  Future<Map<FileType, List<Transaction>>> getTransactionsForTypes(
-      Set<FileType> types) async {
-    Map<FileType, List<Transaction>> transactionsByType = Map();
-    for (var type in types) {
-      List<Transaction> transactions = await _transactionMapper
-          .fromEntities(await _transactionsDao.getTransactionsByType(type));
-      transactionsByType.putIfAbsent(type, () => transactions);
-    }
-    return transactionsByType;
-  }
+  Future<List<Transaction>> getTransactionsForTypesAndKinds(
+          Iterable<FileType> types, Iterable<int> kindIds) async =>
+      _transactionMapper.fromEntities(
+          await _transactionsDao.getTransactionsByTypesOrKinds(types, kindIds));
 }

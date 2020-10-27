@@ -31,24 +31,19 @@ class ComputedStatisticCardWidget extends StatelessWidget {
                 padding: EdgeInsets.symmetric(vertical: padding),
                 child: Text(
                   '${computedStat.transactionsCount} transactions',
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.bodyText2,
                 ),
               ),
               TransactionAmountTextWidget(
-                text: 'Native',
-                amount: computedStat.totalNativeAmount,
-                symbol: '€',
-              ),
-              TransactionAmountTextWidget(
-                text: 'total usd',
+                text: 'total',
                 amount: computedStat.totalUsdAmount,
               ),
               TransactionAmountTextWidget(
-                text: 'positive usd',
+                text: 'positive',
                 amount: computedStat.positiveUsdAmount,
               ),
               TransactionAmountTextWidget(
-                text: 'negative usd',
+                text: 'negative',
                 amount: computedStat.negativeUsdAmount,
               ),
             ],

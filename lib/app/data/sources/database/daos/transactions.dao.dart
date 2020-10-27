@@ -68,19 +68,19 @@ class TransactionsDao extends DatabaseAccessor<AppDatabase>
       select(transactionsTable).watch();
 
   /// Get all of our transactions in a list of kinds
-  Future<List<TransactionEntity>> getTransactionsByKinds(
-          Iterable<int> kindIds) =>
-      (select(transactionsTable)..where((tbl) => tbl.kindId.isIn(kindIds)))
-          .get();
-
-  /// Get all of our transactions in a list of kinds
-  Future<List<TransactionEntity>> getTransactionsByType(FileType type) =>
-      (select(transactionsTable)
-            ..join([
-              leftOuterJoin(db.importedFilesTable,
-                  db.importedFilesTable.id.equalsExp(transactionsTable.fileId))
-            ])
-            ..where((tbl) => tbl.fileId.equals(
-                0))) // TODO : Do this (filter on the imported file type)
-          .get();
+  Future<Iterable<TransactionEntity>> getTransactionsByTypesOrKinds(
+      Iterable<FileType> types, Iterable<int> kindIds) async {
+    // Query that join with the imported file table, and check for types and kind in the given list
+    final query = select(transactionsTable).join([
+      leftOuterJoin(db.importedFilesTable,
+          db.importedFilesTable.id.equalsExp(transactionsTable.fileId))
+    ])
+      ..where(db.importedFilesTable.type.isIn(types.map((type) => type.index)) |
+          transactionsTable.kindId.isIn(kindIds));
+    // Fetch the result
+    final transactionsWithFiles = await query.get();
+    // Map it and return it
+    return transactionsWithFiles
+        .map((typedRow) => typedRow.readTable(transactionsTable));
+  }
 }

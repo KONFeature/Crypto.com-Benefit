@@ -16,9 +16,7 @@ abstract class ITransactionRepository {
   /// Get the transactions streams
   Stream<List<Transaction>> watchTransactions();
 
-  /// Get the transactions matchings some kinds
-  Future<List<Transaction>> getTransactionsForKinds(Set<int> kindIds);
-
-  /// Get the transactions matching some types
-  Future<Map<FileType, List<Transaction>>> getTransactionsForTypes(Set<FileType> types);
+  /// Get the transactions matching the kinds and types parameter
+  Future<List<Transaction>> getTransactionsForTypesAndKinds(
+      Iterable<FileType> types, Iterable<int> kindIds);
 }
