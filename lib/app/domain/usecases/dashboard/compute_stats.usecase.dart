@@ -19,12 +19,15 @@ class WatchComputedStatsUseCase
 
           // Then compute each one of our stat from this transactioons
           List<ComputedStatistic> computedStats = List();
+          // TODO : Switch map for autorefresh when new transactions
+
           for (var stat in statistics) {
             // Get the transactions set for our stat
 
             List<Transaction> transactionsForStat =
                 await _transactionRepository.getTransactionsForTypesAndKinds(
-                    stat.fileTypes, stat.kinds.map((kind) => kind.id));
+                    stat.filter.fileTypes,
+                    stat.filter.kinds.map((kind) => kind.id));
             print(
                 'Total transactions for this stats ${transactionsForStat.length}');
             // Compute the stat for the founded transactions

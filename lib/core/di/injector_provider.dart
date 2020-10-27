@@ -26,14 +26,11 @@ import 'package:crypto_benefit/app/domain/usecases/settings/watch_statistics.use
 import 'package:crypto_benefit/app/presentation/modules/dashboard/dashboard.viewmodel.dart';
 import 'package:crypto_benefit/app/presentation/modules/home/home.viewmodel.dart';
 import 'package:crypto_benefit/app/presentation/modules/import/import.viewmodel.dart';
-import 'package:crypto_benefit/app/presentation/modules/settings/create_statistic/create_statistic.viewmodel.dart';
 import 'package:crypto_benefit/app/presentation/modules/settings/settings.viewmodel.dart';
 import 'package:get_it/get_it.dart';
 
 /// Static access to the current get it instance
 final GetIt inject = GetIt.I;
-
-// TODO : Setup scope for better performance ??
 
 Future<void> setupInjection() async {
   // Database

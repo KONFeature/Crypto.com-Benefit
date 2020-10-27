@@ -16,6 +16,14 @@ class StatisticMapper {
 
   // Map a full stat entity to a stat pojo
   Statistic fromEntity(FullStatisticEntity entity) {
+    return Statistic(
+        id: entity.id,
+        name: entity.name,
+        filter: _filterFromEntity(entity.filterEntity));
+  }
+
+  // Map a full filter entity to a stat pojo
+  Filter _filterFromEntity(FullFilterEntity entity) {
     final kinds = entity.transactionKindEntities != null &&
             entity.transactionKindEntities.isNotEmpty
         ? _kindMapper.fromEntities(entity.transactionKindEntities)
@@ -23,7 +31,6 @@ class StatisticMapper {
     final types = entity.fileTypes != null && entity.fileTypes.isNotEmpty
         ? entity.fileTypes
         : List<FileType>();
-    return Statistic(
-        id: entity.id, name: entity.name, kinds: kinds, fileTypes: types);
+    return Filter(id: entity.id, kinds: kinds, fileTypes: types);
   }
 }

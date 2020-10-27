@@ -1031,7 +1031,8 @@ class $TransactionsTableTable extends TransactionsTable
   GeneratedIntColumn get fileId => _fileId ??= _constructFileId();
   GeneratedIntColumn _constructFileId() {
     return GeneratedIntColumn('file_id', $tableName, false,
-        $customConstraints: 'REFERENCES imported_files_table(id)');
+        $customConstraints:
+            'REFERENCES imported_files_table(id)  ON UPDATE CASCADE ON DELETE CASCADE');
   }
 
   final VerificationMeta _timestampMeta = const VerificationMeta('timestamp');
@@ -1301,11 +1302,13 @@ class StatisticEntity extends DataClass implements Insertable<StatisticEntity> {
   final String name;
   final int priority;
   final DateTime createdTimestamp;
+  final int filterId;
   StatisticEntity(
       {@required this.id,
       @required this.name,
       this.priority,
-      @required this.createdTimestamp});
+      @required this.createdTimestamp,
+      @required this.filterId});
   factory StatisticEntity.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -1320,6 +1323,8 @@ class StatisticEntity extends DataClass implements Insertable<StatisticEntity> {
           intType.mapFromDatabaseResponse(data['${effectivePrefix}priority']),
       createdTimestamp: dateTimeType
           .mapFromDatabaseResponse(data['${effectivePrefix}created_timestamp']),
+      filterId:
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}filter_id']),
     );
   }
   @override
@@ -1337,6 +1342,9 @@ class StatisticEntity extends DataClass implements Insertable<StatisticEntity> {
     if (!nullToAbsent || createdTimestamp != null) {
       map['created_timestamp'] = Variable<DateTime>(createdTimestamp);
     }
+    if (!nullToAbsent || filterId != null) {
+      map['filter_id'] = Variable<int>(filterId);
+    }
     return map;
   }
 
@@ -1350,6 +1358,9 @@ class StatisticEntity extends DataClass implements Insertable<StatisticEntity> {
       createdTimestamp: createdTimestamp == null && nullToAbsent
           ? const Value.absent()
           : Value(createdTimestamp),
+      filterId: filterId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(filterId),
     );
   }
 
@@ -1361,6 +1372,7 @@ class StatisticEntity extends DataClass implements Insertable<StatisticEntity> {
       name: serializer.fromJson<String>(json['name']),
       priority: serializer.fromJson<int>(json['priority']),
       createdTimestamp: serializer.fromJson<DateTime>(json['createdTimestamp']),
+      filterId: serializer.fromJson<int>(json['filterId']),
     );
   }
   @override
@@ -1371,16 +1383,22 @@ class StatisticEntity extends DataClass implements Insertable<StatisticEntity> {
       'name': serializer.toJson<String>(name),
       'priority': serializer.toJson<int>(priority),
       'createdTimestamp': serializer.toJson<DateTime>(createdTimestamp),
+      'filterId': serializer.toJson<int>(filterId),
     };
   }
 
   StatisticEntity copyWith(
-          {int id, String name, int priority, DateTime createdTimestamp}) =>
+          {int id,
+          String name,
+          int priority,
+          DateTime createdTimestamp,
+          int filterId}) =>
       StatisticEntity(
         id: id ?? this.id,
         name: name ?? this.name,
         priority: priority ?? this.priority,
         createdTimestamp: createdTimestamp ?? this.createdTimestamp,
+        filterId: filterId ?? this.filterId,
       );
   @override
   String toString() {
@@ -1388,7 +1406,8 @@ class StatisticEntity extends DataClass implements Insertable<StatisticEntity> {
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('priority: $priority, ')
-          ..write('createdTimestamp: $createdTimestamp')
+          ..write('createdTimestamp: $createdTimestamp, ')
+          ..write('filterId: $filterId')
           ..write(')'))
         .toString();
   }
@@ -1397,7 +1416,9 @@ class StatisticEntity extends DataClass implements Insertable<StatisticEntity> {
   int get hashCode => $mrjf($mrjc(
       id.hashCode,
       $mrjc(
-          name.hashCode, $mrjc(priority.hashCode, createdTimestamp.hashCode))));
+          name.hashCode,
+          $mrjc(priority.hashCode,
+              $mrjc(createdTimestamp.hashCode, filterId.hashCode)))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -1405,7 +1426,8 @@ class StatisticEntity extends DataClass implements Insertable<StatisticEntity> {
           other.id == this.id &&
           other.name == this.name &&
           other.priority == this.priority &&
-          other.createdTimestamp == this.createdTimestamp);
+          other.createdTimestamp == this.createdTimestamp &&
+          other.filterId == this.filterId);
 }
 
 class StatisticTableCompanion extends UpdateCompanion<StatisticEntity> {
@@ -1413,30 +1435,36 @@ class StatisticTableCompanion extends UpdateCompanion<StatisticEntity> {
   final Value<String> name;
   final Value<int> priority;
   final Value<DateTime> createdTimestamp;
+  final Value<int> filterId;
   const StatisticTableCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
     this.priority = const Value.absent(),
     this.createdTimestamp = const Value.absent(),
+    this.filterId = const Value.absent(),
   });
   StatisticTableCompanion.insert({
     this.id = const Value.absent(),
     @required String name,
     this.priority = const Value.absent(),
     @required DateTime createdTimestamp,
+    @required int filterId,
   })  : name = Value(name),
-        createdTimestamp = Value(createdTimestamp);
+        createdTimestamp = Value(createdTimestamp),
+        filterId = Value(filterId);
   static Insertable<StatisticEntity> custom({
     Expression<int> id,
     Expression<String> name,
     Expression<int> priority,
     Expression<DateTime> createdTimestamp,
+    Expression<int> filterId,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (name != null) 'name': name,
       if (priority != null) 'priority': priority,
       if (createdTimestamp != null) 'created_timestamp': createdTimestamp,
+      if (filterId != null) 'filter_id': filterId,
     });
   }
 
@@ -1444,12 +1472,14 @@ class StatisticTableCompanion extends UpdateCompanion<StatisticEntity> {
       {Value<int> id,
       Value<String> name,
       Value<int> priority,
-      Value<DateTime> createdTimestamp}) {
+      Value<DateTime> createdTimestamp,
+      Value<int> filterId}) {
     return StatisticTableCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
       priority: priority ?? this.priority,
       createdTimestamp: createdTimestamp ?? this.createdTimestamp,
+      filterId: filterId ?? this.filterId,
     );
   }
 
@@ -1468,6 +1498,9 @@ class StatisticTableCompanion extends UpdateCompanion<StatisticEntity> {
     if (createdTimestamp.present) {
       map['created_timestamp'] = Variable<DateTime>(createdTimestamp.value);
     }
+    if (filterId.present) {
+      map['filter_id'] = Variable<int>(filterId.value);
+    }
     return map;
   }
 
@@ -1477,7 +1510,8 @@ class StatisticTableCompanion extends UpdateCompanion<StatisticEntity> {
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('priority: $priority, ')
-          ..write('createdTimestamp: $createdTimestamp')
+          ..write('createdTimestamp: $createdTimestamp, ')
+          ..write('filterId: $filterId')
           ..write(')'))
         .toString();
   }
@@ -1532,8 +1566,19 @@ class $StatisticTableTable extends StatisticTable
     );
   }
 
+  final VerificationMeta _filterIdMeta = const VerificationMeta('filterId');
+  GeneratedIntColumn _filterId;
   @override
-  List<GeneratedColumn> get $columns => [id, name, priority, createdTimestamp];
+  GeneratedIntColumn get filterId => _filterId ??= _constructFilterId();
+  GeneratedIntColumn _constructFilterId() {
+    return GeneratedIntColumn('filter_id', $tableName, false,
+        $customConstraints:
+            'REFERENCES filter_table(id) ON UPDATE CASCADE ON DELETE SET NULL');
+  }
+
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, name, priority, createdTimestamp, filterId];
   @override
   $StatisticTableTable get asDslTable => this;
   @override
@@ -1566,6 +1611,12 @@ class $StatisticTableTable extends StatisticTable
     } else if (isInserting) {
       context.missing(_createdTimestampMeta);
     }
+    if (data.containsKey('filter_id')) {
+      context.handle(_filterIdMeta,
+          filterId.isAcceptableOrUnknown(data['filter_id'], _filterIdMeta));
+    } else if (isInserting) {
+      context.missing(_filterIdMeta);
+    }
     return context;
   }
 
@@ -1583,19 +1634,161 @@ class $StatisticTableTable extends StatisticTable
   }
 }
 
-class StatisticKindEntity extends DataClass
-    implements Insertable<StatisticKindEntity> {
-  final int statisticId;
+class FilterEntity extends DataClass implements Insertable<FilterEntity> {
+  final int id;
+  FilterEntity({@required this.id});
+  factory FilterEntity.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
+    return FilterEntity(
+      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<int>(id);
+    }
+    return map;
+  }
+
+  FilterTableCompanion toCompanion(bool nullToAbsent) {
+    return FilterTableCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+    );
+  }
+
+  factory FilterEntity.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return FilterEntity(
+      id: serializer.fromJson<int>(json['id']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+    };
+  }
+
+  FilterEntity copyWith({int id}) => FilterEntity(
+        id: id ?? this.id,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('FilterEntity(')..write('id: $id')..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf(id.hashCode);
+  @override
+  bool operator ==(dynamic other) =>
+      identical(this, other) || (other is FilterEntity && other.id == this.id);
+}
+
+class FilterTableCompanion extends UpdateCompanion<FilterEntity> {
+  final Value<int> id;
+  const FilterTableCompanion({
+    this.id = const Value.absent(),
+  });
+  FilterTableCompanion.insert({
+    this.id = const Value.absent(),
+  });
+  static Insertable<FilterEntity> custom({
+    Expression<int> id,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+    });
+  }
+
+  FilterTableCompanion copyWith({Value<int> id}) {
+    return FilterTableCompanion(
+      id: id ?? this.id,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('FilterTableCompanion(')..write('id: $id')..write(')'))
+        .toString();
+  }
+}
+
+class $FilterTableTable extends FilterTable
+    with TableInfo<$FilterTableTable, FilterEntity> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $FilterTableTable(this._db, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  GeneratedIntColumn _id;
+  @override
+  GeneratedIntColumn get id => _id ??= _constructId();
+  GeneratedIntColumn _constructId() {
+    return GeneratedIntColumn('id', $tableName, false,
+        hasAutoIncrement: true, declaredAsPrimaryKey: true);
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [id];
+  @override
+  $FilterTableTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'filter_table';
+  @override
+  final String actualTableName = 'filter_table';
+  @override
+  VerificationContext validateIntegrity(Insertable<FilterEntity> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  FilterEntity map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return FilterEntity.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  $FilterTableTable createAlias(String alias) {
+    return $FilterTableTable(_db, alias);
+  }
+}
+
+class FilterTransactionKindEntry extends DataClass
+    implements Insertable<FilterTransactionKindEntry> {
+  final int filterId;
   final int kindId;
-  StatisticKindEntity({@required this.statisticId, @required this.kindId});
-  factory StatisticKindEntity.fromData(
+  FilterTransactionKindEntry({@required this.filterId, @required this.kindId});
+  factory FilterTransactionKindEntry.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
-    return StatisticKindEntity(
-      statisticId: intType
-          .mapFromDatabaseResponse(data['${effectivePrefix}statistic_id']),
+    return FilterTransactionKindEntry(
+      filterId:
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}filter_id']),
       kindId:
           intType.mapFromDatabaseResponse(data['${effectivePrefix}kind_id']),
     );
@@ -1603,8 +1796,8 @@ class StatisticKindEntity extends DataClass
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (!nullToAbsent || statisticId != null) {
-      map['statistic_id'] = Variable<int>(statisticId);
+    if (!nullToAbsent || filterId != null) {
+      map['filter_id'] = Variable<int>(filterId);
     }
     if (!nullToAbsent || kindId != null) {
       map['kind_id'] = Variable<int>(kindId);
@@ -1612,21 +1805,21 @@ class StatisticKindEntity extends DataClass
     return map;
   }
 
-  StatisticKindsTableCompanion toCompanion(bool nullToAbsent) {
-    return StatisticKindsTableCompanion(
-      statisticId: statisticId == null && nullToAbsent
+  FilterTransactionKindTableCompanion toCompanion(bool nullToAbsent) {
+    return FilterTransactionKindTableCompanion(
+      filterId: filterId == null && nullToAbsent
           ? const Value.absent()
-          : Value(statisticId),
+          : Value(filterId),
       kindId:
           kindId == null && nullToAbsent ? const Value.absent() : Value(kindId),
     );
   }
 
-  factory StatisticKindEntity.fromJson(Map<String, dynamic> json,
+  factory FilterTransactionKindEntry.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return StatisticKindEntity(
-      statisticId: serializer.fromJson<int>(json['statisticId']),
+    return FilterTransactionKindEntry(
+      filterId: serializer.fromJson<int>(json['filterId']),
       kindId: serializer.fromJson<int>(json['kindId']),
     );
   }
@@ -1634,62 +1827,62 @@ class StatisticKindEntity extends DataClass
   Map<String, dynamic> toJson({ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'statisticId': serializer.toJson<int>(statisticId),
+      'filterId': serializer.toJson<int>(filterId),
       'kindId': serializer.toJson<int>(kindId),
     };
   }
 
-  StatisticKindEntity copyWith({int statisticId, int kindId}) =>
-      StatisticKindEntity(
-        statisticId: statisticId ?? this.statisticId,
+  FilterTransactionKindEntry copyWith({int filterId, int kindId}) =>
+      FilterTransactionKindEntry(
+        filterId: filterId ?? this.filterId,
         kindId: kindId ?? this.kindId,
       );
   @override
   String toString() {
-    return (StringBuffer('StatisticKindEntity(')
-          ..write('statisticId: $statisticId, ')
+    return (StringBuffer('FilterTransactionKindEntry(')
+          ..write('filterId: $filterId, ')
           ..write('kindId: $kindId')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(statisticId.hashCode, kindId.hashCode));
+  int get hashCode => $mrjf($mrjc(filterId.hashCode, kindId.hashCode));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
-      (other is StatisticKindEntity &&
-          other.statisticId == this.statisticId &&
+      (other is FilterTransactionKindEntry &&
+          other.filterId == this.filterId &&
           other.kindId == this.kindId);
 }
 
-class StatisticKindsTableCompanion
-    extends UpdateCompanion<StatisticKindEntity> {
-  final Value<int> statisticId;
+class FilterTransactionKindTableCompanion
+    extends UpdateCompanion<FilterTransactionKindEntry> {
+  final Value<int> filterId;
   final Value<int> kindId;
-  const StatisticKindsTableCompanion({
-    this.statisticId = const Value.absent(),
+  const FilterTransactionKindTableCompanion({
+    this.filterId = const Value.absent(),
     this.kindId = const Value.absent(),
   });
-  StatisticKindsTableCompanion.insert({
-    @required int statisticId,
+  FilterTransactionKindTableCompanion.insert({
+    @required int filterId,
     @required int kindId,
-  })  : statisticId = Value(statisticId),
+  })  : filterId = Value(filterId),
         kindId = Value(kindId);
-  static Insertable<StatisticKindEntity> custom({
-    Expression<int> statisticId,
+  static Insertable<FilterTransactionKindEntry> custom({
+    Expression<int> filterId,
     Expression<int> kindId,
   }) {
     return RawValuesInsertable({
-      if (statisticId != null) 'statistic_id': statisticId,
+      if (filterId != null) 'filter_id': filterId,
       if (kindId != null) 'kind_id': kindId,
     });
   }
 
-  StatisticKindsTableCompanion copyWith(
-      {Value<int> statisticId, Value<int> kindId}) {
-    return StatisticKindsTableCompanion(
-      statisticId: statisticId ?? this.statisticId,
+  FilterTransactionKindTableCompanion copyWith(
+      {Value<int> filterId, Value<int> kindId}) {
+    return FilterTransactionKindTableCompanion(
+      filterId: filterId ?? this.filterId,
       kindId: kindId ?? this.kindId,
     );
   }
@@ -1697,8 +1890,8 @@ class StatisticKindsTableCompanion
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (statisticId.present) {
-      map['statistic_id'] = Variable<int>(statisticId.value);
+    if (filterId.present) {
+      map['filter_id'] = Variable<int>(filterId.value);
     }
     if (kindId.present) {
       map['kind_id'] = Variable<int>(kindId.value);
@@ -1708,29 +1901,29 @@ class StatisticKindsTableCompanion
 
   @override
   String toString() {
-    return (StringBuffer('StatisticKindsTableCompanion(')
-          ..write('statisticId: $statisticId, ')
+    return (StringBuffer('FilterTransactionKindTableCompanion(')
+          ..write('filterId: $filterId, ')
           ..write('kindId: $kindId')
           ..write(')'))
         .toString();
   }
 }
 
-class $StatisticKindsTableTable extends StatisticKindsTable
-    with TableInfo<$StatisticKindsTableTable, StatisticKindEntity> {
+class $FilterTransactionKindTableTable extends FilterTransactionKindTable
+    with
+        TableInfo<$FilterTransactionKindTableTable,
+            FilterTransactionKindEntry> {
   final GeneratedDatabase _db;
   final String _alias;
-  $StatisticKindsTableTable(this._db, [this._alias]);
-  final VerificationMeta _statisticIdMeta =
-      const VerificationMeta('statisticId');
-  GeneratedIntColumn _statisticId;
+  $FilterTransactionKindTableTable(this._db, [this._alias]);
+  final VerificationMeta _filterIdMeta = const VerificationMeta('filterId');
+  GeneratedIntColumn _filterId;
   @override
-  GeneratedIntColumn get statisticId =>
-      _statisticId ??= _constructStatisticId();
-  GeneratedIntColumn _constructStatisticId() {
-    return GeneratedIntColumn('statistic_id', $tableName, false,
+  GeneratedIntColumn get filterId => _filterId ??= _constructFilterId();
+  GeneratedIntColumn _constructFilterId() {
+    return GeneratedIntColumn('filter_id', $tableName, false,
         $customConstraints:
-            'NOT NULL REFERENCES statistic_table(id) ON UPDATE CASCADE ON DELETE CASCADE');
+            'NOT NULL REFERENCES filter_table(id) ON UPDATE CASCADE ON DELETE CASCADE');
   }
 
   final VerificationMeta _kindIdMeta = const VerificationMeta('kindId');
@@ -1744,26 +1937,24 @@ class $StatisticKindsTableTable extends StatisticKindsTable
   }
 
   @override
-  List<GeneratedColumn> get $columns => [statisticId, kindId];
+  List<GeneratedColumn> get $columns => [filterId, kindId];
   @override
-  $StatisticKindsTableTable get asDslTable => this;
+  $FilterTransactionKindTableTable get asDslTable => this;
   @override
-  String get $tableName => _alias ?? 'statistic_kinds_table';
+  String get $tableName => _alias ?? 'filter_transaction_kind_table';
   @override
-  final String actualTableName = 'statistic_kinds_table';
+  final String actualTableName = 'filter_transaction_kind_table';
   @override
   VerificationContext validateIntegrity(
-      Insertable<StatisticKindEntity> instance,
+      Insertable<FilterTransactionKindEntry> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
-    if (data.containsKey('statistic_id')) {
-      context.handle(
-          _statisticIdMeta,
-          statisticId.isAcceptableOrUnknown(
-              data['statistic_id'], _statisticIdMeta));
+    if (data.containsKey('filter_id')) {
+      context.handle(_filterIdMeta,
+          filterId.isAcceptableOrUnknown(data['filter_id'], _filterIdMeta));
     } else if (isInserting) {
-      context.missing(_statisticIdMeta);
+      context.missing(_filterIdMeta);
     }
     if (data.containsKey('kind_id')) {
       context.handle(_kindIdMeta,
@@ -1775,65 +1966,67 @@ class $StatisticKindsTableTable extends StatisticKindsTable
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {statisticId, kindId};
+  Set<GeneratedColumn> get $primaryKey => {filterId, kindId};
   @override
-  StatisticKindEntity map(Map<String, dynamic> data, {String tablePrefix}) {
+  FilterTransactionKindEntry map(Map<String, dynamic> data,
+      {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return StatisticKindEntity.fromData(data, _db, prefix: effectivePrefix);
+    return FilterTransactionKindEntry.fromData(data, _db,
+        prefix: effectivePrefix);
   }
 
   @override
-  $StatisticKindsTableTable createAlias(String alias) {
-    return $StatisticKindsTableTable(_db, alias);
+  $FilterTransactionKindTableTable createAlias(String alias) {
+    return $FilterTransactionKindTableTable(_db, alias);
   }
 }
 
-class StatisticFileEntity extends DataClass
-    implements Insertable<StatisticFileEntity> {
-  final int statisticId;
+class FilterFileTypeEntry extends DataClass
+    implements Insertable<FilterFileTypeEntry> {
+  final int filterId;
   final FileType fileType;
-  StatisticFileEntity({@required this.statisticId, @required this.fileType});
-  factory StatisticFileEntity.fromData(
+  FilterFileTypeEntry({@required this.filterId, @required this.fileType});
+  factory FilterFileTypeEntry.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
-    return StatisticFileEntity(
-      statisticId: intType
-          .mapFromDatabaseResponse(data['${effectivePrefix}statistic_id']),
-      fileType: $StatisticFilesTableTable.$converter0.mapToDart(
+    return FilterFileTypeEntry(
+      filterId:
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}filter_id']),
+      fileType: $FilterFileTypeTableTable.$converter0.mapToDart(
           intType.mapFromDatabaseResponse(data['${effectivePrefix}file_type'])),
     );
   }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (!nullToAbsent || statisticId != null) {
-      map['statistic_id'] = Variable<int>(statisticId);
+    if (!nullToAbsent || filterId != null) {
+      map['filter_id'] = Variable<int>(filterId);
     }
     if (!nullToAbsent || fileType != null) {
-      final converter = $StatisticFilesTableTable.$converter0;
+      final converter = $FilterFileTypeTableTable.$converter0;
       map['file_type'] = Variable<int>(converter.mapToSql(fileType));
     }
     return map;
   }
 
-  StatisticFilesTableCompanion toCompanion(bool nullToAbsent) {
-    return StatisticFilesTableCompanion(
-      statisticId: statisticId == null && nullToAbsent
+  FilterFileTypeTableCompanion toCompanion(bool nullToAbsent) {
+    return FilterFileTypeTableCompanion(
+      filterId: filterId == null && nullToAbsent
           ? const Value.absent()
-          : Value(statisticId),
+          : Value(filterId),
       fileType: fileType == null && nullToAbsent
           ? const Value.absent()
           : Value(fileType),
     );
   }
 
-  factory StatisticFileEntity.fromJson(Map<String, dynamic> json,
+  factory FilterFileTypeEntry.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return StatisticFileEntity(
-      statisticId: serializer.fromJson<int>(json['statisticId']),
+    return FilterFileTypeEntry(
+      filterId: serializer.fromJson<int>(json['filterId']),
       fileType: serializer.fromJson<FileType>(json['fileType']),
     );
   }
@@ -1841,62 +2034,62 @@ class StatisticFileEntity extends DataClass
   Map<String, dynamic> toJson({ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'statisticId': serializer.toJson<int>(statisticId),
+      'filterId': serializer.toJson<int>(filterId),
       'fileType': serializer.toJson<FileType>(fileType),
     };
   }
 
-  StatisticFileEntity copyWith({int statisticId, FileType fileType}) =>
-      StatisticFileEntity(
-        statisticId: statisticId ?? this.statisticId,
+  FilterFileTypeEntry copyWith({int filterId, FileType fileType}) =>
+      FilterFileTypeEntry(
+        filterId: filterId ?? this.filterId,
         fileType: fileType ?? this.fileType,
       );
   @override
   String toString() {
-    return (StringBuffer('StatisticFileEntity(')
-          ..write('statisticId: $statisticId, ')
+    return (StringBuffer('FilterFileTypeEntry(')
+          ..write('filterId: $filterId, ')
           ..write('fileType: $fileType')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(statisticId.hashCode, fileType.hashCode));
+  int get hashCode => $mrjf($mrjc(filterId.hashCode, fileType.hashCode));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
-      (other is StatisticFileEntity &&
-          other.statisticId == this.statisticId &&
+      (other is FilterFileTypeEntry &&
+          other.filterId == this.filterId &&
           other.fileType == this.fileType);
 }
 
-class StatisticFilesTableCompanion
-    extends UpdateCompanion<StatisticFileEntity> {
-  final Value<int> statisticId;
+class FilterFileTypeTableCompanion
+    extends UpdateCompanion<FilterFileTypeEntry> {
+  final Value<int> filterId;
   final Value<FileType> fileType;
-  const StatisticFilesTableCompanion({
-    this.statisticId = const Value.absent(),
+  const FilterFileTypeTableCompanion({
+    this.filterId = const Value.absent(),
     this.fileType = const Value.absent(),
   });
-  StatisticFilesTableCompanion.insert({
-    @required int statisticId,
+  FilterFileTypeTableCompanion.insert({
+    @required int filterId,
     @required FileType fileType,
-  })  : statisticId = Value(statisticId),
+  })  : filterId = Value(filterId),
         fileType = Value(fileType);
-  static Insertable<StatisticFileEntity> custom({
-    Expression<int> statisticId,
+  static Insertable<FilterFileTypeEntry> custom({
+    Expression<int> filterId,
     Expression<int> fileType,
   }) {
     return RawValuesInsertable({
-      if (statisticId != null) 'statistic_id': statisticId,
+      if (filterId != null) 'filter_id': filterId,
       if (fileType != null) 'file_type': fileType,
     });
   }
 
-  StatisticFilesTableCompanion copyWith(
-      {Value<int> statisticId, Value<FileType> fileType}) {
-    return StatisticFilesTableCompanion(
-      statisticId: statisticId ?? this.statisticId,
+  FilterFileTypeTableCompanion copyWith(
+      {Value<int> filterId, Value<FileType> fileType}) {
+    return FilterFileTypeTableCompanion(
+      filterId: filterId ?? this.filterId,
       fileType: fileType ?? this.fileType,
     );
   }
@@ -1904,11 +2097,11 @@ class StatisticFilesTableCompanion
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (statisticId.present) {
-      map['statistic_id'] = Variable<int>(statisticId.value);
+    if (filterId.present) {
+      map['filter_id'] = Variable<int>(filterId.value);
     }
     if (fileType.present) {
-      final converter = $StatisticFilesTableTable.$converter0;
+      final converter = $FilterFileTypeTableTable.$converter0;
       map['file_type'] = Variable<int>(converter.mapToSql(fileType.value));
     }
     return map;
@@ -1916,29 +2109,27 @@ class StatisticFilesTableCompanion
 
   @override
   String toString() {
-    return (StringBuffer('StatisticFilesTableCompanion(')
-          ..write('statisticId: $statisticId, ')
+    return (StringBuffer('FilterFileTypeTableCompanion(')
+          ..write('filterId: $filterId, ')
           ..write('fileType: $fileType')
           ..write(')'))
         .toString();
   }
 }
 
-class $StatisticFilesTableTable extends StatisticFilesTable
-    with TableInfo<$StatisticFilesTableTable, StatisticFileEntity> {
+class $FilterFileTypeTableTable extends FilterFileTypeTable
+    with TableInfo<$FilterFileTypeTableTable, FilterFileTypeEntry> {
   final GeneratedDatabase _db;
   final String _alias;
-  $StatisticFilesTableTable(this._db, [this._alias]);
-  final VerificationMeta _statisticIdMeta =
-      const VerificationMeta('statisticId');
-  GeneratedIntColumn _statisticId;
+  $FilterFileTypeTableTable(this._db, [this._alias]);
+  final VerificationMeta _filterIdMeta = const VerificationMeta('filterId');
+  GeneratedIntColumn _filterId;
   @override
-  GeneratedIntColumn get statisticId =>
-      _statisticId ??= _constructStatisticId();
-  GeneratedIntColumn _constructStatisticId() {
-    return GeneratedIntColumn('statistic_id', $tableName, false,
+  GeneratedIntColumn get filterId => _filterId ??= _constructFilterId();
+  GeneratedIntColumn _constructFilterId() {
+    return GeneratedIntColumn('filter_id', $tableName, false,
         $customConstraints:
-            'NOT NULL REFERENCES statistic_table(id) ON UPDATE CASCADE ON DELETE CASCADE');
+            'NOT NULL REFERENCES filter_table(id) ON UPDATE CASCADE ON DELETE CASCADE');
   }
 
   final VerificationMeta _fileTypeMeta = const VerificationMeta('fileType');
@@ -1954,42 +2145,40 @@ class $StatisticFilesTableTable extends StatisticFilesTable
   }
 
   @override
-  List<GeneratedColumn> get $columns => [statisticId, fileType];
+  List<GeneratedColumn> get $columns => [filterId, fileType];
   @override
-  $StatisticFilesTableTable get asDslTable => this;
+  $FilterFileTypeTableTable get asDslTable => this;
   @override
-  String get $tableName => _alias ?? 'statistic_files_table';
+  String get $tableName => _alias ?? 'filter_file_type_table';
   @override
-  final String actualTableName = 'statistic_files_table';
+  final String actualTableName = 'filter_file_type_table';
   @override
   VerificationContext validateIntegrity(
-      Insertable<StatisticFileEntity> instance,
+      Insertable<FilterFileTypeEntry> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
-    if (data.containsKey('statistic_id')) {
-      context.handle(
-          _statisticIdMeta,
-          statisticId.isAcceptableOrUnknown(
-              data['statistic_id'], _statisticIdMeta));
+    if (data.containsKey('filter_id')) {
+      context.handle(_filterIdMeta,
+          filterId.isAcceptableOrUnknown(data['filter_id'], _filterIdMeta));
     } else if (isInserting) {
-      context.missing(_statisticIdMeta);
+      context.missing(_filterIdMeta);
     }
     context.handle(_fileTypeMeta, const VerificationResult.success());
     return context;
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {statisticId, fileType};
+  Set<GeneratedColumn> get $primaryKey => {filterId, fileType};
   @override
-  StatisticFileEntity map(Map<String, dynamic> data, {String tablePrefix}) {
+  FilterFileTypeEntry map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return StatisticFileEntity.fromData(data, _db, prefix: effectivePrefix);
+    return FilterFileTypeEntry.fromData(data, _db, prefix: effectivePrefix);
   }
 
   @override
-  $StatisticFilesTableTable createAlias(String alias) {
-    return $StatisticFilesTableTable(_db, alias);
+  $FilterFileTypeTableTable createAlias(String alias) {
+    return $FilterFileTypeTableTable(_db, alias);
   }
 
   static TypeConverter<FileType, int> $converter0 =
@@ -2010,12 +2199,14 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   $StatisticTableTable _statisticTable;
   $StatisticTableTable get statisticTable =>
       _statisticTable ??= $StatisticTableTable(this);
-  $StatisticKindsTableTable _statisticKindsTable;
-  $StatisticKindsTableTable get statisticKindsTable =>
-      _statisticKindsTable ??= $StatisticKindsTableTable(this);
-  $StatisticFilesTableTable _statisticFilesTable;
-  $StatisticFilesTableTable get statisticFilesTable =>
-      _statisticFilesTable ??= $StatisticFilesTableTable(this);
+  $FilterTableTable _filterTable;
+  $FilterTableTable get filterTable => _filterTable ??= $FilterTableTable(this);
+  $FilterTransactionKindTableTable _filterTransactionKindTable;
+  $FilterTransactionKindTableTable get filterTransactionKindTable =>
+      _filterTransactionKindTable ??= $FilterTransactionKindTableTable(this);
+  $FilterFileTypeTableTable _filterFileTypeTable;
+  $FilterFileTypeTableTable get filterFileTypeTable =>
+      _filterFileTypeTable ??= $FilterFileTypeTableTable(this);
   StatisticsDao _statisticsDao;
   StatisticsDao get statisticsDao =>
       _statisticsDao ??= StatisticsDao(this as AppDatabase);
@@ -2036,7 +2227,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         transactionKindsTable,
         transactionsTable,
         statisticTable,
-        statisticKindsTable,
-        statisticFilesTable
+        filterTable,
+        filterTransactionKindTable,
+        filterFileTypeTable
       ];
 }

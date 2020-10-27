@@ -8,63 +8,99 @@ import 'package:rxdart/rxdart.dart';
 part 'statistics.dao.g.dart';
 
 /// Class helping us with the table for the statistics
-@UseDao(tables: [StatisticTable, StatisticKindsTable, StatisticFilesTable])
+@UseDao(tables: [
+  StatisticTable,
+  FilterTable,
+  FilterTransactionKindTable,
+  FilterFileTypeTable
+])
 class StatisticsDao extends DatabaseAccessor<AppDatabase>
     with _$StatisticsDaoMixin {
   /// Constructor that fetch the database
   StatisticsDao(AppDatabase db) : super(db);
 
   /// Retreive all the statistic we got in the database
-  Stream<List<FullStatisticEntity>> watchAllStatistics() {
-    final statsStream = select(statisticTable).watch();
-
-    return statsStream.switchMap((stats) {
+  Stream<Iterable<FullStatisticEntity>> watchAllStatistics() {
+    // Watch all of our stats
+    return select(statisticTable).watch().switchMap((stats) {
       // Get the id of all of our stats
-      final idToStat = {for (var stat in stats) stat.id: stat};
-      final statIds = idToStat.keys;
+      final idToStats = {for (var stat in stats) stat.id: stat};
 
-      // Query to get the associated kinds
-      final kindEntriesQuery = select(statisticKindsTable).join([
-        innerJoin(db.transactionKindsTable,
-            db.transactionKindsTable.id.equalsExp(statisticKindsTable.kindId))
-      ])
-        ..where(statisticKindsTable.statisticId.isIn(statIds));
+      // Get the stream for the filter of each one of our stat
+      Stream<Map<int, FullFilterEntity>> filtersStream =
+          _watchFilterForStatistics(stats);
 
-      // Query to get the associated file types
-      final fileTypesQuery = select(statisticFilesTable)
-        ..where((tbl) => tbl.statisticId.isIn(statIds));
-
-      // Observe the kind entries query
-      return kindEntriesQuery.watch().switchMap((kindRows) {
-        // Map the kind entries and associate them with the stat id
-        final idToKind = <int, List<TransactionKindEntity>>{};
-        for (var row in kindRows) {
-          final item = row.readTable(db.transactionKindsTable);
-          final id = row.readTable(statisticKindsTable).statisticId;
-          idToKind.putIfAbsent(id, () => []).add(item);
-        }
-
-        // Do the same things for file (Observe the entries and map them)
-        return fileTypesQuery.watch().map((typeRows) {
-          // Create the map of stat id to list of associated file types
-          final idToFileType = <int, List<FileType>>{};
-          for (var typeRow in typeRows) {
-            final item = typeRow.fileType;
-            final id = typeRow.statisticId;
-            idToFileType.putIfAbsent(id, () => []).add(item);
-          }
-
-          List<FullStatisticEntity> fullStatisticEntities = List();
-          for (var statId in statIds) {
-            fullStatisticEntities.add(FullStatisticEntity.fromStat(
-                idToStat[statId], idToKind[statId], idToFileType[statId]));
-          }
-          // Then build and return our completed object for the 3 map
-          return fullStatisticEntities;
-        });
+      // Merge all the filter stream
+      return filtersStream.map((idToFilters) {
+        // And then use the stream
+        return idToStats.keys.map((statId) {
+          return FullStatisticEntity.fromStat(
+              idToStats[statId], idToFilters[statId]);
+        }).toList();
       });
     });
   }
+
+  /// Create a stream for all the filter for given stats id
+  Stream<Map<int, FullFilterEntity>> _watchFilterForStatistics(
+      List<StatisticEntity> statistics) {
+    // Create stream for each one of our stat object
+    final filterIdToStatId = {
+      for (var stat in statistics) stat.filterId: stat.id
+    };
+    final filterIds = filterIdToStatId.keys;
+
+    // Query to get the associated kinds
+    final kindEntriesQuery = select(filterTransactionKindTable).join([
+      innerJoin(
+          db.transactionKindsTable,
+          db.transactionKindsTable.id
+              .equalsExp(filterTransactionKindTable.kindId))
+    ])
+      ..where(filterTransactionKindTable.filterId.isIn(filterIds));
+
+    // Query to get the associated file types
+    final fileTypesQuery = select(filterFileTypeTable)
+      ..where((tbl) => tbl.filterId.isIn(filterIds));
+
+    // Observe the kind entries query
+    return kindEntriesQuery.watch().switchMap((kindRows) {
+      // Map the kind entries and associate them with the stat id
+      final idToKind = <int, List<TransactionKindEntity>>{};
+      for (var row in kindRows) {
+        final item = row.readTable(db.transactionKindsTable);
+        final id = row.readTable(filterTransactionKindTable).filterId;
+        idToKind.putIfAbsent(id, () => []).add(item);
+      }
+
+      // Do the same things for file (Observe the entries and map them)
+      return fileTypesQuery.watch().map((typeRows) {
+        // Create the map of stat id to list of associated file types
+        final idToFileType = <int, List<FileType>>{};
+        for (var typeRow in typeRows) {
+          final item = typeRow.fileType;
+          final id = typeRow.filterId;
+          idToFileType.putIfAbsent(id, () => []).add(item);
+        }
+
+        // Create the map of stat id to filter
+        Map<int, FullFilterEntity> fullStatisticEntities = Map();
+        for (var filterId in filterIds) {
+          print('Creating filter map');
+          fullStatisticEntities.putIfAbsent(
+              filterIdToStatId[filterId],
+              () => FullFilterEntity(
+                  filterId, idToKind[filterId], idToFileType[filterId]));
+        }
+        // And then return it
+        return fullStatisticEntities;
+      });
+    });
+  }
+
+  /// Create a simple filter entity
+  Future<int> createFilter() =>
+      into(filterTable).insert(FilterEntity(id: null));
 
   /// Save a statistic entity
   Future<int> insert(StatisticEntity entity) async {
@@ -87,35 +123,36 @@ class StatisticsDao extends DatabaseAccessor<AppDatabase>
       (select(statisticTable)..where((tbl) => tbl.name.equals(name)))
           .getSingle();
 
-  /// Update the list of transactions kinds for a stat
-  Future<void> updateKindsForStat(int statId, List<int> kindIds) async {
+  /// Update the list of transactions kinds for a filter
+  Future<void> updateKindsForFilter(int filterId, List<int> kindIds) async {
     // Clear all the previously associated kind
-    (delete(statisticKindsTable)
-          ..where((tbl) => tbl.statisticId.equals(statId)))
+    (delete(filterTransactionKindTable)
+          ..where((tbl) => tbl.filterId.equals(filterId)))
         .go();
     // For each kinds id
     for (var kindId in kindIds) {
       // Build our stat kind entities
-      StatisticKindEntity entry =
-          StatisticKindEntity(statisticId: statId, kindId: kindId);
+      FilterTransactionKindEntry entry =
+          FilterTransactionKindEntry(filterId: filterId, kindId: kindId);
       // Insert it
-      await into(statisticKindsTable).insert(entry, mode: InsertMode.replace);
+      await into(filterTransactionKindTable)
+          .insert(entry, mode: InsertMode.replace);
     }
   }
 
-  /// Update the list of transactions kinds for a stat
-  Future<void> updateFileTypesForStat(int statId, List<FileType> types) async {
+  /// Update the list of transactions kinds for a filter
+  Future<void> updateFileTypesForFilter(
+      int filterId, List<FileType> types) async {
     // Clear all the previously associated types
-    (delete(statisticFilesTable)
-          ..where((tbl) => tbl.statisticId.equals(statId)))
+    (delete(filterFileTypeTable)..where((tbl) => tbl.filterId.equals(filterId)))
         .go();
     // For each kinds id
     for (var type in types) {
       // Build our stat kind entities
-      StatisticFileEntity entry =
-          StatisticFileEntity(statisticId: statId, fileType: type);
+      FilterFileTypeEntry entry =
+          FilterFileTypeEntry(filterId: filterId, fileType: type);
       // Insert it
-      await into(statisticFilesTable).insert(entry, mode: InsertMode.replace);
+      await into(filterFileTypeTable).insert(entry, mode: InsertMode.replace);
     }
   }
 }

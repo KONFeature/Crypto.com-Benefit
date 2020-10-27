@@ -10,7 +10,7 @@ abstract class IStatisticRepository {
       List<Transaction> transactions, Statistic statistic);
 
   /// Watch all the statistics
-  Stream<List<Statistic>> watchStatistics();
+  Stream<Iterable<Statistic>> watchStatistics();
 
   /// Create a new statistic
   Future<int> createStatistic(String name);

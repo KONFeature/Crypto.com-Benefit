@@ -44,12 +44,6 @@ class TransactionRepository implements ITransactionRepository {
       _transactionMapper.fromEntities(await _transactionsDao.getTransactions());
 
   @override
-  Future<void> deleteAll() async {
-    int deleteCount = await _transactionsDao.removeAll();
-    print('Successfully deleted $deleteCount transactions from the database');
-  }
-
-  @override
   Stream<List<Transaction>> watchTransactions() => _transactionsDao
       .watchTransactions()
       .asyncMap((transactionEntities) async =>

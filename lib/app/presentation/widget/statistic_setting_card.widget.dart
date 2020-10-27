@@ -44,7 +44,7 @@ class StatisticSettingCardWidget extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(vertical: padding),
             child: Text(
-              _kindsText(statistic.kinds),
+              _kindsText(statistic.filter.kinds),
               style: Theme.of(context).textTheme.bodyText2,
               textAlign: TextAlign.start,
             ),
@@ -52,7 +52,7 @@ class StatisticSettingCardWidget extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(vertical: padding),
             child: Text(
-              _typesText(statistic.fileTypes),
+              _typesText(statistic.filter.fileTypes),
               style: Theme.of(context).textTheme.bodyText2,
               textAlign: TextAlign.start,
             ),

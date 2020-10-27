@@ -11,8 +11,7 @@ part 'create_statistic.viewmodel.g.dart';
 class CreateStatisticViewModel = _CreateStatisticViewModelBase
     with _$CreateStatisticViewModel;
 
-/// The view model for our create statistic modal.
-/// TODO : Don't inject this view model juste create it in the stateful widget (to bind it with the modal lifecycle)
+/// The view model for our create / update statistic modal.
 abstract class _CreateStatisticViewModelBase with Store {
   /// Use case to fetch all the kinds
   final _getTransactionKindsUseCase = inject<GetTransactionKindsUseCase>();
@@ -65,11 +64,11 @@ abstract class _CreateStatisticViewModelBase with Store {
     // Backup the statistic object
     _statisticToUpdate = statistic;
     // Check the right file types
-    statistic.fileTypes.forEach((type) {
+    statistic.filter.fileTypes.forEach((type) {
       _typeSelected.update(type, (value) => true, ifAbsent: () => true);
     });
     // Check the right kinds types
-    statistic.kinds.forEach((kind) {
+    statistic.filter.kinds.forEach((kind) {
       _kindSelected.update(kind, (value) => true, ifAbsent: () => true);
     });
   }

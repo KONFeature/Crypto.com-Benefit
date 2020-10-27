@@ -60,9 +60,6 @@ class TransactionsDao extends DatabaseAccessor<AppDatabase>
             ..where((tbl) => tbl.kindId.equals(kindId)))
           .get();
 
-  /// Remove all the transactions entries
-  Future<int> removeAll() async => delete(transactionsTable).go();
-
   /// Get a Stream of al the current transactions we got in the database
   Stream<List<TransactionEntity>> watchTransactions() =>
       select(transactionsTable).watch();

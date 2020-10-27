@@ -8,27 +8,35 @@ class StatisticTable extends Table {
   TextColumn get name => text().customConstraint('UNIQUE')();
   IntColumn get priority => integer().nullable()();
   DateTimeColumn get createdTimestamp => dateTime()();
+  IntColumn get filterId => integer().customConstraint(
+      "REFERENCES filter_table(id) ON UPDATE CASCADE ON DELETE SET NULL")();
+}
+
+/// Represent the statistics table
+@DataClassName("FilterEntity")
+class FilterTable extends Table {
+  IntColumn get id => integer().autoIncrement()();
 }
 
 /// Represent the join table between statistic and kind
-@DataClassName("StatisticKindEntity")
-class StatisticKindsTable extends Table {
-  IntColumn get statisticId => integer().customConstraint(
-      "NOT NULL REFERENCES statistic_table(id) ON UPDATE CASCADE ON DELETE CASCADE")();
+@DataClassName("FilterTransactionKindEntry")
+class FilterTransactionKindTable extends Table {
+  IntColumn get filterId => integer().customConstraint(
+      "NOT NULL REFERENCES filter_table(id) ON UPDATE CASCADE ON DELETE CASCADE")();
   IntColumn get kindId => integer().customConstraint(
       "NOT NULL REFERENCES transaction_kinds_table(id) ON UPDATE CASCADE ON DELETE CASCADE")();
 
   @override
-  Set<Column> get primaryKey => {statisticId, kindId};
+  Set<Column> get primaryKey => {filterId, kindId};
 }
 
 /// Represent the join table between statistic and imported file
-@DataClassName("StatisticFileEntity")
-class StatisticFilesTable extends Table {
-  IntColumn get statisticId => integer().customConstraint(
-      "NOT NULL REFERENCES statistic_table(id) ON UPDATE CASCADE ON DELETE CASCADE")();
+@DataClassName("FilterFileTypeEntry")
+class FilterFileTypeTable extends Table {
+  IntColumn get filterId => integer().customConstraint(
+      "NOT NULL REFERENCES filter_table(id) ON UPDATE CASCADE ON DELETE CASCADE")();
   IntColumn get fileType => intEnum<FileType>()();
 
   @override
-  Set<Column> get primaryKey => {statisticId, fileType};
+  Set<Column> get primaryKey => {filterId, fileType};
 }

@@ -9,15 +9,25 @@ class Statistic {
   /// Name of this stats
   final String name;
 
-  /// Kind linked to this statistic
+  /// The filter to get the transaction matching this statistic
+  final Filter filter;
+
+  Statistic({this.id, this.name, this.filter});
+}
+
+/// Simple class representing a transaction filter for a statistic
+class Filter {
+  /// The id of this filter
+  final int id;
+
+  /// Kind linked to this filter
   final List<TransactionKind> kinds;
 
   /// Types linked to this statistic
   final List<FileType> fileTypes;
 
-  Statistic({
+  Filter({
     this.id,
-    this.name,
     this.kinds,
     this.fileTypes,
   });

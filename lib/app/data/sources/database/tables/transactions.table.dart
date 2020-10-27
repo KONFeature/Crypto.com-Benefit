@@ -19,10 +19,4 @@ class TransactionsTable extends Table {
   IntColumn get kindId => integer()
       .nullable()
       .customConstraint("REFERENCES transaction_kinds_table(id)")();
-
-  /// Custon constraints on the table level for composite unique constraint
-  @override
-  List<String> get customConstraints => [
-        // 'UNIQUE(file_id, timestamp, source_currency, source_amount, usd_amount, kind_id)', // Unique constraints TODO : Is that necessary ?
-      ];
 }

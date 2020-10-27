@@ -47,27 +47,31 @@ class StatisticRepository implements IStatisticRepository {
   }
 
   @override
-  Stream<List<Statistic>> watchStatistics() => _statisticDao
+  Stream<Iterable<Statistic>> watchStatistics() => _statisticDao
       .watchAllStatistics()
       .asyncMap((stats) => _statisticMapper.fromEntities(stats));
 
   @override
   Future<int> createStatistic(String name) async {
+    var newFilterId = await _statisticDao.createFilter();
     var newStatId = await _statisticDao.insert(StatisticEntity(
-        id: null, name: name, createdTimestamp: DateTime.now()));
+        id: null,
+        name: name,
+        createdTimestamp: DateTime.now(),
+        filterId: newFilterId));
     print(
-        'Successfully inserted the new statistic \'$name\' with the id $newStatId');
+        'Successfully inserted the new statistic \'$name\' with the id $newStatId, and filter id $newFilterId');
     return newStatId;
   }
 
   @override
   Future<void> updateStatisticFilter(
-      int statId, List<int> kindIds, List<FileType> types) async {
+      int filterId, List<int> kindIds, List<FileType> types) async {
     // Update the kind of the statistics
-    await _statisticDao.updateKindsForStat(statId, kindIds);
+    await _statisticDao.updateKindsForFilter(filterId, kindIds);
     // Update the types of the statistic
-    await _statisticDao.updateFileTypesForStat(statId, types);
-    print('Successfully updated the statistic with id $statId');
+    await _statisticDao.updateFileTypesForFilter(filterId, types);
+    print('Successfully updated the filter with id $filterId');
   }
 
   @override

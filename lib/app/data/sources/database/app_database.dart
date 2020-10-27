@@ -40,8 +40,9 @@ LazyDatabase _openConnection() {
   TransactionKindsTable,
   TransactionsTable,
   StatisticTable,
-  StatisticKindsTable,
-  StatisticFilesTable
+  FilterTable,
+  FilterTransactionKindTable,
+  FilterFileTypeTable
 ], daos: [
   StatisticsDao,
   ImportedFilesDao,

@@ -8,8 +8,9 @@ part of 'statistics.dao.dart';
 
 mixin _$StatisticsDaoMixin on DatabaseAccessor<AppDatabase> {
   $StatisticTableTable get statisticTable => attachedDatabase.statisticTable;
-  $StatisticKindsTableTable get statisticKindsTable =>
-      attachedDatabase.statisticKindsTable;
-  $StatisticFilesTableTable get statisticFilesTable =>
-      attachedDatabase.statisticFilesTable;
+  $FilterTableTable get filterTable => attachedDatabase.filterTable;
+  $FilterTransactionKindTableTable get filterTransactionKindTable =>
+      attachedDatabase.filterTransactionKindTable;
+  $FilterFileTypeTableTable get filterFileTypeTable =>
+      attachedDatabase.filterFileTypeTable;
 }
