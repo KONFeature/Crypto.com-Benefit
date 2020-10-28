@@ -3,6 +3,7 @@ import 'package:crypto_benefit/app/domain/object/statistic/statistic.dart';
 import 'package:crypto_benefit/app/domain/object/transaction_kind.dart';
 import 'package:crypto_benefit/app/domain/usecases/settings/create_statistic.usecase.dart';
 import 'package:crypto_benefit/app/domain/usecases/settings/get_transaction_kinds.usecase.dart';
+import 'package:crypto_benefit/app/domain/usecases/settings/update_statistic.usecase.dart';
 import 'package:crypto_benefit/core/di/injector_provider.dart';
 import 'package:mobx/mobx.dart';
 
@@ -18,6 +19,9 @@ abstract class _CreateStatisticViewModelBase with Store {
 
   /// Use case to create a new statistic
   final _createStatisticUseCase = inject<CreateStatisticUseCase>();
+
+  /// Use case to update statistic
+  final _updateStatisticUseCase = inject<UpdateStatisticUseCase>();
 
   /// Valid char for statistic name
   static final _validCharactersForName = RegExp(r'^[a-zA-Z0-9 ]+$');
@@ -104,10 +108,12 @@ abstract class _CreateStatisticViewModelBase with Store {
         ifAbsent: () => isSelected);
   }
 
+  /// The libelle for the go button
+  String get textActionButton =>
+      _statisticToUpdate == null ? 'Create' : 'Update';
+
   /// Launch the statistic creation
   launchStatisticCreateOrUpdate() async {
-    // TODO : If we have a current statistic object we update it
-    if (_statisticToUpdate != null) return;
     // Extract all the kind selected
     List<TransactionKind> selectedKinds = List();
     for (var kindEntry in _kindSelected.entries) {
@@ -118,12 +124,30 @@ abstract class _CreateStatisticViewModelBase with Store {
     for (var typeEntry in _typeSelected.entries) {
       if (typeEntry.value) selectedTypes.add(typeEntry.key);
     }
+    // Then perform the operation
+    if (_statisticToUpdate == null) {
+      await _launchStatisticCreation(selectedKinds, selectedTypes);
+    } else {
+      await _launchStatisticUpdate(selectedKinds, selectedTypes);
+    }
+  }
+
+  /// Launch the statistic creation process
+  _launchStatisticCreation(
+      List<TransactionKind> selectedKinds, List<FileType> selectedTypes) async {
     // Perform the stat creation
     await _createStatisticUseCase.execute(CreateStatisticParams(
         name: _statisticName, kinds: selectedKinds, types: selectedTypes));
   }
 
-  /// The libelle for the go button
-  String get textActionButton =>
-      _statisticToUpdate == null ? 'Create' : 'Update';
+  /// Launch the statistic update process
+  _launchStatisticUpdate(
+      List<TransactionKind> selectedKinds, List<FileType> selectedTypes) async {
+    // Perform the stat creation
+    await _updateStatisticUseCase.execute(UpdateStatisticParams(
+        id: _statisticToUpdate.id,
+        name: _statisticName,
+        kinds: selectedKinds,
+        types: selectedTypes));
+  }
 }

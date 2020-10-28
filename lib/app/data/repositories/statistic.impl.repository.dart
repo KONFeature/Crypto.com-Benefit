@@ -78,4 +78,8 @@ class StatisticRepository implements IStatisticRepository {
   Future<void> deleteStatistic(int statId) async {
     await _statisticDao.deleteStat(statId);
   }
+
+  @override
+  Future<void> updateStatistic(int id, String name) =>
+      _statisticDao.updateName(id, name);
 }

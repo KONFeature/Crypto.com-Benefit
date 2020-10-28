@@ -15,6 +15,9 @@ abstract class IStatisticRepository {
   /// Create a new statistic
   Future<int> createStatistic(String name);
 
+  /// Update the name of statistic
+  Future<void> updateStatistic(int id, String name);
+
   /// Update the statistic filter
   Future<void> updateStatisticFilter(
       int statId, List<int> kindIds, List<FileType> types);

@@ -3,6 +3,7 @@ import 'package:crypto_benefit/app/domain/object/imported_file.dart';
 import 'package:crypto_benefit/app/domain/object/transaction_kind.dart';
 import 'package:crypto_benefit/app/presentation/widget/base_card.widget.dart';
 import 'package:crypto_benefit/core/values/dimens.dart';
+import 'package:crypto_benefit/core/values/theme.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 
@@ -22,11 +23,7 @@ class StatisticSettingCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => BaseCardWidget(children: [
         ExpandablePanel(
-          theme: ExpandableThemeData(
-            iconColor: Theme.of(context).textTheme.bodyText1.color,
-            tapHeaderToExpand: true,
-            headerAlignment: ExpandablePanelHeaderAlignment.center,
-          ),
+          theme: getExpandableTheme(context),
           header: Text(
             statistic.name,
             style: Theme.of(context).textTheme.bodyText1,

@@ -1,6 +1,8 @@
 import 'package:crypto_benefit/app/domain/object/statistic/statistic.dart';
 import 'package:crypto_benefit/app/presentation/modules/settings/create_statistic/create_statistic.widget.dart';
 import 'package:crypto_benefit/app/presentation/modules/settings/create_statistic/create_statistic.viewmodel.dart';
+import 'package:crypto_benefit/core/values/theme.dart';
+import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
@@ -39,10 +41,7 @@ class CreateStatisticModal extends StatelessWidget with CreateStatisticWidget {
             )
           ],
         ),
-        Form(
-            key: _formKey,
-            child: Observer(
-                builder: (observerContext) => _formContent(observerContext))),
+        Form(key: _formKey, child: _formContent(context)),
       ],
     ));
   }
@@ -56,11 +55,13 @@ class CreateStatisticModal extends StatelessWidget with CreateStatisticWidget {
           partTitle(context, 'File types for your statistic'),
           typesSelection(context),
           // List of available kinds
-          partTitle(context, 'Transaction kinds for your statistic'),
-          // Text(vm.kindSelected.length.toString()),
-          Observer(
-            builder: (observerContext) => kindsSelection(context),
-          ),
+          ExpandablePanel(
+              theme: getExpandableTheme(context),
+              header:
+                  partTitle(context, 'Transaction kinds for your statistic'),
+              expanded: Observer(
+                builder: (observerContext) => kindsSelection(context),
+              )),
           // kindsSelection(context),
           // Button to submit the statistic creation
           _submitButton(context),

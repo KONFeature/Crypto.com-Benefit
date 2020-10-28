@@ -117,6 +117,11 @@ class StatisticsDao extends DatabaseAccessor<AppDatabase>
   Future<StatisticEntity> getById(int id) =>
       (select(statisticTable)..where((tbl) => tbl.id.equals(id))).getSingle();
 
+  /// Update the statistic name
+  Future<void> updateName(int id, String name) =>
+      (update(statisticTable)..where((tbl) => tbl.id.equals(id)))
+          .write(StatisticTableCompanion(name: Value(name)));
+
   /// Retreive a statistic entity from it's name
   Future<StatisticEntity> _getByName(String name) =>
       (select(statisticTable)..where((tbl) => tbl.name.equals(name)))
