@@ -4,9 +4,9 @@ import 'package:crypto_benefit/app/domain/object/imported_file.dart';
 /// Call helping us with the mapping of imported file
 class ImportedFileMapper {
   /// Map a imported file from entity
-  List<ImportedFile> fromEntities(
-          List<ImportedFileEntity> importedFilesEntities) =>
-      importedFilesEntities.map((entity) => fromEntity(entity)).toList();
+  Iterable<ImportedFile> fromEntities(
+          Iterable<ImportedFileEntity> importedFilesEntities) =>
+      importedFilesEntities.map((entity) => fromEntity(entity));
 
   ImportedFile fromEntity(ImportedFileEntity importedFileEntity) =>
       ImportedFile(

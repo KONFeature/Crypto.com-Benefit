@@ -17,7 +17,7 @@ abstract class _ImportViewModelBase with Store {
   final _watchImportedFileUseCase = inject<WatchImportedFileUseCase>();
 
   @observable
-  ObservableStream<List> importedFilesStream;
+  ObservableStream<Iterable> importedFilesStream;
 
   _ImportViewModelBase() {
     // Listen to our imported file stream

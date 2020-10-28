@@ -5,7 +5,6 @@ import 'package:crypto_benefit/core/di/injector_provider.dart';
 import 'package:crypto_benefit/app/presentation/modules/dashboard/dashboard.viewmodel.dart';
 import 'package:crypto_benefit/core/values/dimens.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 /// The widget of the list of transactions pages
 class DashboardWidget {
@@ -29,9 +28,10 @@ class DashboardWidget {
   /// Widget containing the stats imported for transaction kind
   Widget _statisticsWidget(
           BuildContext context, List<ComputedStatistic> stats) =>
-      StaggeredGridView.countBuilder(
+      GridView.builder(
         itemCount: stats.length,
-        crossAxisCount: 2,
+        gridDelegate:
+            SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
         padding: EdgeInsets.all(padding),
@@ -40,7 +40,6 @@ class DashboardWidget {
             child: ComputedStatisticCardWidget(
           computedStat: stats[index],
         )),
-        staggeredTileBuilder: (_) => StaggeredTile.fit(1),
       );
 
   /// Widget to display when no transaction are present
@@ -50,13 +49,14 @@ class DashboardWidget {
         textAlign: TextAlign.center,
       );
 
-  Widget loading(BuildContext context) => StaggeredGridView.countBuilder(
-        itemCount: 5,
-        crossAxisCount: 2,
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        physics: BouncingScrollPhysics(),
-        itemBuilder: (_, index) => Container(child: LoadingStatCardWidget()),
-        staggeredTileBuilder: (_) => StaggeredTile.fit(1),
-      );
+  /// The loading widget to display
+  Widget loading(BuildContext context) => GridView.builder(
+      itemCount: 2,
+      gridDelegate:
+          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      padding: EdgeInsets.all(padding),
+      physics: BouncingScrollPhysics(),
+      itemBuilder: (_, index) => Container(child: LoadingStatCardWidget()));
 }

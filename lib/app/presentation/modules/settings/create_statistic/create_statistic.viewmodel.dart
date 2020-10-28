@@ -27,13 +27,10 @@ abstract class _CreateStatisticViewModelBase with Store {
   static final _validCharactersForName = RegExp(r'^[a-zA-Z0-9 ]+$');
 
   @observable
-  ObservableFuture<List<TransactionKind>> _kinds;
+  ObservableFuture<Iterable<TransactionKind>> _kinds;
 
   @computed
-  bool get isLoading => _kinds.status == FutureStatus.pending;
-
-  @computed
-  List get kinds => _kinds.value;
+  bool get isKindLoading => _kinds.status == FutureStatus.pending;
 
   /// Map telling us if a file type is selected or not
   @observable

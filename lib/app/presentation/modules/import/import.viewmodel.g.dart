@@ -13,13 +13,13 @@ mixin _$ImportViewModel on _ImportViewModelBase, Store {
       Atom(name: '_ImportViewModelBase.importedFilesStream');
 
   @override
-  ObservableStream<List<dynamic>> get importedFilesStream {
+  ObservableStream<Iterable<dynamic>> get importedFilesStream {
     _$importedFilesStreamAtom.reportRead();
     return super.importedFilesStream;
   }
 
   @override
-  set importedFilesStream(ObservableStream<List<dynamic>> value) {
+  set importedFilesStream(ObservableStream<Iterable<dynamic>> value) {
     _$importedFilesStreamAtom.reportWrite(value, super.importedFilesStream, () {
       super.importedFilesStream = value;
     });

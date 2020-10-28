@@ -9,19 +9,12 @@ part of 'create_statistic.viewmodel.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$CreateStatisticViewModel on _CreateStatisticViewModelBase, Store {
-  Computed<bool> _$isLoadingComputed;
+  Computed<bool> _$isKindLoadingComputed;
 
   @override
-  bool get isLoading =>
-      (_$isLoadingComputed ??= Computed<bool>(() => super.isLoading,
-              name: '_CreateStatisticViewModelBase.isLoading'))
-          .value;
-  Computed<List<dynamic>> _$kindsComputed;
-
-  @override
-  List<dynamic> get kinds =>
-      (_$kindsComputed ??= Computed<List<dynamic>>(() => super.kinds,
-              name: '_CreateStatisticViewModelBase.kinds'))
+  bool get isKindLoading =>
+      (_$isKindLoadingComputed ??= Computed<bool>(() => super.isKindLoading,
+              name: '_CreateStatisticViewModelBase.isKindLoading'))
           .value;
   Computed<ObservableMap<FileType, bool>> _$typeSelectedComputed;
 
@@ -43,13 +36,13 @@ mixin _$CreateStatisticViewModel on _CreateStatisticViewModelBase, Store {
   final _$_kindsAtom = Atom(name: '_CreateStatisticViewModelBase._kinds');
 
   @override
-  ObservableFuture<List<TransactionKind>> get _kinds {
+  ObservableFuture<Iterable<TransactionKind>> get _kinds {
     _$_kindsAtom.reportRead();
     return super._kinds;
   }
 
   @override
-  set _kinds(ObservableFuture<List<TransactionKind>> value) {
+  set _kinds(ObservableFuture<Iterable<TransactionKind>> value) {
     _$_kindsAtom.reportWrite(value, super._kinds, () {
       super._kinds = value;
     });
@@ -115,8 +108,7 @@ mixin _$CreateStatisticViewModel on _CreateStatisticViewModelBase, Store {
   @override
   String toString() {
     return '''
-isLoading: ${isLoading},
-kinds: ${kinds},
+isKindLoading: ${isKindLoading},
 typeSelected: ${typeSelected},
 kindSelected: ${kindSelected}
     ''';

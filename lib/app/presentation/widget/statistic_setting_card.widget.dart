@@ -1,6 +1,5 @@
 import 'package:crypto_benefit/app/domain/object/statistic/statistic.dart';
 import 'package:crypto_benefit/app/domain/object/imported_file.dart';
-import 'package:crypto_benefit/app/domain/object/transaction_kind.dart';
 import 'package:crypto_benefit/app/presentation/widget/base_card.widget.dart';
 import 'package:crypto_benefit/core/values/dimens.dart';
 import 'package:crypto_benefit/core/values/theme.dart';
@@ -21,16 +20,18 @@ class StatisticSettingCardWidget extends StatelessWidget {
       : super(key: key);
 
   @override
-  Widget build(BuildContext context) => BaseCardWidget(children: [
-        ExpandablePanel(
-          theme: getExpandableTheme(context),
-          header: Text(
-            statistic.name,
-            style: Theme.of(context).textTheme.bodyText1,
+  Widget build(BuildContext context) => BaseCardWidget(
+        children: [
+          ExpandablePanel(
+            theme: getExpandableTheme(context),
+            header: Text(
+              statistic.name,
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+            expanded: _expandedBody(context),
           ),
-          expanded: _expandedBody(context),
-        ),
-      ]);
+        ],
+      );
 
   /// The expanded body of our statistic (displaying kind and types concerned)
   Widget _expandedBody(BuildContext context) => Column(
@@ -38,25 +39,63 @@ class StatisticSettingCardWidget extends StatelessWidget {
           Divider(
             thickness: 1.0,
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: padding),
-            child: Text(
-              _kindsText(statistic.filter.kinds),
-              style: Theme.of(context).textTheme.bodyText2,
-              textAlign: TextAlign.start,
+          if (statistic.filter.fileTypes != null &&
+              statistic.filter.fileTypes.isNotEmpty)
+            _filterCardsPart(
+              context,
+              'Filter on types : ',
+              statistic.filter.fileTypes.map((type) => type.name),
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: padding),
-            child: Text(
-              _typesText(statistic.filter.fileTypes),
-              style: Theme.of(context).textTheme.bodyText2,
-              textAlign: TextAlign.start,
+          if (statistic.filter.kinds != null &&
+              statistic.filter.kinds.isNotEmpty)
+            _filterCardsPart(
+              context,
+              'Filter on kinds : ',
+              statistic.filter.kinds.map((kind) => kind.name),
             ),
-          ),
           _actionButtons(context)
         ],
       );
+
+  Widget _filterCardsPart(
+          BuildContext context, String title, Iterable<String> filters) =>
+      Padding(
+        padding: EdgeInsets.symmetric(vertical: padding),
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.all(padding),
+              child: Text(
+                title,
+                style: Theme.of(context).textTheme.bodyText2,
+                textAlign: TextAlign.start,
+              ),
+            ),
+            Wrap(
+              alignment: WrapAlignment.spaceEvenly,
+              children: _filterCards(context, filters),
+            )
+          ],
+        ),
+      );
+
+  List<Widget> _filterCards(BuildContext context, Iterable<String> filters) =>
+      filters
+          .map(
+            (filter) => Card(
+              shape: RoundedRectangleBorder(
+                  side: BorderSide(
+                    color: Theme.of(context).primaryColorDark,
+                    width: 1,
+                  ),
+                  borderRadius: BorderRadius.circular(8)),
+              child: Padding(
+                padding: EdgeInsets.all(smallMargin),
+                child: Text(filter),
+              ),
+            ),
+          )
+          .toList();
 
   /// The action button to be displayed
   Widget _actionButtons(BuildContext context) => Row(
@@ -72,13 +111,4 @@ class StatisticSettingCardWidget extends StatelessWidget {
           ),
         ],
       );
-
-  String _kindsText(List<TransactionKind> kinds) =>
-      kinds != null && kinds.isNotEmpty
-          ? 'On kinds : ' + kinds.map((kind) => '${kind.name}').join(', ')
-          : 'No filter on kinds';
-
-  String _typesText(List<FileType> types) => types != null && types.isNotEmpty
-      ? 'On file types : ' + types.map((type) => '${type.name}').join(', ')
-      : 'No filter on file types';
 }

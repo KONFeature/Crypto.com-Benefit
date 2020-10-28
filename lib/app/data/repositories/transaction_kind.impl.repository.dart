@@ -17,7 +17,7 @@ class TransactionKindRepository implements ITransactionKindRepository {
   final _transactionKindMapper = inject<TransactionKindMapper>();
 
   @override
-  Future<List<TransactionKind>> getTransactionKinds() async =>
+  Future<Iterable<TransactionKind>> getTransactionKinds() async =>
       _transactionKindMapper
           .fromEntities(await _transactionKindsDao.getTransactionKind());
 

@@ -11,8 +11,8 @@ class StatisticMapper {
   final _kindMapper = inject<TransactionKindMapper>();
 
   /// Map list of statistics from entities
-  List<Statistic> fromEntities(List<FullStatisticEntity> entities) =>
-      entities.map((stat) => fromEntity(stat)).toList();
+  Iterable<Statistic> fromEntities(Iterable<FullStatisticEntity> entities) =>
+      entities.map((stat) => fromEntity(stat));
 
   // Map a full stat entity to a stat pojo
   Statistic fromEntity(FullStatisticEntity entity) {
@@ -26,7 +26,7 @@ class StatisticMapper {
   Filter _filterFromEntity(FullFilterEntity entity) {
     final kinds = entity.transactionKindEntities != null &&
             entity.transactionKindEntities.isNotEmpty
-        ? _kindMapper.fromEntities(entity.transactionKindEntities)
+        ? _kindMapper.fromEntities(entity.transactionKindEntities).toList()
         : List<TransactionKind>();
     final types = entity.fileTypes != null && entity.fileTypes.isNotEmpty
         ? entity.fileTypes

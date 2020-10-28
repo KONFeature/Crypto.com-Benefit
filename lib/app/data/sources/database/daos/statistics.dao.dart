@@ -104,7 +104,7 @@ class StatisticsDao extends DatabaseAccessor<AppDatabase>
   /// Save a statistic entity
   Future<int> insert(StatisticEntity entity) async {
     // Insert a new stat entity
-    await into(statisticTable).insert(entity); // TODO : replace if conflict ??
+    await into(statisticTable).insert(entity);
     // Find it's id from it's name
     return (await _getByName(entity.name)).id;
   }

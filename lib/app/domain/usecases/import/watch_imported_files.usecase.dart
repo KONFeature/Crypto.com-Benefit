@@ -5,10 +5,10 @@ import 'package:crypto_benefit/core/di/injector_provider.dart';
 
 /// Use case used to fetch all the imported file
 class WatchImportedFileUseCase
-    implements StreamUseCase<List<ImportedFile>, void> {
+    implements StreamUseCase<Iterable<ImportedFile>, void> {
   final _importFileRepository = inject<IImportFileRepository>();
 
   @override
-  Stream<List<ImportedFile>> watch(void params) =>
+  Stream<Iterable<ImportedFile>> watch(void params) =>
       _importFileRepository.watchImportedFiles();
 }

@@ -5,10 +5,10 @@ import 'package:crypto_benefit/core/di/injector_provider.dart';
 
 /// Use case used to fetch all the imported file
 class GetTransactionKindsUseCase
-    implements BaseUseCase<List<TransactionKind>, void> {
+    implements BaseUseCase<Iterable<TransactionKind>, void> {
   final _transactionKindRepository = inject<ITransactionKindRepository>();
 
   @override
-  Future<List<TransactionKind>> execute(void params) =>
+  Future<Iterable<TransactionKind>> execute(void params) =>
       _transactionKindRepository.getTransactionKinds();
 }

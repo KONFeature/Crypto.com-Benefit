@@ -52,7 +52,7 @@ class TransactionMapper {
   }
 
   /// Map list of transactions from entities
-  Future<List<Transaction>> fromEntities(
+  Future<Iterable<Transaction>> fromEntities(
       Iterable<TransactionEntity> transactionEntities) async {
     final List<Transaction> result = new List();
     for (var transactionEntity in transactionEntities.toList()) {

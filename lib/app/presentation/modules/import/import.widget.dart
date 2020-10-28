@@ -4,7 +4,6 @@ import 'package:crypto_benefit/app/presentation/widget/imported_file_card.widget
 import 'package:crypto_benefit/core/di/injector_provider.dart';
 import 'package:crypto_benefit/core/values/dimens.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 /// The widget of the import pages
 class ImportWidget {
@@ -49,17 +48,16 @@ class ImportWidget {
 
   /// List of files imported
   Widget filesImported(
-          BuildContext context, List<ImportedFile> importedFiles) =>
+          BuildContext context, Iterable<ImportedFile> importedFiles) =>
       importedFiles != null && importedFiles.length > 0
-          ? _filesListView(context, importedFiles)
+          ? _filesListView(context, importedFiles.toList())
           : _noFileImported(context);
 
   /// Widget containing the list of files imported
   Widget _filesListView(
           BuildContext context, List<ImportedFile> importedFiles) =>
-      StaggeredGridView.countBuilder(
+      ListView.builder(
         itemCount: importedFiles.length,
-        crossAxisCount: 1,
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
         physics: BouncingScrollPhysics(),
@@ -68,7 +66,6 @@ class ImportWidget {
             child: ImportedFileCardWidget(
           importedFile: importedFiles[index],
         )),
-        staggeredTileBuilder: (_) => StaggeredTile.fit(1),
       );
 
   /// Widget to display when no files are imported

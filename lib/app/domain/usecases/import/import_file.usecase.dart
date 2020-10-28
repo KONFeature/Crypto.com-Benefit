@@ -35,8 +35,8 @@ class ImportFileUseCase implements BaseUseCase<void, ImportFileParams> {
     });
 
     // Extract the list of transactions kinds and send them to the transaction kinds repository
-    Iterable rawKinds = csvRows.map((row) => row[9]).toList();
-    Map<dynamic, int> kindsIdMap =
+    final rawKinds = csvRows.map((row) => row[9]).toList();
+    final kindsIdMap =
         await _transactionKindRepository.putTransactionsKinds(rawKinds);
 
     // Convert the file content to transactions

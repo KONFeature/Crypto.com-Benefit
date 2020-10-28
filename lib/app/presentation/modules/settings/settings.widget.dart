@@ -5,7 +5,6 @@ import 'package:crypto_benefit/app/presentation/widget/statistic_setting_card.wi
 import 'package:crypto_benefit/core/di/injector_provider.dart';
 import 'package:crypto_benefit/core/values/dimens.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 /// The widget of the list of transactions pages
 class SettingsWidget {
@@ -38,24 +37,22 @@ class SettingsWidget {
   /// Widget containing the list of statistics
   Widget _statisticsListView(
           BuildContext context, List<Statistic> statistics) =>
-      StaggeredGridView.countBuilder(
-        itemCount: statistics.length,
-        crossAxisCount: 1,
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        physics: BouncingScrollPhysics(),
-        padding: EdgeInsets.all(padding),
-        itemBuilder: (_, index) {
-          final statistic = statistics[index];
-          return Container(
-              child: StatisticSettingCardWidget(
-            statistic: statistic,
-            onEditClicked: () => _showUpdateStatisticModal(context, statistic),
-            onDeleteClicked: () => vm.deleteStatistic(statistic),
-          ));
-        },
-        staggeredTileBuilder: (_) => StaggeredTile.fit(1),
-      );
+      ListView.builder(
+          itemCount: statistics.length,
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          physics: BouncingScrollPhysics(),
+          padding: EdgeInsets.all(padding),
+          itemBuilder: (_, index) {
+            final statistic = statistics[index];
+            return Container(
+                child: StatisticSettingCardWidget(
+              statistic: statistic,
+              onEditClicked: () =>
+                  _showUpdateStatisticModal(context, statistic),
+              onDeleteClicked: () => vm.deleteStatistic(statistic),
+            ));
+          });
 
   /// Widget to display when no statistics are present
   Widget _emptyStatistics(BuildContext context) => Text(

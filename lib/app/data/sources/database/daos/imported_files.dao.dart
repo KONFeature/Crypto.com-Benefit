@@ -13,11 +13,14 @@ class ImportedFilesDao extends DatabaseAccessor<AppDatabase>
 
   /// Check if a filename is already present in our imported files table
   Future<bool> isFilenameAlreadyPresent(String filename) async {
-    // TODO : Create a count expression, query it, and check it's superior to 0
-    final selectByFilenameResult = await (select(importedFilesTable)
-          ..where((tbl) => tbl.filename.equals(filename)))
+    // Count expression and query
+    final countExpression = importedFilesTable.id.count();
+    final countQuery = await (selectOnly(importedFilesTable)
+          ..where(importedFilesTable.filename.equals(filename))
+          ..addColumns([countExpression]))
         .get();
-    return selectByFilenameResult.length > 0;
+    // Map query and extract count result
+    return countQuery.first.read(countExpression) > 0;
   }
 
   /// Insert a new imported file and return it's id
