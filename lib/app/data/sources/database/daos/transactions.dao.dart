@@ -36,37 +36,9 @@ class TransactionsDao extends DatabaseAccessor<AppDatabase>
     }
   }
 
-  /// Get all the transactions for a specified file id
-  Future<List<TransactionEntity>> getForFileId(int fileId) =>
-      (select(transactionsTable)..where((tbl) => tbl.fileId.equals(fileId)))
-          .get();
-
-  /// Get all of our imported transactions
-  Future<List<TransactionEntity>> getTransactions() =>
-      (select(transactionsTable)
-            ..orderBy([
-              (tbl) => OrderingTerm(
-                  expression: tbl.timestamp, mode: OrderingMode.desc)
-            ]))
-          .get();
-
-  /// Get all of our imported transactions
-  Future<List<TransactionEntity>> getTransactionsByKind(int kindId) =>
-      (select(transactionsTable)
-            ..orderBy([
-              (tbl) => OrderingTerm(
-                  expression: tbl.timestamp, mode: OrderingMode.desc)
-            ])
-            ..where((tbl) => tbl.kindId.equals(kindId)))
-          .get();
-
-  /// Get a Stream of al the current transactions we got in the database
-  Stream<List<TransactionEntity>> watchTransactions() =>
-      select(transactionsTable).watch();
-
-  /// Get all of our transactions in a list of kinds
-  Future<Iterable<TransactionEntity>> getTransactionsByTypesOrKinds(
-      Iterable<FileType> types, Iterable<int> kindIds) async {
+  /// Watch all of our transactions for a filter
+  Stream<Iterable<TransactionEntity>> watchTransactionsForFilter(
+      Iterable<FileType> types, Iterable<int> kindIds) {
     // Query that join with the imported file table, and check for types and kind in the given list
     final query = select(transactionsTable).join([
       leftOuterJoin(db.importedFilesTable,
@@ -75,9 +47,9 @@ class TransactionsDao extends DatabaseAccessor<AppDatabase>
       ..where(db.importedFilesTable.type.isIn(types.map((type) => type.index)) |
           transactionsTable.kindId.isIn(kindIds));
     // Fetch the result
-    final transactionsWithFiles = await query.get();
+    final transactionsForFilterStream = query.watch();
     // Map it and return it
-    return transactionsWithFiles
-        .map((typedRow) => typedRow.readTable(transactionsTable));
+    return transactionsForFilterStream.map((typedRows) =>
+        typedRows.map((typedRow) => typedRow.readTable(transactionsTable)));
   }
 }

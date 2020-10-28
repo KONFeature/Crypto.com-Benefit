@@ -1,44 +1,39 @@
 import 'package:crypto_benefit/app/domain/object/statistic/computed_statistic.dart';
-import 'package:crypto_benefit/app/domain/object/transaction.dart';
 import 'package:crypto_benefit/app/domain/repositories/statistic.repository.dart';
 import 'package:crypto_benefit/app/domain/repositories/transaction.repository.dart';
 import 'package:crypto_benefit/app/domain/usecases/usecase.dart';
 import 'package:crypto_benefit/core/di/injector_provider.dart';
+import 'package:rxdart/rxdart.dart';
 
 /// Use case used to compute all the user statistics
 class WatchComputedStatsUseCase
-    implements StreamUseCase<List<ComputedStatistic>, void> {
+    implements StreamUseCase<Iterable<ComputedStatistic>, void> {
   final _transactionRepository = inject<ITransactionRepository>();
   final _statisticRepository = inject<IStatisticRepository>();
 
   @override
-  Stream<List<ComputedStatistic>> watch(void params) =>
-      _statisticRepository.watchStatistics().asyncMap((statistics) async {
+  Stream<Iterable<ComputedStatistic>> watch(void params) =>
+      _statisticRepository.watchStatistics().switchMap((statistics) {
         try {
           print('Start computing for ${statistics.length} statistics');
 
           // Then compute each one of our stat from this transactioons
-          List<ComputedStatistic> computedStats = List();
-          // TODO : Switch map for autorefresh when new transactions
+          List<Stream<ComputedStatistic>> computedStatStreams = List();
 
           for (var stat in statistics) {
-            // Get the transactions set for our stat
-
-            List<Transaction> transactionsForStat =
-                await _transactionRepository.getTransactionsForTypesAndKinds(
-                    stat.filter.fileTypes,
-                    stat.filter.kinds.map((kind) => kind.id));
-            print(
-                'Total transactions for this stats ${transactionsForStat.length}');
-            // Compute the stat for the founded transactions
-            computedStats.add(
-                await _statisticRepository.computeStatisticForTransaction(
-                    transactionsForStat.toList(), stat));
+            // Find the transactions stream for our stat and put it in our map
+            final transactionsStream =
+                _transactionRepository.watchTransactionsForFilter(stat.filter);
+            // Map the transactions received to computed stat
+            final computedStream = transactionsStream.asyncMap(
+                (transactions) async => await _statisticRepository
+                    .computeStatisticForTransaction(transactions, stat));
+            // Add that to our list of stream
+            computedStatStreams.add(computedStream);
           }
 
-          print('Finish computing statistics');
-          // Return the computed stat
-          return computedStats;
+          // Return a combined stream
+          return Rx.combineLatestList(computedStatStreams);
         } catch (exception) {
           print('Error when computing the statistic $exception');
           rethrow;

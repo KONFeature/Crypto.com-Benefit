@@ -45,9 +45,9 @@ mixin HomeWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(vm.getIconForPage(page)),
+            Icon(page.icon),
             Text(
-              vm.getTitleForPage(page),
+              page.title,
               style: Theme.of(context).textTheme.button,
             )
           ]);

@@ -21,9 +21,9 @@ class DashboardWidget {
       ));
 
   /// List of kind stats
-  Widget statistics(BuildContext context, List<ComputedStatistic> stats) =>
+  Widget statistics(BuildContext context, Iterable<ComputedStatistic> stats) =>
       stats != null && stats.length > 0
-          ? _statisticsWidget(context, stats)
+          ? _statisticsWidget(context, stats.toList())
           : _noStats(context);
 
   /// Widget containing the stats imported for transaction kind

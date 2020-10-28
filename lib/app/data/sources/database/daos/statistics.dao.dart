@@ -86,7 +86,6 @@ class StatisticsDao extends DatabaseAccessor<AppDatabase>
         // Create the map of stat id to filter
         Map<int, FullFilterEntity> fullStatisticEntities = Map();
         for (var filterId in filterIds) {
-          print('Creating filter map');
           fullStatisticEntities.putIfAbsent(
               filterIdToStatId[filterId],
               () => FullFilterEntity(

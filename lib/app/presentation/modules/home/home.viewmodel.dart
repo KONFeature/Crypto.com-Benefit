@@ -18,32 +18,6 @@ abstract class _HomeViewModelBase with Store {
   @computed
   TabPages get currentPage => _currentPage;
 
-  /// Get the icon of a given page
-  IconData getIconForPage(TabPages page) {
-    switch (page) {
-      case TabPages.import:
-        return Icons.file_upload;
-      case TabPages.dashboard:
-        return Icons.dashboard;
-      case TabPages.settings:
-      default:
-        return Icons.settings;
-    }
-  }
-
-  /// Get the title of a given page
-  String getTitleForPage(TabPages page) {
-    switch (page) {
-      case TabPages.import:
-        return 'Import';
-      case TabPages.dashboard:
-        return 'Dashboard';
-      case TabPages.settings:
-      default:
-        return 'Settings';
-    }
-  }
-
   /// Perform the right action when a bottom button is clicked
   @action
   void onTabPageClicked(TabPages page) {
@@ -54,12 +28,48 @@ abstract class _HomeViewModelBase with Store {
     else
       _currentPage = page;
     // When a tab is clicked send the name to display to the navigator
-    navigatorKey.currentState.pushNamed(_getRouteForPage(page));
+    navigatorKey.currentState.pushNamed(page.route);
+  }
+}
+
+/// Enum of the different pages we got
+enum TabPages {
+  dashboard,
+  import,
+  settings,
+}
+
+/// Extension to get the displayable text and icon of our tab pages
+extension TabPagesExtension on TabPages {
+  // Get the icon for our pages
+  IconData get icon {
+    switch (this) {
+      case TabPages.import:
+        return Icons.file_upload;
+      case TabPages.dashboard:
+        return Icons.dashboard;
+      case TabPages.settings:
+      default:
+        return Icons.settings;
+    }
   }
 
-  /// Get the route for a given
-  String _getRouteForPage(TabPages page) {
-    switch (page) {
+  // Get the title for our pages
+  String get title {
+    switch (this) {
+      case TabPages.import:
+        return 'Import';
+      case TabPages.dashboard:
+        return 'Dashboard';
+      case TabPages.settings:
+      default:
+        return 'Settings';
+    }
+  }
+
+  // Get the route for our pages
+  String get route {
+    switch (this) {
       case TabPages.import:
         return CryptoBenefitRoutes.import;
       case TabPages.settings:
@@ -69,11 +79,4 @@ abstract class _HomeViewModelBase with Store {
         return CryptoBenefitRoutes.home;
     }
   }
-}
-
-/// Enum of the different pages we got
-enum TabPages {
-  dashboard,
-  import,
-  settings,
 }

@@ -2,7 +2,7 @@ import 'package:crypto_benefit/app/data/mappers/transaction.mapper.dart';
 import 'package:crypto_benefit/app/data/sources/database/app_database.dart';
 import 'package:crypto_benefit/app/data/sources/database/daos/transactions.dao.dart';
 import 'package:crypto_benefit/app/domain/exceptions/import_file.exceptions.dart';
-import 'package:crypto_benefit/app/domain/object/imported_file.dart';
+import 'package:crypto_benefit/app/domain/object/statistic/statistic.dart';
 import 'package:crypto_benefit/app/domain/object/transaction.dart';
 import 'package:crypto_benefit/app/domain/repositories/transaction.repository.dart';
 import 'package:crypto_benefit/core/di/injector_provider.dart';
@@ -40,18 +40,11 @@ class TransactionRepository implements ITransactionRepository {
   }
 
   @override
-  Future<List<Transaction>> getTransactions() async =>
-      _transactionMapper.fromEntities(await _transactionsDao.getTransactions());
-
-  @override
-  Stream<List<Transaction>> watchTransactions() => _transactionsDao
-      .watchTransactions()
-      .asyncMap((transactionEntities) async =>
-          _transactionMapper.fromEntities(transactionEntities));
-
-  @override
-  Future<List<Transaction>> getTransactionsForTypesAndKinds(
-          Iterable<FileType> types, Iterable<int> kindIds) async =>
-      _transactionMapper.fromEntities(
-          await _transactionsDao.getTransactionsByTypesOrKinds(types, kindIds));
+  Stream<Iterable<Transaction>> watchTransactionsForFilter(Filter filter) {
+    final kindsIds = filter.kinds.map((kind) => kind.id);
+    final entitiesStream =
+        _transactionsDao.watchTransactionsForFilter(filter.fileTypes, kindsIds);
+    return entitiesStream.asyncMap(
+        (transactions) => _transactionMapper.fromEntities(transactions));
+  }
 }

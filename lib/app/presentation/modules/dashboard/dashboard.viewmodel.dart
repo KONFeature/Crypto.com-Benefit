@@ -12,13 +12,13 @@ abstract class _DashboardViewModelBase with Store {
   final _computeKindsStateUseCase = inject<WatchComputedStatsUseCase>();
 
   @observable
-  ObservableStream<List> _stats;
+  ObservableStream<Iterable> _stats;
 
   @computed
   bool get isLoading => _stats.status == StreamStatus.waiting;
 
   @computed
-  List<dynamic> get stats => _stats.value;
+  Iterable<dynamic> get stats => _stats.value;
 
   _DashboardViewModelBase() {
     // Compute kind stats
