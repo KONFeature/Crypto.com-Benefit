@@ -2,7 +2,7 @@ import 'package:crypto_benefit/app/presentation/modules/dashboard/dashboard.page
 import 'package:crypto_benefit/app/presentation/modules/home/home.widget.dart';
 import 'package:crypto_benefit/app/presentation/modules/import/import.page.dart';
 import 'package:crypto_benefit/app/presentation/modules/settings/settings.page.dart';
-import 'package:crypto_benefit/core/config/routes.dart';
+import 'package:crypto_benefit/core/config/routes.config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

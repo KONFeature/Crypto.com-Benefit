@@ -1,4 +1,4 @@
-import 'package:crypto_benefit/core/config/routes.dart';
+import 'package:crypto_benefit/core/config/routes.config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mobx/mobx.dart';

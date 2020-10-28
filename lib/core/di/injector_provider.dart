@@ -33,6 +33,7 @@ import 'package:get_it/get_it.dart';
 /// Static access to the current get it instance
 final GetIt inject = GetIt.I;
 
+/// Setup the dependency injection
 Future<void> setupInjection() async {
   // Database
   inject.registerLazySingleton(() => new AppDatabase());
