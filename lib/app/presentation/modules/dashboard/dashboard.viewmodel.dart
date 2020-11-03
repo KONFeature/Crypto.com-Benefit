@@ -1,3 +1,4 @@
+import 'package:crypto_benefit/app/domain/object/statistic/computed_statistic.dart';
 import 'package:crypto_benefit/app/domain/usecases/dashboard/compute_stats.usecase.dart';
 import 'package:crypto_benefit/core/di/injector_provider.dart';
 import 'package:mobx/mobx.dart';
@@ -21,6 +22,7 @@ abstract class _DashboardViewModelBase with Store {
   Iterable<dynamic> get stats => _stats.value;
 
   _DashboardViewModelBase() {
+    // TODO : Observable stream of list to observable list ???
     // Compute kind stats
     _stats = _computeKindsStateUseCase.watch(null).asObservable();
     _stats.handleError((exception) => print('Erreur survenue $exception'));

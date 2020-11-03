@@ -14,12 +14,14 @@ class _DashboardPageState extends State<DashboardPage> with DashboardWidget {
   final vm = inject<DashboardViewModel>();
 
   @override
-  Widget build(BuildContext context) => Observer(
-        builder: (observerContext) => ListView(children: [
+  Widget build(BuildContext context) => ListView(
+        children: [
           title(context),
-          vm.isLoading
-              ? loading(observerContext)
-              : statistics(observerContext, vm.stats),
-        ]),
+          Observer(
+            builder: (observerContext) => vm.isLoading
+                ? loading(observerContext)
+                : statistics(observerContext, vm.stats),
+          ),
+        ],
       );
 }
