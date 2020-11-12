@@ -44,10 +44,10 @@ dependencies:
   shared_preferences: ^0.5.12+2
 
   # Read CSV content
-  csv: ^4.0.3
+  csv: ^4.1.0
 
   # Path provider and path (Acess file on the system)
-  path_provider: ^1.6.22
+  path_provider: ^1.6.24
   path: ^1.7.0
 
   # Let the user pick a document (in our case import csv files)

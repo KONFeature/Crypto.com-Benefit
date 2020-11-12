@@ -3,7 +3,7 @@ import 'package:crypto_benefit/app/domain/repositories/statistic.repository.dart
 import 'package:crypto_benefit/app/domain/usecases/usecase.dart';
 import 'package:crypto_benefit/core/di/injector_provider.dart';
 
-/// Use case used to fetch all the imported file
+/// Use case used to watch all the current user statistic
 class WatchStatisticsUseCase
     implements StreamUseCase<Iterable<Statistic>, void> {
   final _statisticRepository = inject<IStatisticRepository>();

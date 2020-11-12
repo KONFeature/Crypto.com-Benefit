@@ -17,22 +17,25 @@ class WatchComputedStatsUseCase
         try {
           print('Start computing for ${statistics.length} statistics');
 
-          // Then compute each one of our stat from this transactioons
-          List<Stream<ComputedStatistic>> computedStatStreams = List();
-
-          for (var stat in statistics) {
-            // Find the transactions stream for our stat and put it in our map
-            final transactionsStream =
-                _transactionRepository.watchTransactionsForFilter(stat.filter);
-            // Map the transactions received to computed stat
-            final computedStream = transactionsStream.asyncMap(
-                (transactions) async => await _statisticRepository
-                    .computeStatisticForTransaction(transactions, stat));
-            // Add that to our list of stream
-            computedStatStreams.add(computedStream);
+          if(statistics.isEmpty) {
+            // If we got no statistic just return an empty stream
+            print('Returning 0 streams for computing statistics');
+            return Stream.empty();
           }
 
-          // Return a combined stream
+          // Then compute each one of our stat from this transactioons
+          List<Stream<ComputedStatistic>> computedStatStreams = statistics.map((stat) {
+            // Find the transactions stream for our stat and put it in our map
+            final transactionsStream =
+            _transactionRepository.watchTransactionsForFilter(stat.filter);
+            // Map the transactions received to computed stat stream
+            return transactionsStream.asyncMap(
+                    (transactions) async => await _statisticRepository
+                    .computeStatisticForTransaction(transactions, stat));
+          });
+
+          // Return the combinaison of all the stream
+          print('Returning ${computedStatStreams.length} streams for computing statistics');
           return Rx.combineLatestList(computedStatStreams);
         } catch (exception) {
           print('Error when computing the statistic $exception');

@@ -17,16 +17,16 @@ abstract class _SettingsViewModelBase with Store {
   final _deleteStatisticUseCase = inject<DeleteStatisticUseCase>();
 
   @observable
-  ObservableStream<List> statisticsStream;
+  ObservableStream<List> _statisticsStream;
 
   @computed
-  bool get isLoading => statisticsStream.status == StreamStatus.waiting;
+  bool get isLoading => _statisticsStream.status == StreamStatus.waiting;
 
   @computed
-  List get statistics => statisticsStream.value;
+  List get statistics => _statisticsStream.value;
 
   _SettingsViewModelBase() {
-    statisticsStream = _watchStatisticsUseCase.watch(null).asObservable();
+    _statisticsStream = _watchStatisticsUseCase.watch(null).asObservable();
   }
 
   /// Function call to delete a statistic

@@ -28,22 +28,22 @@ mixin _$SettingsViewModel on _SettingsViewModelBase, Store {
       Atom(name: '_SettingsViewModelBase.statisticsStream');
 
   @override
-  ObservableStream<List<dynamic>> get statisticsStream {
+  ObservableStream<List<dynamic>> get _statisticsStream {
     _$statisticsStreamAtom.reportRead();
-    return super.statisticsStream;
+    return super._statisticsStream;
   }
 
   @override
-  set statisticsStream(ObservableStream<List<dynamic>> value) {
-    _$statisticsStreamAtom.reportWrite(value, super.statisticsStream, () {
-      super.statisticsStream = value;
+  set _statisticsStream(ObservableStream<List<dynamic>> value) {
+    _$statisticsStreamAtom.reportWrite(value, super._statisticsStream, () {
+      super._statisticsStream = value;
     });
   }
 
   @override
   String toString() {
     return '''
-statisticsStream: ${statisticsStream},
+statisticsStream: ${_statisticsStream},
 isLoading: ${isLoading},
 statistics: ${statistics}
     ''';

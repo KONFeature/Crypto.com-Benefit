@@ -88,7 +88,6 @@ class SettingsWidget {
       child: FlatButton(
         padding: EdgeInsets.all(padding),
         onPressed: () {
-          print(vm.statisticsStream.status);
           _showCreateStatisticModal(context);
         },
         color: Theme.of(context).primaryColor,
