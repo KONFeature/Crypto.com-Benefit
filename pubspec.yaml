@@ -39,9 +39,6 @@ dependencies:
 
   # Catcher (for better exception managment) 
   catcher: ^0.3.22
-  
-  # App preferences for both iOS and Android
-  shared_preferences: ^0.5.12+2
 
   # Read CSV content
   csv: ^4.1.0

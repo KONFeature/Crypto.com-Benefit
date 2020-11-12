@@ -10,7 +10,6 @@ import 'package:crypto_benefit/app/data/sources/database/tables/transaction_kind
 import 'package:crypto_benefit/app/data/sources/database/tables/transactions.table.dart';
 import 'package:crypto_benefit/app/domain/object/imported_file.dart';
 import 'package:encrypted_moor/encrypted_moor.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:moor/moor.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
