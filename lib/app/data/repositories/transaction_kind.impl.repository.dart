@@ -1,9 +1,9 @@
 import 'package:crypto_benefit/app/data/mappers/transaction_kind.mapper.dart';
+import 'package:crypto_benefit/app/data/sources/database/app_database.dart';
 import 'package:crypto_benefit/app/data/sources/database/daos/transaction_kinds.dao.dart';
 import 'package:crypto_benefit/app/domain/object/transaction_kind.dart';
 import 'package:crypto_benefit/app/domain/repositories/transaction_kind.repository.dart';
 import 'package:crypto_benefit/core/di/injector_provider.dart';
-import 'package:crypto_benefit/app/data/sources/database/app_database.dart';
 
 /// Interface for the transaction kinds repository
 class TransactionKindRepository implements ITransactionKindRepository {

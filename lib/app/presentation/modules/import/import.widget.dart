@@ -75,7 +75,7 @@ class ImportWidget {
 
   /// Widget to display an error message
   Widget error(BuildContext context, String errorMessage) => Text(
-        errorMessage??'',
+        errorMessage ?? '',
         style: Theme.of(context)
             .textTheme
             .bodyText2

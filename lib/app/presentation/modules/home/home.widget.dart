@@ -1,8 +1,8 @@
+import 'package:crypto_benefit/app/presentation/modules/home/home.viewmodel.dart';
 import 'package:crypto_benefit/core/di/injector_provider.dart';
 import 'package:crypto_benefit/core/values/animations.dart';
 import 'package:crypto_benefit/core/values/dimens.dart';
 import 'package:flutter/material.dart';
-import 'package:crypto_benefit/app/presentation/modules/home/home.viewmodel.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 /// The widget of the import pages

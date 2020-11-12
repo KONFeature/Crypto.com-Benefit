@@ -17,8 +17,8 @@ import 'package:crypto_benefit/app/domain/repositories/transaction.repository.da
 import 'package:crypto_benefit/app/domain/repositories/transaction_kind.repository.dart';
 import 'package:crypto_benefit/app/domain/usecases/dashboard/compute_stats.usecase.dart';
 import 'package:crypto_benefit/app/domain/usecases/import/clear_imports.usecase.dart';
-import 'package:crypto_benefit/app/domain/usecases/import/watch_imported_files.usecase.dart';
 import 'package:crypto_benefit/app/domain/usecases/import/import_file.usecase.dart';
+import 'package:crypto_benefit/app/domain/usecases/import/watch_imported_files.usecase.dart';
 import 'package:crypto_benefit/app/domain/usecases/settings/create_statistic.usecase.dart';
 import 'package:crypto_benefit/app/domain/usecases/settings/delete_statistic.usecase.dart';
 import 'package:crypto_benefit/app/domain/usecases/settings/get_transaction_kinds.usecase.dart';

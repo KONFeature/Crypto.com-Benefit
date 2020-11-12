@@ -3,8 +3,8 @@ import 'package:crypto_benefit/app/data/sources/database/app_database.dart';
 import 'package:crypto_benefit/app/data/sources/database/daos/statistics.dao.dart';
 import 'package:crypto_benefit/app/domain/object/imported_file.dart';
 import 'package:crypto_benefit/app/domain/object/statistic/computed_statistic.dart';
-import 'package:crypto_benefit/app/domain/object/transaction.dart';
 import 'package:crypto_benefit/app/domain/object/statistic/statistic.dart';
+import 'package:crypto_benefit/app/domain/object/transaction.dart';
 import 'package:crypto_benefit/app/domain/repositories/statistic.repository.dart';
 import 'package:crypto_benefit/core/di/injector_provider.dart';
 

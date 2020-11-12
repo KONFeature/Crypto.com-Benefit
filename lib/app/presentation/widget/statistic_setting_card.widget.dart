@@ -1,5 +1,5 @@
-import 'package:crypto_benefit/app/domain/object/statistic/statistic.dart';
 import 'package:crypto_benefit/app/domain/object/imported_file.dart';
+import 'package:crypto_benefit/app/domain/object/statistic/statistic.dart';
 import 'package:crypto_benefit/app/presentation/widget/base_card.widget.dart';
 import 'package:crypto_benefit/core/values/dimens.dart';
 import 'package:crypto_benefit/core/values/theme.dart';

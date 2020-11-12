@@ -11,8 +11,8 @@ import 'package:crypto_benefit/app/data/sources/database/tables/transactions.tab
 import 'package:crypto_benefit/app/domain/object/imported_file.dart';
 import 'package:encrypted_moor/encrypted_moor.dart';
 import 'package:moor/moor.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 
 part 'app_database.g.dart';
 

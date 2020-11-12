@@ -1,8 +1,8 @@
 import 'package:crypto_benefit/app/domain/object/statistic/computed_statistic.dart';
-import 'package:crypto_benefit/app/presentation/widget/loading_stat_card.widget.dart';
-import 'package:crypto_benefit/app/presentation/widget/computed_statistic_card.widget.dart';
-import 'package:crypto_benefit/core/di/injector_provider.dart';
 import 'package:crypto_benefit/app/presentation/modules/dashboard/dashboard.viewmodel.dart';
+import 'package:crypto_benefit/app/presentation/widget/computed_statistic_card.widget.dart';
+import 'package:crypto_benefit/app/presentation/widget/loading_stat_card.widget.dart';
+import 'package:crypto_benefit/core/di/injector_provider.dart';
 import 'package:crypto_benefit/core/values/dimens.dart';
 import 'package:flutter/material.dart';
 

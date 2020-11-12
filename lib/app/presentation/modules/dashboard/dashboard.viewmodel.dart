@@ -1,4 +1,3 @@
-import 'package:crypto_benefit/app/domain/object/statistic/computed_statistic.dart';
 import 'package:crypto_benefit/app/domain/usecases/dashboard/compute_stats.usecase.dart';
 import 'package:crypto_benefit/core/di/injector_provider.dart';
 import 'package:mobx/mobx.dart';
@@ -26,7 +25,7 @@ abstract class _DashboardViewModelBase with Store {
     // Compute kind stats
     _stats = _computeKindsStateUseCase.watch(null).asObservable();
     _stats.listen((event) {
-        print("Data received $event");
+      print("Data received $event");
     });
   }
 }

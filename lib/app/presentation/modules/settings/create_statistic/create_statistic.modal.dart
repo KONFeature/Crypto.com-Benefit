@@ -1,6 +1,6 @@
 import 'package:crypto_benefit/app/domain/object/statistic/statistic.dart';
-import 'package:crypto_benefit/app/presentation/modules/settings/create_statistic/create_statistic.widget.dart';
 import 'package:crypto_benefit/app/presentation/modules/settings/create_statistic/create_statistic.viewmodel.dart';
+import 'package:crypto_benefit/app/presentation/modules/settings/create_statistic/create_statistic.widget.dart';
 import 'package:crypto_benefit/core/values/theme.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';

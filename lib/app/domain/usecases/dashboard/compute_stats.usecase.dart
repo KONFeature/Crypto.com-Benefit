@@ -17,25 +17,27 @@ class WatchComputedStatsUseCase
         try {
           print('Start computing for ${statistics.length} statistics');
 
-          if(statistics.isEmpty) {
+          if (statistics.isEmpty) {
             // If we got no statistic just return an empty stream
             print('Returning 0 stream for computing statistics');
             return Stream.value(null);
           }
 
           // Then compute each one of our stat from this transactioons
-          Iterable<Stream<ComputedStatistic>> computedStatStreams = statistics.map((stat) {
+          Iterable<Stream<ComputedStatistic>> computedStatStreams =
+              statistics.map((stat) {
             // Find the transactions stream for our stat and put it in our map
             final transactionsStream =
-            _transactionRepository.watchTransactionsForFilter(stat.filter);
+                _transactionRepository.watchTransactionsForFilter(stat.filter);
             // Map the transactions received to computed stat stream
-            return transactionsStream.asyncMap(
-                    (transactions) async => await _statisticRepository
-                    .computeStatisticForTransaction(transactions, stat));
+            return transactionsStream.asyncMap((transactions) async =>
+                await _statisticRepository.computeStatisticForTransaction(
+                    transactions, stat));
           });
 
           // Return the combinaison of all the stream
-          print('Returning ${computedStatStreams.length} streams for computing statistics');
+          print(
+              'Returning ${computedStatStreams.length} streams for computing statistics');
           return Rx.combineLatestList(computedStatStreams);
         } catch (exception) {
           print('Error when computing the statistic $exception');

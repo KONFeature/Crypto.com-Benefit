@@ -1,8 +1,7 @@
-import 'dart:ffi';
 
 import 'package:crypto_benefit/app/domain/usecases/import/clear_imports.usecase.dart';
-import 'package:crypto_benefit/app/domain/usecases/import/watch_imported_files.usecase.dart';
 import 'package:crypto_benefit/app/domain/usecases/import/import_file.usecase.dart';
+import 'package:crypto_benefit/app/domain/usecases/import/watch_imported_files.usecase.dart';
 import 'package:crypto_benefit/core/di/injector_provider.dart';
 import 'package:flutter_document_picker/flutter_document_picker.dart';
 import 'package:mobx/mobx.dart';
@@ -43,9 +42,10 @@ abstract class _ImportViewModelBase with Store {
     // Try to import the picked file in the app
     try {
       await _importFileUseCase.execute(ImportFileParams(filePath: csvFilePath));
-    } catch(exception) {
+    } catch (exception) {
       print("Error occured during the file import $exception");
-      errorMessage.value = "Error occured during the import of type : ${exception.runtimeType}";
+      errorMessage.value =
+          "Error occured during the import of type : ${exception.runtimeType}";
     }
   }
 

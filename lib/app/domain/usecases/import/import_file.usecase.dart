@@ -17,7 +17,7 @@ class ImportFileUseCase implements BaseUseCase<void, ImportFileParams> {
   @override
   Future<void> execute(ImportFileParams params) async {
     // Check if we got a file path
-    if(params.filePath == null || params.filePath.isEmpty)
+    if (params.filePath == null || params.filePath.isEmpty)
       throw new NoFileSelectedException();
 
     // Get the file from the filepath
