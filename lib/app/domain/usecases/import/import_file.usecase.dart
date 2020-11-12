@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:crypto_benefit/app/domain/exceptions/import_file.exceptions.dart';
 import 'package:crypto_benefit/app/domain/repositories/import_file.repository.dart';
 import 'package:crypto_benefit/app/domain/repositories/transaction.repository.dart';
 import 'package:crypto_benefit/app/domain/repositories/transaction_kind.repository.dart';
@@ -15,6 +16,10 @@ class ImportFileUseCase implements BaseUseCase<void, ImportFileParams> {
 
   @override
   Future<void> execute(ImportFileParams params) async {
+    // Check if we got a file path
+    if(params.filePath == null || params.filePath.isEmpty)
+      throw new NoFileSelectedException();
+
     // Get the file from the filepath
     final csvFile = new File(params.filePath);
 

@@ -44,7 +44,7 @@ class DashboardWidget {
 
   /// Widget to display when no transaction are present
   Widget _noStats(BuildContext context) => Text(
-        'No statistics founded, you can create your own statistics in the settings page.',
+        'No statistics founded, you can create new one in the settings page.',
         style: Theme.of(context).textTheme.bodyText2,
         textAlign: TextAlign.center,
       );

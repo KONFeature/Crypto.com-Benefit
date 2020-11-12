@@ -16,7 +16,11 @@ class ImportPage extends StatelessWidget with ImportWidget {
             builder: (observerContext) =>
                 filesImported(observerContext, vm.importedFilesStream.value),
           ),
-          buttons(context),
+          buttons(context, () => vm.import(), () => vm.clearImports()),
+          Observer(
+            builder: (observerContext) =>
+                error(observerContext, vm.errorMessage.value),
+          ),
         ],
       );
 }

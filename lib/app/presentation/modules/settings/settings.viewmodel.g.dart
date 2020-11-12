@@ -24,18 +24,18 @@ mixin _$SettingsViewModel on _SettingsViewModelBase, Store {
               name: '_SettingsViewModelBase.statistics'))
           .value;
 
-  final _$statisticsStreamAtom =
-      Atom(name: '_SettingsViewModelBase.statisticsStream');
+  final _$_statisticsStreamAtom =
+      Atom(name: '_SettingsViewModelBase._statisticsStream');
 
   @override
   ObservableStream<List<dynamic>> get _statisticsStream {
-    _$statisticsStreamAtom.reportRead();
+    _$_statisticsStreamAtom.reportRead();
     return super._statisticsStream;
   }
 
   @override
   set _statisticsStream(ObservableStream<List<dynamic>> value) {
-    _$statisticsStreamAtom.reportWrite(value, super._statisticsStream, () {
+    _$_statisticsStreamAtom.reportWrite(value, super._statisticsStream, () {
       super._statisticsStream = value;
     });
   }
@@ -43,7 +43,6 @@ mixin _$SettingsViewModel on _SettingsViewModelBase, Store {
   @override
   String toString() {
     return '''
-statisticsStream: ${_statisticsStream},
 isLoading: ${isLoading},
 statistics: ${statistics}
     ''';

@@ -19,12 +19,12 @@ class WatchComputedStatsUseCase
 
           if(statistics.isEmpty) {
             // If we got no statistic just return an empty stream
-            print('Returning 0 streams for computing statistics');
-            return Stream.empty();
+            print('Returning 0 stream for computing statistics');
+            return Stream.value(null);
           }
 
           // Then compute each one of our stat from this transactioons
-          List<Stream<ComputedStatistic>> computedStatStreams = statistics.map((stat) {
+          Iterable<Stream<ComputedStatistic>> computedStatStreams = statistics.map((stat) {
             // Find the transactions stream for our stat and put it in our map
             final transactionsStream =
             _transactionRepository.watchTransactionsForFilter(stat.filter);

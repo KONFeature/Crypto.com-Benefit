@@ -1,3 +1,6 @@
+/// Exceptions when no file is selected by the user
+class NoFileSelectedException implements Exception {}
+
 /// Exceptions when we were unable to get the file type from a transactions file
 class UnableToReadFileTypeException implements Exception {}
 

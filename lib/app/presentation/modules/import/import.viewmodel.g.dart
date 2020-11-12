@@ -25,6 +25,21 @@ mixin _$ImportViewModel on _ImportViewModelBase, Store {
     });
   }
 
+  final _$errorMessageAtom = Atom(name: '_ImportViewModelBase.errorMessage');
+
+  @override
+  Observable<String> get errorMessage {
+    _$errorMessageAtom.reportRead();
+    return super.errorMessage;
+  }
+
+  @override
+  set errorMessage(Observable<String> value) {
+    _$errorMessageAtom.reportWrite(value, super.errorMessage, () {
+      super.errorMessage = value;
+    });
+  }
+
   final _$importAsyncAction = AsyncAction('_ImportViewModelBase.import');
 
   @override
@@ -43,7 +58,8 @@ mixin _$ImportViewModel on _ImportViewModelBase, Store {
   @override
   String toString() {
     return '''
-importedFilesStream: ${importedFilesStream}
+importedFilesStream: ${importedFilesStream},
+errorMessage: ${errorMessage}
     ''';
   }
 }

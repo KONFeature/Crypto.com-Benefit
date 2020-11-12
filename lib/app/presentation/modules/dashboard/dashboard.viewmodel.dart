@@ -25,6 +25,8 @@ abstract class _DashboardViewModelBase with Store {
     // TODO : Observable stream of list to observable list ???
     // Compute kind stats
     _stats = _computeKindsStateUseCase.watch(null).asObservable();
-    _stats.handleError((exception) => print('Erreur survenue $exception'));
+    _stats.listen((event) {
+        print("Data received $event");
+    });
   }
 }
