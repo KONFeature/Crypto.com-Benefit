@@ -3,7 +3,7 @@ import 'package:crypto_benefit/app/presentation/widget/imported_file_card.widget
 import 'package:crypto_benefit/core/values/dimens.dart';
 import 'package:flutter/material.dart';
 
-/// The widget of the import pages
+/// The widget for our import page
 class ImportWidget {
   /// The title of our page
   Widget title(BuildContext context) => Padding(

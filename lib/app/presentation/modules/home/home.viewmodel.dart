@@ -1,3 +1,4 @@
+import 'package:crypto_benefit/app/domain/object/statistic/computed_statistic.dart';
 import 'package:crypto_benefit/core/config/routes.config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -7,21 +8,22 @@ part 'home.viewmodel.g.dart';
 
 class HomeViewModel = _HomeViewModelBase with _$HomeViewModel;
 
-/// The view model for our import file view.
+/// The view model for our home page.
 abstract class _HomeViewModelBase with Store {
-  /// Key for our navgator object.
+  /// Key for our navigator widget.
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
 
   /// The current tab page displayed
   @observable
   TabPages _currentPage = TabPages.dashboard;
+
   @computed
   TabPages get currentPage => _currentPage;
 
   /// Perform the right action when a bottom button is clicked
   @action
   void onTabPageClicked(TabPages page) {
-    print('Asking to change page for $page');
+    print('Navigating to page $page');
     // If we are already on this page we don't push a new route
     if (page == _currentPage)
       return;
@@ -29,6 +31,14 @@ abstract class _HomeViewModelBase with Store {
       _currentPage = page;
     // When a tab is clicked send the name to display to the navigator
     navigatorKey.currentState.pushNamed(page.route);
+  }
+
+  /// go to the statistic detail page
+  void goToStatDetail(ComputedStatistic computedStat) {
+    navigatorKey.currentState.pushNamed(
+      CryptoBenefitRoutes.statisticDetail,
+      arguments: computedStat,
+    );
   }
 }
 

@@ -6,7 +6,7 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
-/// The create statistic modal root
+/// The create statistic modal
 class CreateStatisticModal extends StatelessWidget with CreateStatisticWidget {
   /// The view model (don't use DI because we want a new view model for each view)
   final vm = CreateStatisticViewModel();

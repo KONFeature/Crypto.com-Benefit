@@ -4,7 +4,7 @@ import 'package:crypto_benefit/app/presentation/widget/selectable_item.widget.da
 import 'package:crypto_benefit/core/values/dimens.dart';
 import 'package:flutter/material.dart';
 
-/// The widget of the list of transactions pages
+/// The widget for our create statistic modal.
 abstract class CreateStatisticWidget {
   /// Find the current view model
   CreateStatisticViewModel getVm();

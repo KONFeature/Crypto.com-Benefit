@@ -58,6 +58,9 @@ dependencies:
 
   # Smooth expandable container
   expandable: ^4.1.4
+
+  # FL Chart, interactive and modern chart
+  fl_chart: ^0.12.0
   
 dev_dependencies:
   moor_generator: ^3.4.0

@@ -4,24 +4,22 @@ import 'package:crypto_benefit/core/di/injector_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
-/// The transactions page root
-class DashboardPage extends StatefulWidget {
-  @override
-  _DashboardPageState createState() => _DashboardPageState();
-}
-
-class _DashboardPageState extends State<DashboardPage> with DashboardWidget {
+/// The dashboard page
+class DashboardPage extends StatelessWidget with DashboardWidget {
+  /// The view model for this page
   final vm = inject<DashboardViewModel>();
 
   @override
-  Widget build(BuildContext context) => ListView(
-        children: [
-          title(context),
-          Observer(
-            builder: (observerContext) => vm.isLoading
-                ? loading(observerContext)
-                : statistics(observerContext, vm.stats),
-          ),
-        ],
-      );
+  Widget build(BuildContext context) => Material(
+    child: ListView(
+      children: [
+        title(context),
+        Observer(
+          builder: (observerContext) => vm.isLoading
+              ? loading(observerContext)
+              : statistics(observerContext, vm.stats),
+        ),
+      ],
+    ),
+  );
 }

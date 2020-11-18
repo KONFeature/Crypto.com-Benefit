@@ -5,7 +5,7 @@ import 'package:crypto_benefit/core/values/dimens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
-/// The widget of the import pages
+/// The widget for our home page
 mixin HomeWidget {
   /// Our view model for the home page
   final vm = inject<HomeViewModel>();

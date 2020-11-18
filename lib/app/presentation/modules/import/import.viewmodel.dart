@@ -10,12 +10,14 @@ part 'import.viewmodel.g.dart';
 
 class ImportViewModel = _ImportViewModelBase with _$ImportViewModel;
 
-/// The view model for our import file view.
+/// The view model for our import page.
 abstract class _ImportViewModelBase with Store {
-  /// Our use cases for this view model
+  /// Use case to import a new file
   final _importFileUseCase = inject<ImportFileUseCase>();
-  final _clearImportUseCase = inject<ClearImportsUseCase>();
+  /// Use case to watch the current imported file
   final _watchImportedFileUseCase = inject<WatchImportedFileUseCase>();
+  /// Use case to clear and all the imported use case
+  final _clearImportUseCase = inject<ClearImportsUseCase>();
 
   @observable
   ObservableStream<Iterable> importedFilesStream;

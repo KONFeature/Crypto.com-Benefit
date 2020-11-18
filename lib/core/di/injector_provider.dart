@@ -28,6 +28,7 @@ import 'package:crypto_benefit/app/presentation/modules/dashboard/dashboard.view
 import 'package:crypto_benefit/app/presentation/modules/home/home.viewmodel.dart';
 import 'package:crypto_benefit/app/presentation/modules/import/import.viewmodel.dart';
 import 'package:crypto_benefit/app/presentation/modules/settings/settings.viewmodel.dart';
+import 'package:crypto_benefit/app/presentation/modules/stat_detail/stat_detail.viewmodel.dart';
 import 'package:get_it/get_it.dart';
 
 /// Static access to the current get it instance
@@ -72,6 +73,7 @@ Future<void> setupInjection() async {
   inject.registerLazySingleton(() => new ImportViewModel());
   inject.registerLazySingleton(() => new DashboardViewModel());
   inject.registerLazySingleton(() => new SettingsViewModel());
+  inject.registerLazySingleton(() => new StatDetailViewModel());
 }
 
 Future<void> setupUseCases() async {

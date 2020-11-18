@@ -6,10 +6,10 @@ part 'dashboard.viewmodel.g.dart';
 
 class DashboardViewModel = _DashboardViewModelBase with _$DashboardViewModel;
 
-/// The view model for our transactions page.
+/// The view model for our dashboard page.
 abstract class _DashboardViewModelBase with Store {
-  /// Our use cases
-  final _computeKindsStateUseCase = inject<WatchComputedStatsUseCase>();
+  /// Our use case the compute the statistics
+  final _computeStatsUseCase = inject<WatchComputedStatsUseCase>();
 
   @observable
   ObservableStream<Iterable> _stats;
@@ -22,10 +22,7 @@ abstract class _DashboardViewModelBase with Store {
 
   _DashboardViewModelBase() {
     // TODO : Observable stream of list to observable list ???
-    // Compute kind stats
-    _stats = _computeKindsStateUseCase.watch(null).asObservable();
-    _stats.listen((event) {
-      print("Data received $event");
-    });
+    // Compute statistics
+    _stats = _computeStatsUseCase.watch(null).asObservable();
   }
 }

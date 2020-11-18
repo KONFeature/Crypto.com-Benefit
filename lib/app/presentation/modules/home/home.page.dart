@@ -1,16 +1,17 @@
 import 'package:crypto_benefit/app/presentation/modules/dashboard/dashboard.page.dart';
 import 'package:crypto_benefit/app/presentation/modules/home/home.widget.dart';
+import 'package:crypto_benefit/app/presentation/modules/home/home_page_route.widget.dart';
 import 'package:crypto_benefit/app/presentation/modules/import/import.page.dart';
 import 'package:crypto_benefit/app/presentation/modules/settings/settings.page.dart';
+import 'package:crypto_benefit/app/presentation/modules/stat_detail/stat_detail.page.dart';
 import 'package:crypto_benefit/core/config/routes.config.dart';
 import 'package:flutter/material.dart';
 
+/// The home page
 class HomePage extends StatelessWidget with HomeWidget {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) => Scaffold(
-      key: _scaffoldKey,
       extendBody: false,
       bottomNavigationBar: bottomBar(context),
       body: _body(context));
@@ -37,10 +38,13 @@ class HomePage extends StatelessWidget with HomeWidget {
       case CryptoBenefitRoutes.settings:
         builder = (context) => SettingsPage();
         break;
+      case CryptoBenefitRoutes.statisticDetail:
+        builder = (context) => StatDetailPage();
+        return AppPageRoute(builder: builder, settings: settings, fullscreenDialog: true);
       default:
         throw Exception('Invalid route: ${settings.name}');
     }
 
-    return MaterialPageRoute(builder: builder, settings: settings);
+    return AppPageRoute(builder: builder, settings: settings);
   }
 }

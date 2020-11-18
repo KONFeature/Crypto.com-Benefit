@@ -1,14 +1,19 @@
 import 'package:crypto_benefit/app/domain/object/statistic/computed_statistic.dart';
 import 'package:crypto_benefit/app/presentation/modules/dashboard/dashboard.viewmodel.dart';
-import 'package:crypto_benefit/app/presentation/widget/computed_statistic_card.widget.dart';
+import 'package:crypto_benefit/app/presentation/modules/home/home.viewmodel.dart';
+import 'package:crypto_benefit/app/presentation/widget/computed_stat_card/computed_stat_card.widget.dart';
 import 'package:crypto_benefit/app/presentation/widget/loading_stat_card.widget.dart';
 import 'package:crypto_benefit/core/di/injector_provider.dart';
 import 'package:crypto_benefit/core/values/dimens.dart';
 import 'package:flutter/material.dart';
 
-/// The widget of the list of transactions pages
+/// The widget for our dashboard page
 class DashboardWidget {
+  /// The view model for this page
   final vm = inject<DashboardViewModel>();
+
+  /// The view model for the home page (needed to change route on stat card click)
+  final homeVm = inject<HomeViewModel>();
 
   /// The title of our page
   Widget title(BuildContext context) => Padding(
@@ -37,7 +42,10 @@ class DashboardWidget {
         padding: EdgeInsets.all(padding),
         physics: BouncingScrollPhysics(),
         itemBuilder: (_, index) => Container(
-            child: ComputedStatisticCardWidget(
+            child: ComputedStatCardWidget(
+              onTap: () {
+                homeVm.goToStatDetail(stats[index]);
+              },
           computedStat: stats[index],
         )),
       );

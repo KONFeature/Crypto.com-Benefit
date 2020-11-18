@@ -6,7 +6,7 @@ import 'package:crypto_benefit/core/di/injector_provider.dart';
 import 'package:crypto_benefit/core/values/dimens.dart';
 import 'package:flutter/material.dart';
 
-/// The widget of the list of transactions pages
+/// The widget for our settings page
 class SettingsWidget {
   final vm = inject<SettingsViewModel>();
 
