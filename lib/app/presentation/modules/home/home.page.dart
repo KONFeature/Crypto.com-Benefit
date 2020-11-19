@@ -1,6 +1,6 @@
 import 'package:crypto_benefit/app/presentation/modules/dashboard/dashboard.page.dart';
 import 'package:crypto_benefit/app/presentation/modules/home/home.widget.dart';
-import 'package:crypto_benefit/app/presentation/modules/home/home_page_route.widget.dart';
+import 'package:crypto_benefit/app/presentation/modules/home/home_page.route.dart';
 import 'package:crypto_benefit/app/presentation/modules/import/import.page.dart';
 import 'package:crypto_benefit/app/presentation/modules/settings/settings.page.dart';
 import 'package:crypto_benefit/app/presentation/modules/stat_detail/stat_detail.page.dart';
@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 
 /// The home page
 class HomePage extends StatelessWidget with HomeWidget {
-
   @override
   Widget build(BuildContext context) => Scaffold(
       extendBody: false,
@@ -40,11 +39,14 @@ class HomePage extends StatelessWidget with HomeWidget {
         break;
       case CryptoBenefitRoutes.statisticDetail:
         builder = (context) => StatDetailPage();
-        return AppPageRoute(builder: builder, settings: settings, fullscreenDialog: true);
+        return HomePageRoute(
+          builder: builder,
+          settings: settings,
+        );
       default:
         throw Exception('Invalid route: ${settings.name}');
     }
 
-    return AppPageRoute(builder: builder, settings: settings);
+    return HomePageRoute(builder: builder, settings: settings);
   }
 }

@@ -1,4 +1,6 @@
 import 'package:crypto_benefit/app/domain/object/statistic/computed_statistic.dart';
+import 'package:crypto_benefit/app/presentation/modules/home/home_page.route.dart';
+import 'package:crypto_benefit/app/presentation/modules/stat_detail/stat_detail.page.dart';
 import 'package:crypto_benefit/core/config/routes.config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -39,6 +41,11 @@ abstract class _HomeViewModelBase with Store {
       CryptoBenefitRoutes.statisticDetail,
       arguments: computedStat,
     );
+  }
+
+  /// go to the statistic detail page
+  void onBackPressed() {
+    navigatorKey.currentState.pop();
   }
 }
 

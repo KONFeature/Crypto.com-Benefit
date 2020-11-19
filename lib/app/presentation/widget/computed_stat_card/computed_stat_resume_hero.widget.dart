@@ -13,7 +13,7 @@ class ComputedStatResumeHeroWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Hero(
-        tag: 'computed_stat_resume',
+        tag: 'computed_stat_resume_${computedStat.id}',
         child: Column(
           children: [
             Padding(

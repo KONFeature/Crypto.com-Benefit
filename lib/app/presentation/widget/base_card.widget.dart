@@ -12,17 +12,16 @@ class BaseCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Card(
-        elevation: noElevation,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(4),
-          child: Container(
-            padding: EdgeInsets.all(margin),
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
-            child: Column(
-              children: children,
-            ),
+      elevation: noElevation,
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(cardBorderRadius),
+        child: Padding(
+          padding: EdgeInsets.all(margin),
+          child: Column(
+            children: children,
           ),
-          onTap: onTap,
-        )
-      );
+        ),
+        onTap: onTap,
+      ));
 }

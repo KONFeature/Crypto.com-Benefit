@@ -41,13 +41,17 @@ class DashboardWidget {
         shrinkWrap: true,
         padding: EdgeInsets.all(padding),
         physics: BouncingScrollPhysics(),
-        itemBuilder: (_, index) => Container(
+        itemBuilder: (_, index) {
+          final stat = stats[index];
+          return Container(
             child: ComputedStatCardWidget(
               onTap: () {
-                homeVm.goToStatDetail(stats[index]);
+                homeVm.goToStatDetail(stat);
               },
-          computedStat: stats[index],
-        )),
+              computedStat: stat,
+            ),
+          );
+        },
       );
 
   /// Widget to display when no transaction are present

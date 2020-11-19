@@ -6,9 +6,12 @@ const double notchMargin = 4.0;
 // padding size
 const double padding = 8.0;
 
+// border radius size
+const double cardBorderRadius = 4.0;
+const double modalBorderRadius = 8.0;
+
 // elevation
 const double noElevation = 0.0;
-const double smallElevation = 4.0;
 
 // fonts sizes
 const double fontSizeTitle = 32.0;

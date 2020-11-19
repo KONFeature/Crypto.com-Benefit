@@ -88,7 +88,7 @@ class StatisticSettingCardWidget extends StatelessWidget {
                     color: Theme.of(context).primaryColorDark,
                     width: 1,
                   ),
-                  borderRadius: BorderRadius.circular(8)),
+                  borderRadius: BorderRadius.circular(modalBorderRadius)),
               child: Padding(
                 padding: EdgeInsets.all(smallMargin),
                 child: Text(filter),

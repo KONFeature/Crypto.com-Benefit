@@ -11,7 +11,7 @@ class ComputedStatHeaderHeroWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Hero(
-        tag: 'computed_statistic_header',
+        tag: 'computed_statistic_header_${computedStat.id}',
         child: Column(
           children: [
             Padding(

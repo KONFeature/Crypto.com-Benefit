@@ -17,5 +17,5 @@ class ComputedStatistic extends Statistic {
     this.totalUsdAmount,
     this.positiveUsdAmount,
     this.negativeUsdAmount,
-  }) : super(name: stat.name, filter: stat.filter);
+  }) : super(id: stat.id, name: stat.name, filter: stat.filter);
 }
