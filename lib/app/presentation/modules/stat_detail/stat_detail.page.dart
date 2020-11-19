@@ -1,9 +1,9 @@
 import 'package:crypto_benefit/app/domain/object/statistic/computed_statistic.dart';
+import 'package:crypto_benefit/app/presentation/modules/stat_detail/chart/stat_chart.widget.dart';
 import 'package:crypto_benefit/app/presentation/modules/stat_detail/stat_detail.viewmodel.dart';
 import 'package:crypto_benefit/app/presentation/modules/stat_detail/stat_detail.widget.dart';
 import 'package:crypto_benefit/core/values/dimens.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 
 /// The statistic detail page
 class StatDetailPage extends StatelessWidget with StatDetailWidget {
@@ -15,7 +15,6 @@ class StatDetailPage extends StatelessWidget with StatDetailWidget {
     // Get the computed stat, and launch the computation in the view model
     final ComputedStatistic computedStat =
         ModalRoute.of(context).settings.arguments;
-    vm.computeChart(computedStat);
 
     // Build the view
     return Hero(
@@ -38,10 +37,10 @@ class StatDetailPage extends StatelessWidget with StatDetailWidget {
           BuildContext context, ComputedStatistic computedStat) =>
       [
         header(context, computedStat),
-        Observer(
-            builder: (observerContext) => vm.isLoading
-                ? loadingChart(observerContext)
-                : testChart(observerContext, vm.statSpots)),
+        Padding(
+          padding: EdgeInsets.all(margin),
+          child: StatChardWidget(statistic: computedStat),
+        ),
       ];
 
   @override

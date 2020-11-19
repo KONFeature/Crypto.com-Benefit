@@ -49,8 +49,6 @@ abstract class _CreateStatisticViewModelBase with Store {
   // Base statistic
   Statistic _statisticToUpdate;
 
-  /// Last validated statistic name
-
   _CreateStatisticViewModelBase() {
     // Fetch our transaction kinds
     _kinds = _getTransactionKindsUseCase.execute(null).asObservable();

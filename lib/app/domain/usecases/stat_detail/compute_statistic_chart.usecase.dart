@@ -17,12 +17,27 @@ class ComputeStatisticChartUseCase
         .watchTransactionsForFilter(params.computedStatistic.filter);
 
     return transactionsStream.map((transactions) {
-      // TODO : Cumulative amount for transactions
+      // Get all the transaction and sort them by date
+      final transactionList = transactions.toList();
+      transactionList
+          .sort((tx1, tx2) => tx1.timestamp.compareTo(tx2.timestamp));
+
+      // total that will be computed
+      double totalAmount = 0.0;
 
       // Map each transactions into a chart spot
-      final spots = transactions.map((transaction) => StatisticChartSpot(
+      final List<StatisticChartSpot> spots = List();
+      transactionList.forEach((transaction) {
+        // Increase the total amount
+        totalAmount += transaction.usdAmount;
+
+        // Create and return the stat chart spot
+        spots.add(StatisticChartSpot(
           transaction.timestamp.millisecondsSinceEpoch.toDouble(),
-          transaction.usdAmount));
+          transaction.usdAmount,
+          totalAmount,
+        ));
+      });
 
       // Then create our statistic chart
       return StatisticChart(params.computedStatistic, spots);
