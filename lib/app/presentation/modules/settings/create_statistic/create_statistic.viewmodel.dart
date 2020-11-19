@@ -35,12 +35,14 @@ abstract class _CreateStatisticViewModelBase with Store {
   /// Map telling us if a file type is selected or not
   @observable
   ObservableMap<FileType, bool> _typeSelected = ObservableMap();
+
   @computed
   ObservableMap<FileType, bool> get typeSelected => _typeSelected;
 
   /// Map telling us if a kinds is selected or not
   @observable
   ObservableMap<TransactionKind, bool> _kindSelected = ObservableMap();
+
   @computed
   ObservableMap<TransactionKind, bool> get kindSelected => _kindSelected;
 

@@ -11,15 +11,15 @@ class DashboardPage extends StatelessWidget with DashboardWidget {
 
   @override
   Widget build(BuildContext context) => Material(
-    child: ListView(
-      children: [
-        title(context),
-        Observer(
-          builder: (observerContext) => vm.isLoading
-              ? loading(observerContext)
-              : statistics(observerContext, vm.stats),
+        child: ListView(
+          children: [
+            title(context),
+            Observer(
+              builder: (observerContext) => vm.isLoading
+                  ? loading(observerContext)
+                  : statistics(observerContext, vm.stats),
+            ),
+          ],
         ),
-      ],
-    ),
-  );
+      );
 }

@@ -1,4 +1,3 @@
-
 import 'package:crypto_benefit/app/domain/usecases/import/clear_imports.usecase.dart';
 import 'package:crypto_benefit/app/domain/usecases/import/import_file.usecase.dart';
 import 'package:crypto_benefit/app/domain/usecases/import/watch_imported_files.usecase.dart';
@@ -14,8 +13,10 @@ class ImportViewModel = _ImportViewModelBase with _$ImportViewModel;
 abstract class _ImportViewModelBase with Store {
   /// Use case to import a new file
   final _importFileUseCase = inject<ImportFileUseCase>();
+
   /// Use case to watch the current imported file
   final _watchImportedFileUseCase = inject<WatchImportedFileUseCase>();
+
   /// Use case to clear and all the imported use case
   final _clearImportUseCase = inject<ClearImportsUseCase>();
 

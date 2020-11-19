@@ -26,8 +26,8 @@ LazyDatabase _openConnection() {
     // Create the dart encrypted database arround the file
     return EncryptedExecutor(
         path: file.path,
-        password:
-            'MySuperStrongPassword', // TODO : Externalize this password to a safer place
+        password: 'MySuperStrongPassword',
+        // TODO : Externalize this password to a safer place
         logStatements: false,
         singleInstance: true);
   });

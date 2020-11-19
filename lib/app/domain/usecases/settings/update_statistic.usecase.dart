@@ -26,5 +26,6 @@ class UpdateStatisticParams {
   final String name;
   final List<TransactionKind> kinds;
   final List<FileType> types;
+
   UpdateStatisticParams({this.id, this.name, this.kinds, this.types});
 }

@@ -26,5 +26,6 @@ class CreateStatisticParams {
   final String name;
   final List<TransactionKind> kinds;
   final List<FileType> types;
+
   CreateStatisticParams({this.name, this.kinds, this.types});
 }

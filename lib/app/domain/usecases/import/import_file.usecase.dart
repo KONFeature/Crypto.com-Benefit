@@ -52,5 +52,6 @@ class ImportFileUseCase implements BaseUseCase<void, ImportFileParams> {
 /// Params for our use case
 class ImportFileParams {
   final String filePath;
+
   ImportFileParams({this.filePath});
 }

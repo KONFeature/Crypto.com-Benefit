@@ -10,19 +10,19 @@ class ImportPage extends StatelessWidget with ImportWidget {
 
   @override
   Widget build(BuildContext context) => Material(
-    child: ListView(
-      children: [
-        title(context),
-        Observer(
-          builder: (observerContext) =>
-              filesImported(observerContext, vm.importedFilesStream.value),
+        child: ListView(
+          children: [
+            title(context),
+            Observer(
+              builder: (observerContext) =>
+                  filesImported(observerContext, vm.importedFilesStream.value),
+            ),
+            buttons(context, () => vm.import(), () => vm.clearImports()),
+            Observer(
+              builder: (observerContext) =>
+                  error(observerContext, vm.errorMessage.value),
+            ),
+          ],
         ),
-        buttons(context, () => vm.import(), () => vm.clearImports()),
-        Observer(
-          builder: (observerContext) =>
-              error(observerContext, vm.errorMessage.value),
-        ),
-      ],
-    ),
-  );
+      );
 }

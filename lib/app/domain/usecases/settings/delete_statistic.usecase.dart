@@ -18,5 +18,6 @@ class DeleteStatisticUseCase
 /// Params for our use case
 class DeleteStatisticParams {
   final Statistic statistic;
+
   DeleteStatisticParams({this.statistic});
 }

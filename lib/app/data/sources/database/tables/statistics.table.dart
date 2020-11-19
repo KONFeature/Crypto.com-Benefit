@@ -5,9 +5,13 @@ import 'package:moor/moor.dart';
 @DataClassName("StatisticEntity")
 class StatisticTable extends Table {
   IntColumn get id => integer().autoIncrement()();
+
   TextColumn get name => text().customConstraint('UNIQUE')();
+
   IntColumn get priority => integer().nullable()();
+
   DateTimeColumn get createdTimestamp => dateTime()();
+
   IntColumn get filterId => integer().customConstraint(
       "REFERENCES filter_table(id) ON UPDATE CASCADE ON DELETE SET NULL")();
 }
@@ -23,6 +27,7 @@ class FilterTable extends Table {
 class FilterTransactionKindTable extends Table {
   IntColumn get filterId => integer().customConstraint(
       "NOT NULL REFERENCES filter_table(id) ON UPDATE CASCADE ON DELETE CASCADE")();
+
   IntColumn get kindId => integer().customConstraint(
       "NOT NULL REFERENCES transaction_kinds_table(id) ON UPDATE CASCADE ON DELETE CASCADE")();
 
@@ -35,6 +40,7 @@ class FilterTransactionKindTable extends Table {
 class FilterFileTypeTable extends Table {
   IntColumn get filterId => integer().customConstraint(
       "NOT NULL REFERENCES filter_table(id) ON UPDATE CASCADE ON DELETE CASCADE")();
+
   IntColumn get fileType => intEnum<FileType>()();
 
   @override
