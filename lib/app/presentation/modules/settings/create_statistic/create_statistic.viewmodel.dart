@@ -93,15 +93,13 @@ abstract class _CreateStatisticViewModelBase with Store {
   /// Update the selection status for a given file type
   @action
   updateTypeSelection(FileType type, bool isSelected) {
-    _typeSelected.update(type, (value) => isSelected,
-        ifAbsent: () => isSelected);
+    _typeSelected[type] = isSelected;
   }
 
   /// Update the selection status for a given file type
   @action
   updateKindSelection(TransactionKind kind, bool isSelected) {
-    _kindSelected.update(kind, (value) => isSelected,
-        ifAbsent: () => isSelected);
+    _kindSelected[kind] = isSelected;
   }
 
   /// The libelle for the go button
@@ -111,15 +109,16 @@ abstract class _CreateStatisticViewModelBase with Store {
   /// Launch the statistic creation
   launchStatisticCreateOrUpdate() async {
     // Extract all the kind selected
-    List<TransactionKind> selectedKinds = List();
+    final List<TransactionKind> selectedKinds = _kindSelected.keys
+        .where((kind) => _kindSelected[kind] ?? false)
+        .toList(growable: false);
     for (var kindEntry in _kindSelected.entries) {
       if (kindEntry.value) selectedKinds.add(kindEntry.key);
     }
     // Extract the types selected
-    List<FileType> selectedTypes = List();
-    for (var typeEntry in _typeSelected.entries) {
-      if (typeEntry.value) selectedTypes.add(typeEntry.key);
-    }
+    final List<FileType> selectedTypes = _typeSelected.keys
+        .where((type) => _typeSelected[type] ?? false)
+        .toList(growable: false);
     // Then perform the operation
     if (_statisticToUpdate == null) {
       await _launchStatisticCreation(selectedKinds, selectedTypes);

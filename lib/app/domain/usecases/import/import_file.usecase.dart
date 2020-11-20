@@ -18,10 +18,10 @@ class ImportFileUseCase implements BaseUseCase<void, ImportFileParams> {
   Future<void> execute(ImportFileParams params) async {
     // Check if we got a file path
     if (params.filePath == null || params.filePath.isEmpty)
-      throw new NoFileSelectedException();
+      throw NoFileSelectedException();
 
     // Get the file from the filepath
-    final csvFile = new File(params.filePath);
+    final csvFile = File(params.filePath);
 
     // Send the selected file to the repository for the import.
     final importFiledId = await _importFileRepository.importFile(csvFile);

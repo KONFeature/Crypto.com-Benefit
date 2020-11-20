@@ -1,5 +1,6 @@
 import 'package:crypto_benefit/app/domain/object/imported_file.dart';
 import 'package:crypto_benefit/app/domain/object/transaction_kind.dart';
+import 'package:flutter/foundation.dart';
 
 /// Simple class representing a the stats of transactions
 class Statistic {
@@ -12,7 +13,11 @@ class Statistic {
   /// The filter to get the transaction matching this statistic
   final Filter filter;
 
-  Statistic({this.id, this.name, this.filter});
+  Statistic({
+    @required this.id,
+    @required this.name,
+    this.filter,
+  });
 }
 
 /// Simple class representing a transaction filter for a statistic
@@ -27,8 +32,8 @@ class Filter {
   final List<FileType> fileTypes;
 
   Filter({
-    this.id,
-    this.kinds,
-    this.fileTypes,
+    @required this.id,
+    @required this.kinds,
+    @required this.fileTypes,
   });
 }

@@ -26,21 +26,20 @@ class ComputeStatisticChartUseCase
       double totalAmount = 0.0;
 
       // Map each transactions into a chart spot
-      final List<StatisticChartSpot> spots = List();
-      transactionList.forEach((transaction) {
+      final List<StatisticChartSpot> spots = transactionList.map((transaction) {
         // Increase the total amount
         totalAmount += transaction.usdAmount;
 
         // Create and return the stat chart spot
-        spots.add(StatisticChartSpot(
-          transaction.timestamp.millisecondsSinceEpoch.toDouble(),
-          transaction.usdAmount,
-          totalAmount,
-        ));
-      });
+        return StatisticChartSpot(
+          timestamp: transaction.timestamp.millisecondsSinceEpoch.toDouble(),
+          amountUsd: transaction.usdAmount,
+          totalAmountUsd: totalAmount,
+        );
+      }).toList(growable: false);
 
       // Then create our statistic chart
-      return StatisticChart(params.computedStatistic, spots);
+      return StatisticChart(statistic: params.computedStatistic, spots: spots);
     });
   }
 }

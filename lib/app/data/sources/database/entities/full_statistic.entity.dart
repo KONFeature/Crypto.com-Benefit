@@ -10,8 +10,13 @@ class FullStatisticEntity {
 
   final FullFilterEntity filterEntity;
 
-  FullStatisticEntity(this.id, this.name, this.priority, this.createdTimestamp,
-      this.filterEntity);
+  FullStatisticEntity(
+    this.id,
+    this.name,
+    this.priority,
+    this.createdTimestamp,
+    this.filterEntity,
+  );
 
   FullStatisticEntity.fromStat(StatisticEntity statEntity, this.filterEntity)
       : this.id = statEntity.id,
@@ -26,5 +31,9 @@ class FullFilterEntity {
   final List<TransactionKindEntity> transactionKindEntities;
   final List<FileType> fileTypes;
 
-  FullFilterEntity(this.id, this.transactionKindEntities, this.fileTypes);
+  FullFilterEntity(
+    this.id,
+    this.transactionKindEntities,
+    this.fileTypes,
+  );
 }

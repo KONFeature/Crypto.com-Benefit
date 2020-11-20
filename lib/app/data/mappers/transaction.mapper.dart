@@ -12,7 +12,7 @@ class TransactionMapper {
   /// Map a single csv row to a CsvTransaction
   TransactionEntity fromCsvRowToEntity(
           List<dynamic> csvRow, int fileId, int kindId) =>
-      new TransactionEntity(
+      TransactionEntity(
         id: null,
         fileId: fileId,
         timestamp: _getDateTime(csvRow[0]),
@@ -54,7 +54,7 @@ class TransactionMapper {
   /// Map list of transactions from entities
   Future<Iterable<Transaction>> fromEntities(
       Iterable<TransactionEntity> transactionEntities) async {
-    final List<Transaction> result = new List();
+    final List<Transaction> result = List();
     for (var transactionEntity in transactionEntities.toList()) {
       result.add(await fromEntity(transactionEntity));
     }
@@ -68,7 +68,7 @@ class TransactionMapper {
     // Fetch and map the associated transaction kind
     final TransactionKindEntity transactionKindEntity =
         await _transactionKindsDao.getbyId(transactionEntity.kindId);
-    final TransactionKind transactionKind = new TransactionKind(
+    final TransactionKind transactionKind = TransactionKind(
         id: transactionKindEntity.id, name: transactionKindEntity.name);
 
     // Build the transaction from the entity

@@ -11,7 +11,7 @@ class TransactionKindMapper {
   /// Map a transaction kind from entity
   TransactionKind fromEntity(TransactionKindEntity transactionKindEntity) {
     if (transactionKindEntity == null) return null;
-    return new TransactionKind(
+    return TransactionKind(
         id: transactionKindEntity.id, name: transactionKindEntity.name);
   }
 }

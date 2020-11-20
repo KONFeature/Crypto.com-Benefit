@@ -1,4 +1,5 @@
 import 'package:crypto_benefit/app/domain/object/transaction_kind.dart';
+import 'package:flutter/foundation.dart';
 
 /// Simple class representing our transaction
 class Transaction {
@@ -17,18 +18,18 @@ class Transaction {
   final TransactionKind kind;
 
   Transaction({
-    this.id,
-    this.fileId,
-    this.timestamp,
+    @required this.id,
+    @required this.fileId,
+    @required this.timestamp,
     this.description,
-    this.sourceCurrency,
-    this.sourceAmount,
+    @required this.sourceCurrency,
+    @required this.sourceAmount,
     this.toCurrency,
     this.toAmount,
-    this.nativeCurrency,
-    this.nativeAmount,
-    this.usdAmount,
-    this.rawKind,
+    @required this.nativeCurrency,
+    @required this.nativeAmount,
+    @required this.usdAmount,
+    @required this.rawKind,
     this.kind,
   });
 }

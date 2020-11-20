@@ -27,7 +27,7 @@ class TransactionKindsDao extends DatabaseAccessor<AppDatabase>
     }
 
     // Create a new one if we havn't founded it
-    final transactionKind = new TransactionKindEntity(id: null, name: name);
+    final transactionKind = TransactionKindEntity(id: null, name: name);
     final rowId = await into(transactionKindsTable)
         .insertOnConflictUpdate(transactionKind);
     print('Inserted the $name transaction kinds at row id $rowId');

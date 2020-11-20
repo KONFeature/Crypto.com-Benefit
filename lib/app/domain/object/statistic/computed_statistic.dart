@@ -1,4 +1,5 @@
 import 'package:crypto_benefit/app/domain/object/statistic/statistic.dart';
+import 'package:flutter/foundation.dart';
 
 /// Simple class representing a computed stats object
 class ComputedStatistic extends Statistic {
@@ -11,11 +12,11 @@ class ComputedStatistic extends Statistic {
 
   /// Constructors
   ComputedStatistic({
-    Statistic stat,
-    this.transactionsCount,
-    this.totalNativeAmount,
-    this.totalUsdAmount,
-    this.positiveUsdAmount,
-    this.negativeUsdAmount,
+    @required Statistic stat,
+    @required this.transactionsCount,
+    @required this.totalNativeAmount,
+    @required this.totalUsdAmount,
+    @required this.positiveUsdAmount,
+    @required this.negativeUsdAmount,
   }) : super(id: stat.id, name: stat.name, filter: stat.filter);
 }

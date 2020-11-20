@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 /// Class representing a spot on the statistic chart
 class StatisticChartSpot {
   final double timestamp;
@@ -6,5 +8,9 @@ class StatisticChartSpot {
 
   final double totalAmountUsd;
 
-  StatisticChartSpot(this.timestamp, this.amountUsd, this.totalAmountUsd);
+  StatisticChartSpot({
+    @required this.timestamp,
+    @required this.amountUsd,
+    @required this.totalAmountUsd,
+  });
 }

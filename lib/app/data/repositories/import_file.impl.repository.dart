@@ -33,14 +33,14 @@ class ImportFileRepository implements IImportFileRepository {
 
     // Check we don't already have a file imported with this filename
     if (await _importedFilesDao.isFilenameAlreadyPresent(filename))
-      throw new FileAlreadyImportedException();
+      throw FileAlreadyImportedException();
 
     // Get the type and generated timestamp of the file from the filename
     final type = _getFileTypeFromFilename(filename);
     final generatedTimeStamp = _getGeneratedTimestampFromFilename(filename);
 
     // Build the entity
-    final importedFile = new ImportedFileEntity(
+    final importedFile = ImportedFileEntity(
         id: null,
         filename: filename,
         type: type,
@@ -60,7 +60,7 @@ class ImportFileRepository implements IImportFileRepository {
       if (filenameRegex.hasMatch(filename)) return typeFilenameEntry.key;
     }
     // If we got here we throw an exception
-    throw new UnableToReadFileTypeException();
+    throw UnableToReadFileTypeException();
   }
 
   /// Get the generated timestamp of a file from it's filename
@@ -70,14 +70,14 @@ class ImportFileRepository implements IImportFileRepository {
         caseSensitive: false, multiLine: false);
     // If we havn't any match in our filename for the specified timestamp we throw an exception
     if (!generatedTimeRegex.hasMatch(filename))
-      throw new UnableToReadGeneratedTimestampException();
+      throw UnableToReadGeneratedTimestampException();
     // Extract the matching group of our regex and parse it to datetime
     final generatedTimeString =
         generatedTimeRegex.firstMatch(filename).group(1);
     final parsedDate = DateTime.parse(generatedTimeString.replaceAll('_', 'T'));
 
     // If we arn't able to parse the date we throw an exception
-    if (parsedDate == null) throw new UnableToReadGeneratedTimestampException();
+    if (parsedDate == null) throw UnableToReadGeneratedTimestampException();
     // Else return it
     return parsedDate;
   }

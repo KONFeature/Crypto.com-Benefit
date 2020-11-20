@@ -18,12 +18,12 @@ class TransactionRepository implements ITransactionRepository {
   /// Import CSV rows from imported file to transaction entity
   Future<void> importFromCsv(List<List<dynamic>> csvRows, int fileId,
       Map<dynamic, int> kindsId) async {
-    final List<TransactionEntity> transactionEntities = new List();
+    final List<TransactionEntity> transactionEntities = List();
     for (final csvRow in csvRows) {
       // Get the transaction kind matching the csv entry (throw exception if we didn't find it)
       var rawTransactionKind = csvRow[9];
       if (!kindsId.containsKey(rawTransactionKind))
-        throw new UnableToDetermineTransactionKind();
+        throw UnableToDetermineTransactionKind();
 
       // Fetch the transaction kind id
       var kindId = kindsId[rawTransactionKind];

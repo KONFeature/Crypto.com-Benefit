@@ -6,7 +6,7 @@ import 'colors.dart' as colors;
 /// Light theme of our app
 final ThemeData lightTheme = ThemeData(
   brightness: Brightness.light,
-  primarySwatch: colors.primarySwatch,
+  primarySwatch: colors.primarySwatch as MaterialColor,
   visualDensity: VisualDensity.adaptivePlatformDensity,
 );
 

@@ -1,4 +1,5 @@
 import 'package:crypto_benefit/app/domain/object/statistic/computed_statistic.dart';
+import 'package:flutter/foundation.dart';
 
 import 'statistic_chart_spot.dart';
 
@@ -10,5 +11,8 @@ class StatisticChart {
   /// All the spot for our chart
   final Iterable<StatisticChartSpot> spots;
 
-  StatisticChart(this.statistic, this.spots);
+  StatisticChart({
+    @required this.statistic,
+    @required this.spots,
+  });
 }

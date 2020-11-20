@@ -38,9 +38,9 @@ final GetIt inject = GetIt.I;
 /// Setup the dependency injection
 Future<void> setupInjection() async {
   // Database
-  inject.registerLazySingleton(() => new AppDatabase());
+  inject.registerLazySingleton(() => AppDatabase());
 
-  // Daos
+  // Dao's
   inject.registerLazySingleton<TransactionsDao>(
       () => inject<AppDatabase>().transactionsDao);
   inject.registerLazySingleton<ImportedFilesDao>(
@@ -51,48 +51,48 @@ Future<void> setupInjection() async {
       () => inject<AppDatabase>().statisticsDao);
 
   // Mappers
-  inject.registerLazySingleton(() => new ImportedFileMapper());
-  inject.registerLazySingleton(() => new TransactionMapper());
-  inject.registerLazySingleton(() => new TransactionKindMapper());
-  inject.registerLazySingleton(() => new StatisticMapper());
+  inject.registerLazySingleton(() => ImportedFileMapper());
+  inject.registerLazySingleton(() => TransactionMapper());
+  inject.registerLazySingleton(() => TransactionKindMapper());
+  inject.registerLazySingleton(() => StatisticMapper());
 
   // Repositories
   inject.registerLazySingleton<ITransactionRepository>(
-      () => new TransactionRepository());
+      () => TransactionRepository());
   inject.registerLazySingleton<IImportFileRepository>(
-      () => new ImportFileRepository());
+      () => ImportFileRepository());
   inject.registerLazySingleton<ITransactionKindRepository>(
-      () => new TransactionKindRepository());
-  inject.registerLazySingleton<IStatisticRepository>(
-      () => new StatisticRepository());
+      () => TransactionKindRepository());
+  inject
+      .registerLazySingleton<IStatisticRepository>(() => StatisticRepository());
 
   // Use Cases
   await setupUseCases();
 
   // ViewModels
-  inject.registerLazySingleton(() => new HomeViewModel());
-  inject.registerLazySingleton(() => new ImportViewModel());
-  inject.registerLazySingleton(() => new DashboardViewModel());
-  inject.registerLazySingleton(() => new SettingsViewModel());
-  inject.registerLazySingleton(() => new StatDetailViewModel());
+  inject.registerLazySingleton(() => HomeViewModel());
+  inject.registerLazySingleton(() => ImportViewModel());
+  inject.registerLazySingleton(() => DashboardViewModel());
+  inject.registerLazySingleton(() => SettingsViewModel());
+  inject.registerLazySingleton(() => StatDetailViewModel());
 }
 
 Future<void> setupUseCases() async {
   // Import Use Cases
-  inject.registerLazySingleton(() => new ImportFileUseCase());
-  inject.registerLazySingleton(() => new ClearImportsUseCase());
-  inject.registerLazySingleton(() => new WatchImportedFileUseCase());
+  inject.registerLazySingleton(() => ImportFileUseCase());
+  inject.registerLazySingleton(() => ClearImportsUseCase());
+  inject.registerLazySingleton(() => WatchImportedFileUseCase());
 
   // Settings Use Cases
-  inject.registerLazySingleton(() => new WatchStatisticsUseCase());
-  inject.registerLazySingleton(() => new GetTransactionKindsUseCase());
-  inject.registerLazySingleton(() => new CreateStatisticUseCase());
-  inject.registerLazySingleton(() => new UpdateStatisticUseCase());
-  inject.registerLazySingleton(() => new DeleteStatisticUseCase());
+  inject.registerLazySingleton(() => WatchStatisticsUseCase());
+  inject.registerLazySingleton(() => GetTransactionKindsUseCase());
+  inject.registerLazySingleton(() => CreateStatisticUseCase());
+  inject.registerLazySingleton(() => UpdateStatisticUseCase());
+  inject.registerLazySingleton(() => DeleteStatisticUseCase());
 
   // Dashboard use case
-  inject.registerLazySingleton(() => new WatchComputedStatsUseCase());
+  inject.registerLazySingleton(() => WatchComputedStatsUseCase());
 
   // Statistic detail use case
-  inject.registerLazySingleton(() => new ComputeStatisticChartUseCase());
+  inject.registerLazySingleton(() => ComputeStatisticChartUseCase());
 }
