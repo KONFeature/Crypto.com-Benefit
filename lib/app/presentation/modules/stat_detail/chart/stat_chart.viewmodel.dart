@@ -80,8 +80,7 @@ abstract class _StatChartViewModelBase with Store {
         }));
     final minAmount = amountList.reduce(min);
     final maxAmount = amountList.reduce(max);
-    print("min $minAmount, max $maxAmount");
-    return (maxAmount - minAmount) / 10;
+    return (maxAmount - minAmount) / 6;
   }
 
   @computed
@@ -111,6 +110,7 @@ abstract class _StatChartViewModelBase with Store {
 
   @action
   selectAmountType(AmountType type, bool isSelected) {
+    // TODO : Assert we got at least one value checked
     amountSelected[type] = isSelected;
   }
 }

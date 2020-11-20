@@ -1,7 +1,9 @@
 import 'package:crypto_benefit/app/domain/object/statistic/computed_statistic.dart';
 import 'package:crypto_benefit/app/presentation/widget/selectable_item.widget.dart';
+import 'package:crypto_benefit/core/values/animations.dart';
 import 'package:crypto_benefit/core/values/dimens.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:intl/intl.dart';
@@ -21,7 +23,9 @@ class StatChardWidget extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) => Column(
+  Widget build(BuildContext context) => Wrap(
+        spacing: double.infinity,
+        alignment: WrapAlignment.center,
         children: [
           // The cart itself
           Observer(
@@ -42,68 +46,74 @@ class StatChardWidget extends StatelessWidget {
   /// Widget display the chart itself
   Widget chart(BuildContext context) {
     final typesToDisplay = vm.amountSelected.keys;
-    return LineChart(
-      LineChartData(
-        lineBarsData: typesToDisplay
-            .where((type) =>
-                vm.statSpotsByType[type] != null &&
-                vm.statSpotsByType[type].isNotEmpty)
-            .map(
-              (type) => LineChartBarData(
-                spots: vm.statSpotsByType[type],
-                colors: [Theme.of(context).accentColor],
-                barWidth: 2,
-                isStrokeCapRound: true,
-                isCurved: true,
-                dotData: FlDotData(show: false),
-              ),
-            )
-            .toList(),
-        lineTouchData: LineTouchData(
-          touchTooltipData: LineTouchTooltipData(
-            tooltipBgColor: Colors.blueGrey.withOpacity(0.8),
-            tooltipRoundedRadius: cardBorderRadius,
-            getTooltipItems: (touchedSpots) {
-              if (touchedSpots == null) {
-                return null;
-              }
+    return AspectRatio(
+      aspectRatio: 2.5,
+      child: Container(
+        child: LineChart(
+          LineChartData(
+            lineBarsData: typesToDisplay
+                .where((type) =>
+                    vm.statSpotsByType[type] != null &&
+                    vm.statSpotsByType[type].isNotEmpty)
+                .map(
+                  (type) => LineChartBarData(
+                    spots: vm.statSpotsByType[type],
+                    colors: [Theme.of(context).accentColor],
+                    barWidth: 2,
+                    isStrokeCapRound: true,
+                    isCurved: false,
+                    dotData: FlDotData(show: false),
+                  ),
+                )
+                .toList(),
+            lineTouchData: LineTouchData(
+              touchTooltipData: LineTouchTooltipData(
+                tooltipBgColor: Colors.blueGrey.withOpacity(0.8),
+                tooltipRoundedRadius: cardBorderRadius,
+                getTooltipItems: (touchedSpots) {
+                  if (touchedSpots == null) {
+                    return null;
+                  }
 
-              return touchedSpots.map((LineBarSpot touchedSpot) {
-                if (touchedSpot == null) {
-                  return null;
-                }
-                final TextStyle textStyle = TextStyle(
-                  color: touchedSpot.bar.colors[0],
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                );
-                return LineTooltipItem(
-                    NumberFormat.compactCurrency(symbol: '\$')
-                        .format(touchedSpot.y),
-                    textStyle);
-              }).toList();
-            },
-          ),
-          handleBuiltInTouches: true,
-        ),
-        titlesData: FlTitlesData(
-          bottomTitles: _bottomChartTitle(),
-          leftTitles: _leftChartTitle(),
-        ),
-        borderData: FlBorderData(
-          show: true,
-          border: Border(
-            bottom: BorderSide(
-              color: Theme.of(context).colorScheme.background,
-              width: 4,
+                  return touchedSpots.map((LineBarSpot touchedSpot) {
+                    if (touchedSpot == null) {
+                      return null;
+                    }
+                    final TextStyle textStyle = TextStyle(
+                      color: touchedSpot.bar.colors[0],
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                    );
+                    return LineTooltipItem(
+                        NumberFormat.compactCurrency(symbol: '\$')
+                            .format(touchedSpot.y),
+                        textStyle);
+                  }).toList();
+                },
+              ),
+              handleBuiltInTouches: true,
             ),
-            left: BorderSide(
-              color: Theme.of(context).colorScheme.background,
-              width: 4,
+            titlesData: FlTitlesData(
+              bottomTitles: _bottomChartTitle(),
+              leftTitles: _leftChartTitle(),
             ),
-            right: BorderSide(color: Colors.transparent),
-            top: BorderSide(color: Colors.transparent),
+            borderData: FlBorderData(
+              show: true,
+              border: Border(
+                bottom: BorderSide(
+                  color: Theme.of(context).colorScheme.background,
+                  width: 4,
+                ),
+                left: BorderSide(
+                  color: Theme.of(context).colorScheme.background,
+                  width: 4,
+                ),
+                right: BorderSide(color: Colors.transparent),
+                top: BorderSide(color: Colors.transparent),
+              ),
+            ),
           ),
+          swapAnimationDuration: baseAnimationDuration,
         ),
       ),
     );
