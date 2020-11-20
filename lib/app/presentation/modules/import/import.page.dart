@@ -20,7 +20,7 @@ class ImportPage extends StatelessWidget with ImportWidget {
             buttons(context, () => vm.import(), () => vm.clearImports()),
             Observer(
               builder: (observerContext) =>
-                  error(observerContext, vm.errorMessage.value),
+                  error(observerContext, vm.errorMessage),
             ),
           ],
         ),

@@ -16,34 +16,19 @@ mixin _$DashboardViewModel on _DashboardViewModelBase, Store {
       (_$isLoadingComputed ??= Computed<bool>(() => super.isLoading,
               name: '_DashboardViewModelBase.isLoading'))
           .value;
-  Computed<Iterable<dynamic>> _$statsComputed;
+  Computed<Iterable<ComputedStatistic>> _$statisticsComputed;
 
   @override
-  Iterable<dynamic> get stats =>
-      (_$statsComputed ??= Computed<Iterable<dynamic>>(() => super.stats,
-              name: '_DashboardViewModelBase.stats'))
-          .value;
-
-  final _$_statsAtom = Atom(name: '_DashboardViewModelBase._stats');
-
-  @override
-  ObservableStream<Iterable<dynamic>> get _stats {
-    _$_statsAtom.reportRead();
-    return super._stats;
-  }
-
-  @override
-  set _stats(ObservableStream<Iterable<dynamic>> value) {
-    _$_statsAtom.reportWrite(value, super._stats, () {
-      super._stats = value;
-    });
-  }
+  Iterable<ComputedStatistic> get statistics => (_$statisticsComputed ??=
+          Computed<Iterable<ComputedStatistic>>(() => super.statistics,
+              name: '_DashboardViewModelBase.statistics'))
+      .value;
 
   @override
   String toString() {
     return '''
 isLoading: ${isLoading},
-stats: ${stats}
+statistics: ${statistics}
     ''';
   }
 }

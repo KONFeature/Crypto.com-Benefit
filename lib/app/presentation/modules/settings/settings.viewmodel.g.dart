@@ -16,29 +16,13 @@ mixin _$SettingsViewModel on _SettingsViewModelBase, Store {
       (_$isLoadingComputed ??= Computed<bool>(() => super.isLoading,
               name: '_SettingsViewModelBase.isLoading'))
           .value;
-  Computed<List<dynamic>> _$statisticsComputed;
+  Computed<List<Statistic>> _$statisticsComputed;
 
   @override
-  List<dynamic> get statistics =>
-      (_$statisticsComputed ??= Computed<List<dynamic>>(() => super.statistics,
+  List<Statistic> get statistics => (_$statisticsComputed ??=
+          Computed<List<Statistic>>(() => super.statistics,
               name: '_SettingsViewModelBase.statistics'))
-          .value;
-
-  final _$_statisticsStreamAtom =
-      Atom(name: '_SettingsViewModelBase._statisticsStream');
-
-  @override
-  ObservableStream<List<dynamic>> get _statisticsStream {
-    _$_statisticsStreamAtom.reportRead();
-    return super._statisticsStream;
-  }
-
-  @override
-  set _statisticsStream(ObservableStream<List<dynamic>> value) {
-    _$_statisticsStreamAtom.reportWrite(value, super._statisticsStream, () {
-      super._statisticsStream = value;
-    });
-  }
+      .value;
 
   @override
   String toString() {

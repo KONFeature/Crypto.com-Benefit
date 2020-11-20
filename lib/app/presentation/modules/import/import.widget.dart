@@ -7,42 +7,44 @@ import 'package:flutter/material.dart';
 class ImportWidget {
   /// The title of our page
   Widget title(BuildContext context) => Padding(
-      padding: EdgeInsets.all(margin),
-      child: Text(
-        'Manage csv files imported',
-        style: Theme.of(context).textTheme.headline5,
-        textAlign: TextAlign.center,
-      ));
+        padding: EdgeInsets.all(margin),
+        child: Text(
+          'Manage csv files imported',
+          style: Theme.of(context).textTheme.headline5,
+          textAlign: TextAlign.center,
+        ),
+      );
 
   /// Button to manage the imports
   Widget buttons(
           BuildContext context, VoidCallback import, VoidCallback clear) =>
       Padding(
-          padding: EdgeInsets.all(margin),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              FlatButton(
-                // Button to launch the csv import
-                onPressed: import,
-                color: Theme.of(context).primaryColor,
-                child: Text(
-                  'Import CSV',
-                  style: Theme.of(context).textTheme.button,
-                ),
+        padding: EdgeInsets.all(margin),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            FlatButton(
+              // Button to launch the csv import
+              onPressed: import,
+              color: Theme.of(context).primaryColor,
+              child: Text(
+                'Import CSV',
+                style: Theme.of(context).textTheme.button,
               ),
-              FlatButton(
-                // Button to clear all the previous imports
-                onPressed: clear,
-                color: Theme.of(context).colorScheme.error,
-                child: Text(
-                  'Clear imports',
-                  style: Theme.of(context).textTheme.button,
-                ),
+            ),
+            FlatButton(
+              // Button to clear all the previous imports
+              onPressed: clear,
+              color: Theme.of(context).colorScheme.error,
+              child: Text(
+                'Clear imports',
+                style: Theme.of(context).textTheme.button,
               ),
-            ],
-          ));
+            ),
+          ],
+        ),
+      );
 
   /// List of files imported
   Widget filesImported(
@@ -61,9 +63,10 @@ class ImportWidget {
         physics: BouncingScrollPhysics(),
         padding: EdgeInsets.all(padding),
         itemBuilder: (_, index) => Container(
-            child: ImportedFileCardWidget(
-          importedFile: importedFiles[index],
-        )),
+          child: ImportedFileCardWidget(
+            importedFile: importedFiles[index],
+          ),
+        ),
       );
 
   /// Widget to display when no files are imported

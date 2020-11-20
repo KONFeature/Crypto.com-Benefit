@@ -16,49 +16,32 @@ mixin _$CreateStatisticViewModel on _CreateStatisticViewModelBase, Store {
       (_$isKindLoadingComputed ??= Computed<bool>(() => super.isKindLoading,
               name: '_CreateStatisticViewModelBase.isKindLoading'))
           .value;
-  Computed<ObservableMap<FileType, bool>> _$typeSelectedComputed;
+  Computed<Map<FileType, bool>> _$typeSelectedComputed;
 
   @override
-  ObservableMap<FileType, bool> get typeSelected => (_$typeSelectedComputed ??=
-          Computed<ObservableMap<FileType, bool>>(() => super.typeSelected,
+  Map<FileType, bool> get typeSelected => (_$typeSelectedComputed ??=
+          Computed<Map<FileType, bool>>(() => super.typeSelected,
               name: '_CreateStatisticViewModelBase.typeSelected'))
       .value;
-  Computed<ObservableMap<TransactionKind, bool>> _$kindSelectedComputed;
+  Computed<Map<TransactionKind, bool>> _$kindSelectedComputed;
 
   @override
-  ObservableMap<TransactionKind, bool> get kindSelected =>
-      (_$kindSelectedComputed ??=
-              Computed<ObservableMap<TransactionKind, bool>>(
-                  () => super.kindSelected,
-                  name: '_CreateStatisticViewModelBase.kindSelected'))
-          .value;
-
-  final _$_kindsAtom = Atom(name: '_CreateStatisticViewModelBase._kinds');
-
-  @override
-  ObservableFuture<Iterable<TransactionKind>> get _kinds {
-    _$_kindsAtom.reportRead();
-    return super._kinds;
-  }
-
-  @override
-  set _kinds(ObservableFuture<Iterable<TransactionKind>> value) {
-    _$_kindsAtom.reportWrite(value, super._kinds, () {
-      super._kinds = value;
-    });
-  }
+  Map<TransactionKind, bool> get kindSelected => (_$kindSelectedComputed ??=
+          Computed<Map<TransactionKind, bool>>(() => super.kindSelected,
+              name: '_CreateStatisticViewModelBase.kindSelected'))
+      .value;
 
   final _$_typeSelectedAtom =
       Atom(name: '_CreateStatisticViewModelBase._typeSelected');
 
   @override
-  ObservableMap<FileType, bool> get _typeSelected {
+  Map<FileType, bool> get _typeSelected {
     _$_typeSelectedAtom.reportRead();
     return super._typeSelected;
   }
 
   @override
-  set _typeSelected(ObservableMap<FileType, bool> value) {
+  set _typeSelected(Map<FileType, bool> value) {
     _$_typeSelectedAtom.reportWrite(value, super._typeSelected, () {
       super._typeSelected = value;
     });
@@ -68,13 +51,13 @@ mixin _$CreateStatisticViewModel on _CreateStatisticViewModelBase, Store {
       Atom(name: '_CreateStatisticViewModelBase._kindSelected');
 
   @override
-  ObservableMap<TransactionKind, bool> get _kindSelected {
+  Map<TransactionKind, bool> get _kindSelected {
     _$_kindSelectedAtom.reportRead();
     return super._kindSelected;
   }
 
   @override
-  set _kindSelected(ObservableMap<TransactionKind, bool> value) {
+  set _kindSelected(Map<TransactionKind, bool> value) {
     _$_kindSelectedAtom.reportWrite(value, super._kindSelected, () {
       super._kindSelected = value;
     });

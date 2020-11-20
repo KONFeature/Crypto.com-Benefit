@@ -25,25 +25,26 @@ class CreateStatisticModal extends StatelessWidget with CreateStatisticWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        child: ListView(
-      children: [
-        Row(
-          children: [
-            title(context),
-            Expanded(
-              child: Container(),
-            ),
-            IconButton(
-              icon: Icon(Icons.close),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            )
-          ],
-        ),
-        Form(key: _formKey, child: _formContent(context)),
-      ],
-    ));
+      child: ListView(
+        children: [
+          Row(
+            children: [
+              title(context),
+              Expanded(
+                child: Container(),
+              ),
+              IconButton(
+                icon: Icon(Icons.close),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              )
+            ],
+          ),
+          Form(key: _formKey, child: _formContent(context)),
+        ],
+      ),
+    );
   }
 
   /// Get the content for our form
@@ -57,12 +58,12 @@ class CreateStatisticModal extends StatelessWidget with CreateStatisticWidget {
               builder: (observerContext) => typesSelection(observerContext)),
           // List of available kinds
           ExpandablePanel(
-              theme: getExpandableTheme(context),
-              header:
-                  partTitle(context, 'Transaction kinds for your statistic'),
-              expanded: Observer(
-                builder: (observerContext) => kindsSelection(context),
-              )),
+            theme: getExpandableTheme(context),
+            header: partTitle(context, 'Transaction kinds for your statistic'),
+            expanded: Observer(
+              builder: (observerContext) => kindsSelection(context),
+            ),
+          ),
           // kindsSelection(context),
           // Button to submit the statistic creation
           _submitButton(context),

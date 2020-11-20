@@ -1,3 +1,4 @@
+import 'package:crypto_benefit/app/domain/object/statistic/computed_statistic.dart';
 import 'package:crypto_benefit/app/presentation/modules/dashboard/dashboard.viewmodel.dart';
 import 'package:crypto_benefit/app/presentation/modules/dashboard/dashboard.widget.dart';
 import 'package:crypto_benefit/core/di/injector_provider.dart';
@@ -17,9 +18,15 @@ class DashboardPage extends StatelessWidget with DashboardWidget {
             Observer(
               builder: (observerContext) => vm.isLoading
                   ? loading(observerContext)
-                  : statistics(observerContext, vm.stats),
+                  : _displayStatistics(observerContext, vm.statistics),
             ),
           ],
         ),
       );
+
+  /// Show a list of statistics or no statistics
+  Widget _displayStatistics(BuildContext context, Iterable<ComputedStatistic> stats) =>
+      stats != null && stats.length > 0
+          ? statisticsWidget(context, stats.toList())
+          : noStatistics(context);
 }

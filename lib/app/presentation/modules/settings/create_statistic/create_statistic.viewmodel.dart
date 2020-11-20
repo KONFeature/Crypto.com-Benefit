@@ -26,7 +26,6 @@ abstract class _CreateStatisticViewModelBase with Store {
   /// Valid char for statistic name
   static final _validCharactersForName = RegExp(r'^[a-zA-Z0-9 ]+$');
 
-  @observable
   ObservableFuture<Iterable<TransactionKind>> _kinds;
 
   @computed
@@ -34,17 +33,17 @@ abstract class _CreateStatisticViewModelBase with Store {
 
   /// Map telling us if a file type is selected or not
   @observable
-  ObservableMap<FileType, bool> _typeSelected = ObservableMap();
+  Map<FileType, bool> _typeSelected = ObservableMap();
 
   @computed
-  ObservableMap<FileType, bool> get typeSelected => _typeSelected;
+  Map<FileType, bool> get typeSelected => _typeSelected;
 
   /// Map telling us if a kinds is selected or not
   @observable
-  ObservableMap<TransactionKind, bool> _kindSelected = ObservableMap();
+  Map<TransactionKind, bool> _kindSelected = ObservableMap();
 
   @computed
-  ObservableMap<TransactionKind, bool> get kindSelected => _kindSelected;
+  Map<TransactionKind, bool> get kindSelected => _kindSelected;
 
   // Base statistic
   Statistic _statisticToUpdate;

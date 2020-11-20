@@ -37,10 +37,11 @@ abstract class StatDetailWidget {
 
   /// The title of our page
   Widget _headerTitle(BuildContext context, String text) => Padding(
-      padding: EdgeInsets.all(margin),
-      child: Text(
-        text,
-        style: Theme.of(context).textTheme.headline5,
-        textAlign: TextAlign.center,
-      ));
+        padding: EdgeInsets.all(margin),
+        child: Text(
+          text,
+          style: Theme.of(context).textTheme.headline5,
+          textAlign: TextAlign.center,
+        ),
+  );
 }

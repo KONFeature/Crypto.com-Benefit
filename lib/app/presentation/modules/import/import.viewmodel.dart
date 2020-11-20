@@ -1,3 +1,4 @@
+import 'package:crypto_benefit/app/domain/object/imported_file.dart';
 import 'package:crypto_benefit/app/domain/usecases/import/clear_imports.usecase.dart';
 import 'package:crypto_benefit/app/domain/usecases/import/import_file.usecase.dart';
 import 'package:crypto_benefit/app/domain/usecases/import/watch_imported_files.usecase.dart';
@@ -20,11 +21,10 @@ abstract class _ImportViewModelBase with Store {
   /// Use case to clear and all the imported use case
   final _clearImportUseCase = inject<ClearImportsUseCase>();
 
-  @observable
-  ObservableStream<Iterable> importedFilesStream;
+  ObservableStream<Iterable<ImportedFile>> importedFilesStream;
 
   @observable
-  Observable<String> errorMessage = Observable(null);
+  String errorMessage;
 
   _ImportViewModelBase() {
     // Listen to our imported file stream
@@ -33,6 +33,8 @@ abstract class _ImportViewModelBase with Store {
 
   @action
   import() async {
+    // Clear the previous error message when launching a new import
+    errorMessage = null;
     // TODO : Try catch or onError ?
     // Launch file picking actions
     FlutterDocumentPickerParams filePickerParams = FlutterDocumentPickerParams(
@@ -47,7 +49,7 @@ abstract class _ImportViewModelBase with Store {
       await _importFileUseCase.execute(ImportFileParams(filePath: csvFilePath));
     } catch (exception) {
       print("Error occured during the file import $exception");
-      errorMessage.value =
+      errorMessage =
           "Error occured during the import of type : ${exception.runtimeType}";
     }
   }

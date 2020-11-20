@@ -14,11 +14,12 @@ mixin HomeWidget {
   BottomAppBar bottomBar(BuildContext context) => BottomAppBar(
         notchMargin: notchMargin,
         child: Observer(
-            builder: (observableContext) => Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: _appBarButtons(observableContext),
-                )),
+          builder: (observableContext) => Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: _appBarButtons(observableContext),
+          ),
+        ),
       );
 
   /// Get our app bars buttons
@@ -29,26 +30,28 @@ mixin HomeWidget {
 
   /// Get the right icon for the given page.
   Widget _buttonForPage(BuildContext context, TabPages page) => MaterialButton(
-      padding: EdgeInsets.all(margin),
-      onPressed: () {
-        // Send the event to the view model
-        vm.onTabPageClicked(page);
-      },
-      child: AnimatedOpacity(
-        opacity: vm.currentPage == page ? 1.0 : 0.3,
-        duration: baseAnimationDuration,
-        child: _buttonContentForPage(context, page),
-      ));
+        padding: EdgeInsets.all(margin),
+        onPressed: () {
+          // Send the event to the view model
+          vm.onTabPageClicked(page);
+        },
+        child: AnimatedOpacity(
+          opacity: vm.currentPage == page ? 1.0 : 0.3,
+          duration: baseAnimationDuration,
+          child: _buttonContentForPage(context, page),
+        ),
+      );
 
   /// Create the content of a button for a given pages
   Widget _buttonContentForPage(BuildContext context, TabPages page) => Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(page.icon),
-            Text(
-              page.title,
-              style: Theme.of(context).textTheme.button,
-            )
-          ]);
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(page.icon),
+          Text(
+            page.title,
+            style: Theme.of(context).textTheme.button,
+          )
+        ],
+      );
 }

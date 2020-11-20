@@ -11,26 +11,29 @@ abstract class CreateStatisticWidget {
 
   /// The title of our page
   Widget title(BuildContext context) => Padding(
-      padding: EdgeInsets.all(margin),
-      child: Text('Create statistic',
-          style: Theme.of(context).textTheme.headline6,
-          textAlign: TextAlign.start));
+        padding: EdgeInsets.all(margin),
+        child: Text('Create statistic',
+            style: Theme.of(context).textTheme.headline6,
+            textAlign: TextAlign.start),
+      );
 
   /// The title of our page
   Widget partTitle(BuildContext context, String partTitle) => Padding(
-      padding: EdgeInsets.all(margin),
-      child: Text(partTitle,
-          style: Theme.of(context).textTheme.subtitle1,
-          textAlign: TextAlign.start));
+        padding: EdgeInsets.all(margin),
+        child: Text(partTitle,
+            style: Theme.of(context).textTheme.subtitle1,
+            textAlign: TextAlign.start),
+      );
 
   /// Widget for the statistic name
   Widget statisticNameInput(BuildContext context) => Padding(
-      padding: EdgeInsets.all(margin),
-      child: TextFormField(
-        initialValue: getVm().initialStatName,
-        decoration: InputDecoration(labelText: 'Statistic name'),
-        validator: (value) => getVm().validateStatName(value),
-      ));
+        padding: EdgeInsets.all(margin),
+        child: TextFormField(
+          initialValue: getVm().initialStatName,
+          decoration: InputDecoration(labelText: 'Statistic name'),
+          validator: (value) => getVm().validateStatName(value),
+        ),
+      );
 
   /// Widget use to let the user select types for his statistics
   Widget typesSelection(BuildContext context) {
@@ -38,13 +41,15 @@ abstract class CreateStatisticWidget {
     return Wrap(
       alignment: WrapAlignment.spaceEvenly,
       children: types
-          .map((type) => SelectableItemWidget(
-                text: type.name,
-                isSelected: getVm().typeSelected[type],
-                onChanged: (isSelected) {
-                  getVm().updateTypeSelection(type, isSelected);
-                },
-              ))
+          .map(
+            (type) => SelectableItemWidget(
+              text: type.name,
+              isSelected: getVm().typeSelected[type],
+              onChanged: (isSelected) {
+                getVm().updateTypeSelection(type, isSelected);
+              },
+            ),
+          )
           .toList(),
     );
   }
@@ -68,13 +73,15 @@ abstract class CreateStatisticWidget {
     return Wrap(
       alignment: WrapAlignment.spaceEvenly,
       children: kinds
-          .map((kind) => SelectableItemWidget(
-                text: kind.name,
-                isSelected: getVm().kindSelected[kind],
-                onChanged: (isSelected) {
-                  getVm().updateKindSelection(kind, isSelected);
-                },
-              ))
+          .map(
+            (kind) => SelectableItemWidget(
+              text: kind.name,
+              isSelected: getVm().kindSelected[kind],
+              onChanged: (isSelected) {
+                getVm().updateKindSelection(kind, isSelected);
+              },
+            ),
+          )
           .toList(),
     );
   }

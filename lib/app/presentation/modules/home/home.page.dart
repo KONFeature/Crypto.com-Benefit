@@ -11,17 +11,19 @@ import 'package:flutter/material.dart';
 class HomePage extends StatelessWidget with HomeWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
-      extendBody: false,
-      bottomNavigationBar: bottomBar(context),
-      body: _body(context));
+        extendBody: false,
+        bottomNavigationBar: bottomBar(context),
+        body: _body(context),
+      );
 
   /// The main body of the app.
   Widget _body(BuildContext context) => SafeArea(
-          child: Navigator(
-        key: vm.navigatorKey,
-        initialRoute: CryptoBenefitRoutes.home,
-        onGenerateRoute: (settings) => _generateRoute(context, settings),
-      ));
+        child: Navigator(
+          key: vm.navigatorKey,
+          initialRoute: CryptoBenefitRoutes.home,
+          onGenerateRoute: (settings) => _generateRoute(context, settings),
+        ),
+      );
 
   // Create the page for a given route
   PageRoute _generateRoute(BuildContext context, RouteSettings settings) {

@@ -18,7 +18,11 @@ class BaseCardWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(cardBorderRadius),
         child: Padding(
           padding: EdgeInsets.all(margin),
-          child: Column(
+          child: Wrap(
+            crossAxisAlignment: WrapCrossAlignment.center,
+            alignment: WrapAlignment.center,
+            spacing: double.infinity,
+            runAlignment: WrapAlignment.spaceEvenly,
             children: children,
           ),
         ),

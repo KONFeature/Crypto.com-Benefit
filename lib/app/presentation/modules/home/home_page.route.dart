@@ -14,5 +14,5 @@ class HomePageRoute extends MaterialPageRoute<String> {
         );
 
   @override
-  Duration get transitionDuration => const Duration(milliseconds: 2000);
+  Duration get transitionDuration => const Duration(milliseconds: 500);
 }

@@ -17,58 +17,56 @@ class DashboardWidget {
 
   /// The title of our page
   Widget title(BuildContext context) => Padding(
-      padding: EdgeInsets.all(margin),
-      child: Text(
-        'Dashboard',
-        style: Theme.of(context).textTheme.headline5,
-        textAlign: TextAlign.center,
-      ));
-
-  /// List of kind stats
-  Widget statistics(BuildContext context, Iterable<ComputedStatistic> stats) =>
-      stats != null && stats.length > 0
-          ? _statisticsWidget(context, stats.toList())
-          : _noStats(context);
-
-  /// Widget containing the stats imported for transaction kind
-  Widget _statisticsWidget(
-          BuildContext context, List<ComputedStatistic> stats) =>
-      GridView.builder(
-        itemCount: stats.length,
-        gridDelegate:
-            SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        padding: EdgeInsets.all(padding),
-        physics: BouncingScrollPhysics(),
-        itemBuilder: (_, index) {
-          final stat = stats[index];
-          return Container(
-            child: ComputedStatCardWidget(
-              onTap: () {
-                homeVm.goToStatDetail(stat);
-              },
-              computedStat: stat,
-            ),
-          );
-        },
+        padding: EdgeInsets.all(margin),
+        child: Text(
+          'Dashboard',
+          style: Theme.of(context).textTheme.headline5,
+          textAlign: TextAlign.center,
+        ),
       );
 
+  /// Grid that will contain all of our widget
+  Widget _statisticsContainer(BuildContext context, List<Widget> children) =>
+      OrientationBuilder(
+        builder: (context, orientation) => GridView.count(
+          crossAxisCount:
+              MediaQuery.of(context).orientation == Orientation.portrait
+                  ? 2
+                  : 3,
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          padding: EdgeInsets.all(padding),
+          physics: BouncingScrollPhysics(),
+          children: children,
+        ),
+      );
+
+  /// Widget containing the stats imported for transaction kind
+  Widget statisticsWidget(
+          BuildContext context, List<ComputedStatistic> stats) =>
+      _statisticsContainer(
+          context,
+          stats
+              .map(
+                (stat) => Container(
+                  child: ComputedStatCardWidget(
+                    onTap: () {
+                      homeVm.goToStatDetail(stat);
+                    },
+                    computedStat: stat,
+                  ),
+                ),
+              )
+              .toList());
+
   /// Widget to display when no transaction are present
-  Widget _noStats(BuildContext context) => Text(
+  Widget noStatistics(BuildContext context) => Text(
         'No statistics founded, you can create new one in the settings page.',
         style: Theme.of(context).textTheme.bodyText2,
-        textAlign: TextAlign.center,
+    textAlign: TextAlign.center,
       );
 
   /// The loading widget to display
-  Widget loading(BuildContext context) => GridView.builder(
-      itemCount: 2,
-      gridDelegate:
-          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
-      padding: EdgeInsets.all(padding),
-      physics: BouncingScrollPhysics(),
-      itemBuilder: (_, index) => Container(child: LoadingStatCardWidget()));
+  Widget loading(BuildContext context) =>
+      _statisticsContainer(context, [LoadingStatCardWidget()]);
 }

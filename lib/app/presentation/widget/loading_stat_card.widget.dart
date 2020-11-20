@@ -13,10 +13,11 @@ class LoadingStatCardWidget extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(vertical: padding),
             child: BaseShimmerWidget(
-                child: Text(
-              'Loading statistic title',
-              style: Theme.of(context).textTheme.bodyText1,
-            )),
+              child: Text(
+                'Loading statistic title',
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+            ),
           ),
           Divider(
             thickness: 1.0,
@@ -24,26 +25,30 @@ class LoadingStatCardWidget extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(vertical: padding),
             child: BaseShimmerWidget(
-                child: Text(
-              'XXX transactions',
-              style: Theme.of(context).textTheme.bodyText1,
-            )),
+              child: Text(
+                'XXX transactions',
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+            ),
           ),
           BaseShimmerWidget(
-              child: TransactionAmountTextWidget(
-            text: 'total',
-            amount: 0,
-          )),
+            child: TransactionAmountTextWidget(
+              text: 'total',
+              amount: 0,
+            ),
+          ),
           BaseShimmerWidget(
-              child: TransactionAmountTextWidget(
-            text: 'positive',
-            amount: 0,
-          )),
+            child: TransactionAmountTextWidget(
+              text: 'positive',
+              amount: 0,
+            ),
+          ),
           BaseShimmerWidget(
-              child: TransactionAmountTextWidget(
-            text: 'negative',
-            amount: 0,
-          )),
+            child: TransactionAmountTextWidget(
+              text: 'negative',
+              amount: 0,
+            ),
+          ),
         ],
       );
 }

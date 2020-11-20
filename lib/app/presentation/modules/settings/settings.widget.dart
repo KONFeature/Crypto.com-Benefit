@@ -12,21 +12,23 @@ class SettingsWidget {
 
   /// The title of our page
   Widget title(BuildContext context) => Padding(
-      padding: EdgeInsets.all(margin),
-      child: Text(
-        'Settings',
-        style: Theme.of(context).textTheme.headline5,
-        textAlign: TextAlign.center,
-      ));
+        padding: EdgeInsets.all(margin),
+        child: Text(
+          'Settings',
+          style: Theme.of(context).textTheme.headline5,
+          textAlign: TextAlign.center,
+        ),
+      );
 
   /// A part of the settings
   Widget partHeader(BuildContext context, String partName) => Padding(
-      padding: EdgeInsets.all(margin),
-      child: Text(
-        partName,
-        style: Theme.of(context).textTheme.headline6,
-        textAlign: TextAlign.center,
-      ));
+        padding: EdgeInsets.all(margin),
+        child: Text(
+          partName,
+          style: Theme.of(context).textTheme.headline6,
+          textAlign: TextAlign.center,
+        ),
+      );
 
   /// List of statistics
   Widget statistics(BuildContext context, List<Statistic> statistics) =>
@@ -46,12 +48,13 @@ class SettingsWidget {
           itemBuilder: (_, index) {
             final statistic = statistics[index];
             return Container(
-                child: StatisticSettingCardWidget(
-              statistic: statistic,
-              onEditClicked: () =>
-                  _showUpdateStatisticModal(context, statistic),
-              onDeleteClicked: () => vm.deleteStatistic(statistic),
-            ));
+              child: StatisticSettingCardWidget(
+                statistic: statistic,
+                onEditClicked: () =>
+                    _showUpdateStatisticModal(context, statistic),
+                onDeleteClicked: () => vm.deleteStatistic(statistic),
+              ),
+            );
           });
 
   /// Widget to display when no statistics are present
@@ -84,18 +87,19 @@ class SettingsWidget {
 
   /// Widget used to add a new statistics
   Widget createStatisticsButton(BuildContext context) => Padding(
-      padding: EdgeInsets.all(padding),
-      child: FlatButton(
         padding: EdgeInsets.all(padding),
-        onPressed: () {
-          _showCreateStatisticModal(context);
-        },
-        color: Theme.of(context).primaryColor,
-        child: Text(
-          'Create a new statistic',
-          style: Theme.of(context).textTheme.button,
+        child: FlatButton(
+          padding: EdgeInsets.all(padding),
+          onPressed: () {
+            _showCreateStatisticModal(context);
+          },
+          color: Theme.of(context).primaryColor,
+          child: Text(
+            'Create a new statistic',
+            style: Theme.of(context).textTheme.button,
+          ),
         ),
-      ));
+      );
 
   /// Method used to build the modal for statistic creation
   void _showCreateStatisticModal(context) {
