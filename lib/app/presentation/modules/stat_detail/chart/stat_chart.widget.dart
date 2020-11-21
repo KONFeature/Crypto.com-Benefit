@@ -34,7 +34,7 @@ class StatChardWidget extends StatelessWidget {
                   : chart(observerContext)),
           // The selector for the chart data
           Observer(
-            builder: (observerContext) => dataSelector(observerContext),
+            builder: (observerContext) => _graphConfiguration(observerContext),
           )
         ],
       );
@@ -124,17 +124,13 @@ class StatChardWidget extends StatelessWidget {
         showTitles: true,
         reservedSize: 32,
         margin: 16,
-        interval: vm.dateInterval,
+        interval: vm.dateAxisInterval,
         getTextStyles: (value) => TextStyle(
           color: Color(0xff72719b),
           fontWeight: FontWeight.bold,
           fontSize: 16,
         ),
-        getTitles: (value) {
-          final DateTime date =
-              DateTime.fromMillisecondsSinceEpoch(value.toInt());
-          return DateFormat.yMd().format(date);
-        },
+        getTitles: (timestamp) => formatDateForTransaction(timestamp),
       );
 
   /// Define the left title of our chart
@@ -152,8 +148,16 @@ class StatChardWidget extends StatelessWidget {
             NumberFormat.compactCurrency(symbol: '\$').format(value),
       );
 
-  /// Widget we will use to select the data that we will display
-  Widget dataSelector(BuildContext context) {
+  /// Widget we will use to select the data that we will display in the graph
+  Widget _graphConfiguration(BuildContext context) => Column(
+        children: [
+          _amountTypeSelectors(context),
+          _periodSelector(context),
+        ],
+      );
+
+  /// Widget used to let the user pick the type of amount he want in the graph
+  Widget _amountTypeSelectors(BuildContext context) {
     final amountTypes = vm.amountSelected.keys;
     return Wrap(
       alignment: WrapAlignment.spaceEvenly,
@@ -169,5 +173,24 @@ class StatChardWidget extends StatelessWidget {
           )
           .toList(),
     );
+  }
+
+  /// Widget that let the user pick the range displayed in the graph
+  Widget _periodSelector(BuildContext context) => RangeSlider(
+        min: vm.minTimestamp,
+        max: vm.maxTimestamp,
+        divisions: 100,
+        values: vm.periodRangeValue,
+        onChanged: (rangeValues) => vm.periodChange(rangeValues),
+        labels: RangeLabels(
+          formatDateForTransaction(vm.periodRangeValue.start),
+          formatDateForTransaction(vm.periodRangeValue.end),
+        ),
+      );
+
+  String formatDateForTransaction(double timestamp) {
+    final DateTime date =
+        DateTime.fromMillisecondsSinceEpoch(timestamp.toInt());
+    return DateFormat.yMd().format(date);
   }
 }

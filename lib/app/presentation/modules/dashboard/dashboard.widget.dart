@@ -63,7 +63,7 @@ class DashboardWidget {
   Widget noStatistics(BuildContext context) => Text(
         'No statistics founded, you can create new one in the settings page.',
         style: Theme.of(context).textTheme.bodyText2,
-    textAlign: TextAlign.center,
+        textAlign: TextAlign.center,
       );
 
   /// The loading widget to display

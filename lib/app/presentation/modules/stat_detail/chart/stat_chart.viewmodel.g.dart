@@ -30,6 +30,27 @@ mixin _$StatChartViewModel on _StatChartViewModelBase, Store {
           Computed<Iterable<StatisticChartSpot>>(() => super.statSpots,
               name: '_StatChartViewModelBase.statSpots'))
       .value;
+  Computed<double> _$minTimestampComputed;
+
+  @override
+  double get minTimestamp =>
+      (_$minTimestampComputed ??= Computed<double>(() => super.minTimestamp,
+              name: '_StatChartViewModelBase.minTimestamp'))
+          .value;
+  Computed<double> _$maxTimestampComputed;
+
+  @override
+  double get maxTimestamp =>
+      (_$maxTimestampComputed ??= Computed<double>(() => super.maxTimestamp,
+              name: '_StatChartViewModelBase.maxTimestamp'))
+          .value;
+  Computed<RangeValues> _$periodRangeValueComputed;
+
+  @override
+  RangeValues get periodRangeValue => (_$periodRangeValueComputed ??=
+          Computed<RangeValues>(() => super.periodRangeValue,
+              name: '_StatChartViewModelBase.periodRangeValue'))
+      .value;
   Computed<Map<AmountType, List<FlSpot>>> _$statSpotsByTypeComputed;
 
   @override
@@ -45,13 +66,13 @@ mixin _$StatChartViewModel on _StatChartViewModelBase, Store {
       (_$amountIntervalComputed ??= Computed<double>(() => super.amountInterval,
               name: '_StatChartViewModelBase.amountInterval'))
           .value;
-  Computed<double> _$dateIntervalComputed;
+  Computed<double> _$dateAxisIntervalComputed;
 
   @override
-  double get dateInterval =>
-      (_$dateIntervalComputed ??= Computed<double>(() => super.dateInterval,
-              name: '_StatChartViewModelBase.dateInterval'))
-          .value;
+  double get dateAxisInterval => (_$dateAxisIntervalComputed ??=
+          Computed<double>(() => super.dateAxisInterval,
+              name: '_StatChartViewModelBase.dateAxisInterval'))
+      .value;
 
   final _$_amountSelectedAtom =
       Atom(name: '_StatChartViewModelBase._amountSelected');
@@ -66,6 +87,54 @@ mixin _$StatChartViewModel on _StatChartViewModelBase, Store {
   set _amountSelected(Map<AmountType, bool> value) {
     _$_amountSelectedAtom.reportWrite(value, super._amountSelected, () {
       super._amountSelected = value;
+    });
+  }
+
+  final _$_startTimestampAtom =
+      Atom(name: '_StatChartViewModelBase._startTimestamp');
+
+  @override
+  double get _startTimestamp {
+    _$_startTimestampAtom.reportRead();
+    return super._startTimestamp;
+  }
+
+  @override
+  set _startTimestamp(double value) {
+    _$_startTimestampAtom.reportWrite(value, super._startTimestamp, () {
+      super._startTimestamp = value;
+    });
+  }
+
+  final _$_endTimestampAtom =
+      Atom(name: '_StatChartViewModelBase._endTimestamp');
+
+  @override
+  double get _endTimestamp {
+    _$_endTimestampAtom.reportRead();
+    return super._endTimestamp;
+  }
+
+  @override
+  set _endTimestamp(double value) {
+    _$_endTimestampAtom.reportWrite(value, super._endTimestamp, () {
+      super._endTimestamp = value;
+    });
+  }
+
+  final _$_currentPeriodRangeAtom =
+      Atom(name: '_StatChartViewModelBase._currentPeriodRange');
+
+  @override
+  RangeValues get _currentPeriodRange {
+    _$_currentPeriodRangeAtom.reportRead();
+    return super._currentPeriodRange;
+  }
+
+  @override
+  set _currentPeriodRange(RangeValues value) {
+    _$_currentPeriodRangeAtom.reportWrite(value, super._currentPeriodRange, () {
+      super._currentPeriodRange = value;
     });
   }
 
@@ -95,14 +164,28 @@ mixin _$StatChartViewModel on _StatChartViewModelBase, Store {
   }
 
   @override
+  dynamic periodChange(RangeValues periodValues) {
+    final _$actionInfo = _$_StatChartViewModelBaseActionController.startAction(
+        name: '_StatChartViewModelBase.periodChange');
+    try {
+      return super.periodChange(periodValues);
+    } finally {
+      _$_StatChartViewModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 amountSelected: ${amountSelected},
 isLoading: ${isLoading},
 statSpots: ${statSpots},
+minTimestamp: ${minTimestamp},
+maxTimestamp: ${maxTimestamp},
+periodRangeValue: ${periodRangeValue},
 statSpotsByType: ${statSpotsByType},
 amountInterval: ${amountInterval},
-dateInterval: ${dateInterval}
+dateAxisInterval: ${dateAxisInterval}
     ''';
   }
 }

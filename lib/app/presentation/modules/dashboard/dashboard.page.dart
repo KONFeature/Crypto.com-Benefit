@@ -25,7 +25,8 @@ class DashboardPage extends StatelessWidget with DashboardWidget {
       );
 
   /// Show a list of statistics or no statistics
-  Widget _displayStatistics(BuildContext context, Iterable<ComputedStatistic> stats) =>
+  Widget _displayStatistics(
+          BuildContext context, Iterable<ComputedStatistic> stats) =>
       stats != null && stats.length > 0
           ? statisticsWidget(context, stats.toList())
           : noStatistics(context);

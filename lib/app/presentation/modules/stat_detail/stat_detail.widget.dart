@@ -43,5 +43,5 @@ abstract class StatDetailWidget {
           style: Theme.of(context).textTheme.headline5,
           textAlign: TextAlign.center,
         ),
-  );
+      );
 }

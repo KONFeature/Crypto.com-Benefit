@@ -6,6 +6,7 @@ import 'package:crypto_benefit/app/domain/object/statistic_chart/statistic_chart
 import 'package:crypto_benefit/app/domain/usecases/stat_detail/compute_statistic_chart.usecase.dart';
 import 'package:crypto_benefit/core/di/injector_provider.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 
 part 'stat_chart.viewmodel.g.dart';
@@ -33,6 +34,40 @@ abstract class _StatChartViewModelBase with Store {
   Iterable<StatisticChartSpot> get statSpots => _statChart.value.spots;
 
   @computed
+  double get minTimestamp {
+    if (_statChart == null ||
+        _statChart.value == null ||
+        _statChart.value.spots == null ||
+        _statChart.value.spots.isEmpty) return 0.0;
+
+    final dateList = statSpots.map((spot) => spot.timestamp);
+    return dateList.reduce(min);
+  }
+
+  @computed
+  double get maxTimestamp {
+    if (_statChart == null ||
+        _statChart.value == null ||
+        _statChart.value.spots == null ||
+        _statChart.value.spots.isEmpty) return double.maxFinite;
+
+    final dateList = statSpots.map((spot) => spot.timestamp);
+    return dateList.reduce(max);
+  }
+
+  @observable
+  double _startTimestamp;
+
+  @observable
+  double _endTimestamp;
+
+  @observable
+  RangeValues _currentPeriodRange;
+
+  @computed
+  RangeValues get periodRangeValue => _currentPeriodRange ?? RangeValues(minTimestamp, maxTimestamp);
+
+  @computed
   Map<AmountType, List<FlSpot>> get statSpotsByType {
     final result = Map<AmountType, List<FlSpot>>();
     // For each selected amount
@@ -42,20 +77,26 @@ abstract class _StatChartViewModelBase with Store {
           type,
           () =>
               // Compute the spots matching the amount type selected
-              _statChart.value.spots.map((statSpot) {
-                double value;
+              _statChart.value.spots.where((statSpot) {
+                // Compare to start and end timestamp of the graph
+                bool startCondition = statSpot.timestamp > periodRangeValue.start;
+                bool endCondition = statSpot.timestamp < periodRangeValue.end;
+                return startCondition && endCondition;
+              }).map((statSpot) {
+                // Get the value to add corresponding to the current amount type we are checking
+                double chartSpotValue;
                 switch (type) {
                   case AmountType.AMOUNT_USDT:
-                    value = statSpot.amountUsd;
+                    chartSpotValue = statSpot.amountUsd;
                     break;
                   case AmountType.TOTAL_USDT:
-                    value = statSpot.totalAmountUsd;
+                    chartSpotValue = statSpot.totalAmountUsd;
                     break;
                   default:
-                    value = 0.0;
+                    chartSpotValue = 0.0;
                     break;
                 }
-                return FlSpot(statSpot.timestamp, value);
+                return FlSpot(statSpot.timestamp, chartSpotValue);
               }).toList());
     });
     // Return our map
@@ -84,14 +125,8 @@ abstract class _StatChartViewModelBase with Store {
   }
 
   @computed
-  double get dateInterval {
-    if (statSpots == null || statSpots.isEmpty) return 0.0;
-
-    final dateList = statSpots.map((spot) => spot.timestamp);
-    final minTimestamp = dateList.reduce(min);
-    final maxTimestamp = dateList.reduce(max);
-    return (maxTimestamp - minTimestamp) / 2;
-  }
+  double get dateAxisInterval =>
+      (periodRangeValue.end - periodRangeValue.start) / 2;
 
   _StatChartViewModelBase() {
     // Init our selected amount type map to true
@@ -112,6 +147,16 @@ abstract class _StatChartViewModelBase with Store {
   selectAmountType(AmountType type, bool isSelected) {
     // TODO : Assert we got at least one value checked
     amountSelected[type] = isSelected;
+  }
+
+  @action
+  periodChange(RangeValues periodValues) {
+    print("Updating timestamp to $periodValues");
+    _currentPeriodRange = periodValues;
+    print("Min and max timestamp to $minTimestamp && $maxTimestamp");
+    _startTimestamp = periodRangeValue.start;
+    _endTimestamp = periodRangeValue.end;
+    print("Current period $periodRangeValue");
   }
 }
 
