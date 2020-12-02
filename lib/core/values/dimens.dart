@@ -11,7 +11,7 @@ const double cardBorderRadius = 4.0;
 const double modalBorderRadius = 8.0;
 
 // elevation
-const double noElevation = 0.0;
+const double noElevation = 1.0;
 
 // fonts sizes
 const double fontSizeTitle = 32.0;

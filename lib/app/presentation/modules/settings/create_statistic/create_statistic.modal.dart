@@ -81,10 +81,8 @@ class CreateStatisticModal extends StatelessWidget with CreateStatisticWidget {
           }
         },
         color: Theme.of(context).primaryColor,
-        child: Text(
-          vm.textActionButton,
-          style: Theme.of(context).textTheme.button,
-        ),
+        textTheme: ButtonTextTheme.primary,
+        child: Text(vm.textActionButton),
       );
 
   @override

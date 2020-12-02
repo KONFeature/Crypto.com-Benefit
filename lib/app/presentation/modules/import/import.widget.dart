@@ -28,19 +28,13 @@ class ImportWidget {
               // Button to launch the csv import
               onPressed: import,
               color: Theme.of(context).primaryColor,
-              child: Text(
-                'Import CSV',
-                style: Theme.of(context).textTheme.button,
-              ),
+              child: Text('Import CSV'),
             ),
             FlatButton(
               // Button to clear all the previous imports
               onPressed: clear,
-              color: Theme.of(context).colorScheme.error,
-              child: Text(
-                'Clear imports',
-                style: Theme.of(context).textTheme.button,
-              ),
+              color: Theme.of(context).accentColor,
+              child: Text('Clear imports'),
             ),
           ],
         ),

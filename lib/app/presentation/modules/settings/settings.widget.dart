@@ -94,10 +94,8 @@ class SettingsWidget {
             _showCreateStatisticModal(context);
           },
           color: Theme.of(context).primaryColor,
-          child: Text(
-            'Create a new statistic',
-            style: Theme.of(context).textTheme.button,
-          ),
+          textTheme: ButtonTextTheme.primary,
+          child: Text('Create a new statistic'),
         ),
       );
 

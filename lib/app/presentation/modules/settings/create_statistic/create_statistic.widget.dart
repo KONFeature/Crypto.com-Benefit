@@ -44,6 +44,7 @@ abstract class CreateStatisticWidget {
             (type) => Padding(
               child: FilterChip(
                 label: Text(type.name),
+                showCheckmark: false,
                 selectedColor: Theme.of(context).accentColor,
                 selected: getVm().typeSelected[type],
                 onSelected: (isSelected) {
@@ -80,6 +81,7 @@ abstract class CreateStatisticWidget {
             (kind) => Padding(
               child: FilterChip(
                 label: Text(kind.name),
+                showCheckmark: false,
                 selectedColor: Theme.of(context).accentColor,
                 selected: getVm().kindSelected[kind],
                 onSelected: (isSelected) {

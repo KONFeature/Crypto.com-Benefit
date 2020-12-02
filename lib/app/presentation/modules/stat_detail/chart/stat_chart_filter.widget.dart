@@ -65,6 +65,7 @@ class _StatChartFilterState extends State<StatChartFilterWidget> {
               child: FilterChip(
                 label: Text(amountType.name),
                 selectedColor: Theme.of(context).accentColor,
+                showCheckmark: false,
                 selected: _currentFilter.amounts.contains(amountType),
                 onSelected: (isSelected) => setState(() {
                   // Add or remove the amount from our selected amount type

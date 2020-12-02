@@ -7,15 +7,15 @@ import 'package:crypto_benefit/app/domain/object/statistic_chart/statistic_chart
 import 'package:crypto_benefit/app/domain/object/transaction.dart';
 import 'package:crypto_benefit/app/domain/repositories/transaction.repository.dart';
 import 'package:crypto_benefit/app/domain/usecases/usecase.dart';
+import 'package:crypto_benefit/core/config/logger.config.dart';
 import 'package:crypto_benefit/core/di/injector_provider.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:logger/logger.dart';
 
 /// Use case used to compute the statistic chart
 class ComputeStatisticChartUseCase
     implements
         BaseUseCase<ComputeStatisticChartResult, ComputeStatisticChartParams> {
-  final log = Logger(printer: PrettyPrinter());
+  final log = AppLogger();
 
   final _transactionRepository = inject<ITransactionRepository>();
 
@@ -23,7 +23,7 @@ class ComputeStatisticChartUseCase
   Future<ComputeStatisticChartResult> execute(
       ComputeStatisticChartParams params) async {
     log.i(
-        "Computing a new statistic chart for filter ${params.computedStatistic.name ?? "null"}");
+        "Computing a new statistic chart for filter ${params.computedStatistic.id ?? "null"}");
 
     // Find the transactions for the statistic filter
     Iterable<Transaction> transactions = await _transactionRepository

@@ -6,15 +6,20 @@ import 'colors.dart' as colors;
 /// Light theme of our app
 final ThemeData lightTheme = ThemeData(
   brightness: Brightness.light,
-  primarySwatch: colors.primarySwatch as MaterialColor,
+  primaryColor: colors.lightPrimary,
+  accentColor: colors.lightAccent,
+  errorColor: colors.lightError,
+  buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
   visualDensity: VisualDensity.adaptivePlatformDensity,
 );
 
 /// Dark theme of our app
 final ThemeData darkTheme = ThemeData(
   brightness: Brightness.dark,
-  primaryColor: Colors.green[700],
-  accentColor: Colors.green[500],
+  primaryColor: colors.darkPrimary,
+  accentColor: colors.darkAccent,
+  errorColor: colors.darkError,
+  buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
   visualDensity: VisualDensity.adaptivePlatformDensity,
 );
 
