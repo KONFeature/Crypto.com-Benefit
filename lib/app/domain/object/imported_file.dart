@@ -15,6 +15,16 @@ class ImportedFile {
     @required this.importedTimestamp,
     @required this.type,
   });
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ImportedFile &&
+          runtimeType == other.runtimeType &&
+          id == other.id;
+
+  @override
+  int get hashCode => id.hashCode;
 }
 
 /// Enum representing the different file type than can be imported in the app
@@ -32,7 +42,7 @@ extension FileTypeExtension on FileType {
       case FileType.cryptoTransactions:
         return 'Crypto transactions';
       default:
-        return null;
+        return 'Unknwon';
     }
   }
 }

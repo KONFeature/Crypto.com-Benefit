@@ -112,9 +112,7 @@ abstract class _CreateStatisticViewModelBase with Store {
     final List<TransactionKind> selectedKinds = _kindSelected.keys
         .where((kind) => _kindSelected[kind] ?? false)
         .toList(growable: false);
-    for (var kindEntry in _kindSelected.entries) {
-      if (kindEntry.value) selectedKinds.add(kindEntry.key);
-    }
+
     // Extract the types selected
     final List<FileType> selectedTypes = _typeSelected.keys
         .where((type) => _typeSelected[type] ?? false)

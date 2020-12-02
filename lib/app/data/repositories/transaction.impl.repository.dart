@@ -47,4 +47,12 @@ class TransactionRepository implements ITransactionRepository {
     return entitiesStream.asyncMap(
         (transactions) => _transactionMapper.fromEntities(transactions));
   }
+
+  @override
+  Future<Iterable<Transaction>> getTransactionsForFilter(Filter filter) async {
+    final kindsIds = filter.kinds.map((kind) => kind.id);
+    final entities = await _transactionsDao.getTransactionsForFilter(
+        filter.fileTypes, kindsIds);
+    return _transactionMapper.fromEntities(entities);
+  }
 }

@@ -7,6 +7,9 @@ abstract class ITransactionRepository {
   Future<void> importFromCsv(
       List<List<dynamic>> csvRows, int fileId, Map<dynamic, int> kindsId);
 
-  /// Get the transactions matching the kinds and types parameter
+  /// Watch the transactions matching the kinds and types parameter
   Stream<Iterable<Transaction>> watchTransactionsForFilter(Filter filter);
+
+  /// Get the transactions matching the kinds and types parameter
+  Future<Iterable<Transaction>> getTransactionsForFilter(Filter filter);
 }

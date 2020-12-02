@@ -9,13 +9,14 @@ part of 'stat_chart.viewmodel.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$StatChartViewModel on _StatChartViewModelBase, Store {
-  Computed<Map<AmountType, bool>> _$amountSelectedComputed;
+  Computed<ObservableStream<StatisticChart>> _$_chartStreamComputed;
 
   @override
-  Map<AmountType, bool> get amountSelected => (_$amountSelectedComputed ??=
-          Computed<Map<AmountType, bool>>(() => super.amountSelected,
-              name: '_StatChartViewModelBase.amountSelected'))
-      .value;
+  ObservableStream<StatisticChart> get _chartStream =>
+      (_$_chartStreamComputed ??= Computed<ObservableStream<StatisticChart>>(
+              () => super._chartStream,
+              name: '_StatChartViewModelBase._chartStream'))
+          .value;
   Computed<bool> _$isLoadingComputed;
 
   @override
@@ -23,12 +24,19 @@ mixin _$StatChartViewModel on _StatChartViewModelBase, Store {
       (_$isLoadingComputed ??= Computed<bool>(() => super.isLoading,
               name: '_StatChartViewModelBase.isLoading'))
           .value;
-  Computed<Iterable<StatisticChartSpot>> _$statSpotsComputed;
+  Computed<bool> _$isChartLoadingComputed;
 
   @override
-  Iterable<StatisticChartSpot> get statSpots => (_$statSpotsComputed ??=
-          Computed<Iterable<StatisticChartSpot>>(() => super.statSpots,
-              name: '_StatChartViewModelBase.statSpots'))
+  bool get isChartLoading =>
+      (_$isChartLoadingComputed ??= Computed<bool>(() => super.isChartLoading,
+              name: '_StatChartViewModelBase.isChartLoading'))
+          .value;
+  Computed<Iterable<StatisticChartSpot>> _$_statSpotsComputed;
+
+  @override
+  Iterable<StatisticChartSpot> get _statSpots => (_$_statSpotsComputed ??=
+          Computed<Iterable<StatisticChartSpot>>(() => super._statSpots,
+              name: '_StatChartViewModelBase._statSpots'))
       .value;
   Computed<double> _$minTimestampComputed;
 
@@ -44,20 +52,15 @@ mixin _$StatChartViewModel on _StatChartViewModelBase, Store {
       (_$maxTimestampComputed ??= Computed<double>(() => super.maxTimestamp,
               name: '_StatChartViewModelBase.maxTimestamp'))
           .value;
-  Computed<RangeValues> _$periodRangeValueComputed;
+  Computed<Map<StatisticChartAmountType, List<FlSpot>>>
+      _$statSpotsByTypeComputed;
 
   @override
-  RangeValues get periodRangeValue => (_$periodRangeValueComputed ??=
-          Computed<RangeValues>(() => super.periodRangeValue,
-              name: '_StatChartViewModelBase.periodRangeValue'))
-      .value;
-  Computed<Map<AmountType, List<FlSpot>>> _$statSpotsByTypeComputed;
-
-  @override
-  Map<AmountType, List<FlSpot>> get statSpotsByType =>
-      (_$statSpotsByTypeComputed ??= Computed<Map<AmountType, List<FlSpot>>>(
-              () => super.statSpotsByType,
-              name: '_StatChartViewModelBase.statSpotsByType'))
+  Map<StatisticChartAmountType, List<FlSpot>> get statSpotsByType =>
+      (_$statSpotsByTypeComputed ??=
+              Computed<Map<StatisticChartAmountType, List<FlSpot>>>(
+                  () => super.statSpotsByType,
+                  name: '_StatChartViewModelBase.statSpotsByType'))
           .value;
   Computed<double> _$amountIntervalComputed;
 
@@ -74,101 +77,40 @@ mixin _$StatChartViewModel on _StatChartViewModelBase, Store {
               name: '_StatChartViewModelBase.dateAxisInterval'))
       .value;
 
-  final _$_amountSelectedAtom =
-      Atom(name: '_StatChartViewModelBase._amountSelected');
+  final _$_computeChartResultAtom =
+      Atom(name: '_StatChartViewModelBase._computeChartResult');
 
   @override
-  Map<AmountType, bool> get _amountSelected {
-    _$_amountSelectedAtom.reportRead();
-    return super._amountSelected;
+  ObservableFuture<ComputeStatisticChartResult> get _computeChartResult {
+    _$_computeChartResultAtom.reportRead();
+    return super._computeChartResult;
   }
 
   @override
-  set _amountSelected(Map<AmountType, bool> value) {
-    _$_amountSelectedAtom.reportWrite(value, super._amountSelected, () {
-      super._amountSelected = value;
+  set _computeChartResult(ObservableFuture<ComputeStatisticChartResult> value) {
+    _$_computeChartResultAtom.reportWrite(value, super._computeChartResult, () {
+      super._computeChartResult = value;
     });
   }
 
-  final _$_startTimestampAtom =
-      Atom(name: '_StatChartViewModelBase._startTimestamp');
+  final _$computeChartAsyncAction =
+      AsyncAction('_StatChartViewModelBase.computeChart');
 
   @override
-  double get _startTimestamp {
-    _$_startTimestampAtom.reportRead();
-    return super._startTimestamp;
-  }
-
-  @override
-  set _startTimestamp(double value) {
-    _$_startTimestampAtom.reportWrite(value, super._startTimestamp, () {
-      super._startTimestamp = value;
-    });
-  }
-
-  final _$_endTimestampAtom =
-      Atom(name: '_StatChartViewModelBase._endTimestamp');
-
-  @override
-  double get _endTimestamp {
-    _$_endTimestampAtom.reportRead();
-    return super._endTimestamp;
-  }
-
-  @override
-  set _endTimestamp(double value) {
-    _$_endTimestampAtom.reportWrite(value, super._endTimestamp, () {
-      super._endTimestamp = value;
-    });
-  }
-
-  final _$_currentPeriodRangeAtom =
-      Atom(name: '_StatChartViewModelBase._currentPeriodRange');
-
-  @override
-  RangeValues get _currentPeriodRange {
-    _$_currentPeriodRangeAtom.reportRead();
-    return super._currentPeriodRange;
-  }
-
-  @override
-  set _currentPeriodRange(RangeValues value) {
-    _$_currentPeriodRangeAtom.reportWrite(value, super._currentPeriodRange, () {
-      super._currentPeriodRange = value;
-    });
+  Future computeChart(ComputedStatistic computedStatistic) {
+    return _$computeChartAsyncAction
+        .run(() => super.computeChart(computedStatistic));
   }
 
   final _$_StatChartViewModelBaseActionController =
       ActionController(name: '_StatChartViewModelBase');
 
   @override
-  dynamic computeChart(ComputedStatistic computedStatistic) {
+  dynamic onFilterUpdated(StatisticChartFilter chartFilter) {
     final _$actionInfo = _$_StatChartViewModelBaseActionController.startAction(
-        name: '_StatChartViewModelBase.computeChart');
+        name: '_StatChartViewModelBase.onFilterUpdated');
     try {
-      return super.computeChart(computedStatistic);
-    } finally {
-      _$_StatChartViewModelBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  dynamic selectAmountType(AmountType type, bool isSelected) {
-    final _$actionInfo = _$_StatChartViewModelBaseActionController.startAction(
-        name: '_StatChartViewModelBase.selectAmountType');
-    try {
-      return super.selectAmountType(type, isSelected);
-    } finally {
-      _$_StatChartViewModelBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  dynamic periodChange(RangeValues periodValues) {
-    final _$actionInfo = _$_StatChartViewModelBaseActionController.startAction(
-        name: '_StatChartViewModelBase.periodChange');
-    try {
-      return super.periodChange(periodValues);
+      return super.onFilterUpdated(chartFilter);
     } finally {
       _$_StatChartViewModelBaseActionController.endAction(_$actionInfo);
     }
@@ -177,12 +119,10 @@ mixin _$StatChartViewModel on _StatChartViewModelBase, Store {
   @override
   String toString() {
     return '''
-amountSelected: ${amountSelected},
 isLoading: ${isLoading},
-statSpots: ${statSpots},
+isChartLoading: ${isChartLoading},
 minTimestamp: ${minTimestamp},
 maxTimestamp: ${maxTimestamp},
-periodRangeValue: ${periodRangeValue},
 statSpotsByType: ${statSpotsByType},
 amountInterval: ${amountInterval},
 dateAxisInterval: ${dateAxisInterval}

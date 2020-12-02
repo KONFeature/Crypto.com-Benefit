@@ -1,5 +1,5 @@
 import 'package:crypto_benefit/app/domain/object/statistic/computed_statistic.dart';
-import 'package:crypto_benefit/app/presentation/widget/selectable_item.widget.dart';
+import 'package:crypto_benefit/app/presentation/modules/stat_detail/chart/stat_chart_filter.widget.dart';
 import 'package:crypto_benefit/core/values/animations.dart';
 import 'package:crypto_benefit/core/values/dimens.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -19,33 +19,33 @@ class StatChardWidget extends StatelessWidget {
   final ComputedStatistic statistic;
 
   StatChardWidget({Key key, this.statistic}) : super(key: key) {
+    print("Rebuilding global widget");
     vm.computeChart(statistic);
   }
 
   @override
-  Widget build(BuildContext context) => Wrap(
-        spacing: double.infinity,
-        alignment: WrapAlignment.center,
-        children: [
-          // The cart itself
-          Observer(
-              builder: (observerContext) => vm.isLoading
-                  ? loadingChart(observerContext)
-                  : chart(observerContext)),
-          // The selector for the chart data
-          Observer(
-            builder: (observerContext) => _graphConfiguration(observerContext),
-          )
-        ],
+  Widget build(BuildContext context) => Observer(
+        builder: (observerContext) => vm.isLoading
+            ? _loadingChart(observerContext)
+            : Wrap(
+                spacing: double.infinity,
+                alignment: WrapAlignment.center,
+                children: [
+                  // The cart itself
+                  _chart(observerContext),
+                  _graphConfiguration(observerContext)
+                ],
+              ),
       );
 
   /// Widget used to display a loading chart
-  Widget loadingChart(BuildContext context) =>
-      Text('The cart is currently computing');
+  Widget _loadingChart(BuildContext context) =>
+      Text('The chart is currently computing');
 
   /// Widget display the chart itself
-  Widget chart(BuildContext context) {
-    final typesToDisplay = vm.amountSelected.keys;
+  Widget _chart(BuildContext context) {
+    print("Printing chart");
+    final typesToDisplay = vm.statSpotsByType.keys;
     return AspectRatio(
       aspectRatio: 2.5,
       child: Container(
@@ -149,43 +149,10 @@ class StatChardWidget extends StatelessWidget {
       );
 
   /// Widget we will use to select the data that we will display in the graph
-  Widget _graphConfiguration(BuildContext context) => Column(
-        children: [
-          _amountTypeSelectors(context),
-          _periodSelector(context),
-        ],
-      );
-
-  /// Widget used to let the user pick the type of amount he want in the graph
-  Widget _amountTypeSelectors(BuildContext context) {
-    final amountTypes = vm.amountSelected.keys;
-    return Wrap(
-      alignment: WrapAlignment.spaceEvenly,
-      children: amountTypes
-          .map(
-            (amountType) => SelectableItemWidget(
-              text: amountType.toString(),
-              isSelected: vm.amountSelected[amountType],
-              onChanged: (isSelected) {
-                vm.selectAmountType(amountType, isSelected);
-              },
-            ),
-          )
-          .toList(),
-    );
-  }
-
-  /// Widget that let the user pick the range displayed in the graph
-  Widget _periodSelector(BuildContext context) => RangeSlider(
-        min: vm.minTimestamp,
-        max: vm.maxTimestamp,
-        divisions: 100,
-        values: vm.periodRangeValue,
-        onChanged: (rangeValues) => vm.periodChange(rangeValues),
-        labels: RangeLabels(
-          formatDateForTransaction(vm.periodRangeValue.start),
-          formatDateForTransaction(vm.periodRangeValue.end),
-        ),
+  Widget _graphConfiguration(BuildContext context) => StatChartFilterWidget(
+        onFilterUpdated: (filter) => vm.onFilterUpdated(filter),
+        minTimestamp: vm.minTimestamp,
+        maxTimestamp: vm.maxTimestamp,
       );
 
   String formatDateForTransaction(double timestamp) {

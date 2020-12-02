@@ -40,16 +40,35 @@ class TransactionsDao extends DatabaseAccessor<AppDatabase>
   Stream<Iterable<TransactionEntity>> watchTransactionsForFilter(
       Iterable<FileType> types, Iterable<int> kindIds) {
     // Query that join with the imported file table, and check for types and kind in the given list
-    final query = select(transactionsTable).join([
-      leftOuterJoin(db.importedFilesTable,
-          db.importedFilesTable.id.equalsExp(transactionsTable.fileId))
-    ])
-      ..where(db.importedFilesTable.type.isIn(types.map((type) => type.index)) |
-          transactionsTable.kindId.isIn(kindIds));
+    final query = _transactionForFilterQuery(types, kindIds);
     // Fetch the result
     final transactionsForFilterStream = query.watch();
     // Map it and return it
     return transactionsForFilterStream.map((typedRows) =>
         typedRows.map((typedRow) => typedRow.readTable(transactionsTable)));
   }
+
+  /// Watch all of our transactions for a filter
+  Future<Iterable<TransactionEntity>> getTransactionsForFilter(
+      Iterable<FileType> types, Iterable<int> kindIds) async {
+    // Query that join with the imported file table, and check for types and kind in the given list
+    final query = _transactionForFilterQuery(types, kindIds);
+    // Fetch the result
+    final transactionsForFilter = await query.get();
+    // Map it and return it
+    return transactionsForFilter
+        .map((typedRow) => typedRow.readTable(transactionsTable));
+  }
+
+  /// Build q auery to fetch transactions for a specified filter
+  JoinedSelectStatement<Table, DataClass> _transactionForFilterQuery(
+          Iterable<FileType> types, Iterable<int> kindIds) =>
+      // Query that join with the imported file table, and check for types and kind in the given list
+      select(transactionsTable).join([
+        leftOuterJoin(db.importedFilesTable,
+            db.importedFilesTable.id.equalsExp(transactionsTable.fileId))
+      ])
+        ..where(
+            db.importedFilesTable.type.isIn(types.map((type) => type.index)) |
+                transactionsTable.kindId.isIn(kindIds));
 }

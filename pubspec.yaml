@@ -17,6 +17,9 @@ dependencies:
   # Intl (String format and internationalization)
   intl: ^0.16.1
 
+  # Logger (ease the logger logic of flutter)
+  logger: ^0.9.4
+
   # Moor (database)
   moor: ^3.4.0
   encrypted_moor:
@@ -38,7 +41,7 @@ dependencies:
   flutter_mobx: ^1.1.0+2
 
   # Catcher (for better exception managment) 
-  catcher: ^0.3.22
+  catcher: ^0.3.23
 
   # Read CSV content
   csv: ^4.1.0
@@ -52,9 +55,6 @@ dependencies:
 
   # Shimmer (for some loading views)
   shimmer: ^1.1.2
-
-  # Selectable container (for better selection view to create stats)
-  selectable_container: ^0.1.4
 
   # Smooth expandable container
   expandable: ^4.1.4

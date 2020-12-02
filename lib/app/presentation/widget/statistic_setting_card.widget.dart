@@ -73,25 +73,20 @@ class StatisticSettingCardWidget extends StatelessWidget {
             ),
             Wrap(
               alignment: WrapAlignment.spaceEvenly,
-              children: _filterCards(context, filters),
+              children: _filterChips(context, filters),
             )
           ],
         ),
       );
 
-  List<Widget> _filterCards(BuildContext context, Iterable<String> filters) =>
+  List<Widget> _filterChips(BuildContext context, Iterable<String> filters) =>
       filters
           .map(
-            (filter) => Card(
-              shape: RoundedRectangleBorder(
-                  side: BorderSide(
-                    color: Theme.of(context).primaryColorDark,
-                    width: 1,
-                  ),
-                  borderRadius: BorderRadius.circular(modalBorderRadius)),
-              child: Padding(
-                padding: EdgeInsets.all(smallMargin),
-                child: Text(filter),
+            (filter) => Padding(
+              padding: EdgeInsets.symmetric(horizontal: padding),
+              child: Chip(
+                label: Text(filter),
+                backgroundColor: Theme.of(context).accentColor,
               ),
             ),
           )

@@ -18,6 +18,14 @@ class Statistic {
     @required this.name,
     this.filter,
   });
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Statistic && runtimeType == other.runtimeType && id == other.id;
+
+  @override
+  int get hashCode => id.hashCode;
 }
 
 /// Simple class representing a transaction filter for a statistic
@@ -36,4 +44,12 @@ class Filter {
     @required this.kinds,
     @required this.fileTypes,
   });
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Filter && runtimeType == other.runtimeType && id == other.id;
+
+  @override
+  int get hashCode => id.hashCode;
 }

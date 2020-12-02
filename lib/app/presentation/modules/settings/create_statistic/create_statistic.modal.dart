@@ -55,7 +55,8 @@ class CreateStatisticModal extends StatelessWidget with CreateStatisticWidget {
           // List of available types
           partTitle(context, 'File types for your statistic'),
           Observer(
-              builder: (observerContext) => typesSelection(observerContext)),
+              builder: (observerContext) =>
+                  typesSelectionChips(observerContext)),
           // List of available kinds
           ExpandablePanel(
             theme: getExpandableTheme(context),

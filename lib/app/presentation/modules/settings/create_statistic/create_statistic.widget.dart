@@ -1,6 +1,5 @@
 import 'package:crypto_benefit/app/domain/object/imported_file.dart';
 import 'package:crypto_benefit/app/presentation/modules/settings/create_statistic/create_statistic.viewmodel.dart';
-import 'package:crypto_benefit/app/presentation/widget/selectable_item.widget.dart';
 import 'package:crypto_benefit/core/values/dimens.dart';
 import 'package:flutter/material.dart';
 
@@ -36,18 +35,22 @@ abstract class CreateStatisticWidget {
       );
 
   /// Widget use to let the user select types for his statistics
-  Widget typesSelection(BuildContext context) {
+  Widget typesSelectionChips(BuildContext context) {
     final types = getVm().typeSelected.keys;
     return Wrap(
       alignment: WrapAlignment.spaceEvenly,
       children: types
           .map(
-            (type) => SelectableItemWidget(
-              text: type.name,
-              isSelected: getVm().typeSelected[type],
-              onChanged: (isSelected) {
-                getVm().updateTypeSelection(type, isSelected);
-              },
+            (type) => Padding(
+              child: FilterChip(
+                label: Text(type.name),
+                selectedColor: Theme.of(context).accentColor,
+                selected: getVm().typeSelected[type],
+                onSelected: (isSelected) {
+                  getVm().updateTypeSelection(type, isSelected);
+                },
+              ),
+              padding: EdgeInsets.symmetric(horizontal: padding),
             ),
           )
           .toList(),
@@ -58,7 +61,7 @@ abstract class CreateStatisticWidget {
   Widget kindsSelection(BuildContext context) =>
       getVm().isKindLoading || getVm().kindSelected.isEmpty
           ? _kindsLoading(context)
-          : _kindsCheckboxes(context);
+          : _kindsSelectionChips(context);
 
   /// Listview of the transaction kinds loading
   Widget _kindsLoading(BuildContext context) => Padding(
@@ -67,19 +70,23 @@ abstract class CreateStatisticWidget {
       );
 
   /// List of checkboxes for the transactions kinds
-  Widget _kindsCheckboxes(BuildContext context) {
+  Widget _kindsSelectionChips(BuildContext context) {
     final kinds = getVm().kindSelected.keys.toList();
     kinds.sort((ka, kb) => ka.name.compareTo(kb.name));
     return Wrap(
       alignment: WrapAlignment.spaceEvenly,
       children: kinds
           .map(
-            (kind) => SelectableItemWidget(
-              text: kind.name,
-              isSelected: getVm().kindSelected[kind],
-              onChanged: (isSelected) {
-                getVm().updateKindSelection(kind, isSelected);
-              },
+            (kind) => Padding(
+              child: FilterChip(
+                label: Text(kind.name),
+                selectedColor: Theme.of(context).accentColor,
+                selected: getVm().kindSelected[kind],
+                onSelected: (isSelected) {
+                  getVm().updateKindSelection(kind, isSelected);
+                },
+              ),
+              padding: EdgeInsets.symmetric(horizontal: padding),
             ),
           )
           .toList(),
