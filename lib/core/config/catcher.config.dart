@@ -7,7 +7,11 @@ void setupCatcherAndRun(StatelessWidget root) {
   CatcherOptions debugOptions =
       CatcherOptions(PageReportMode(), [ConsoleHandler()]);
   CatcherOptions releaseOptions = CatcherOptions(DialogReportMode(), [
-    EmailManualHandler(["quentin@nivelais.com"])
+    EmailManualHandler(["quentin@nivelais.com"]),
+    ToastHandler()
   ]);
-  Catcher(root, debugConfig: debugOptions, releaseConfig: releaseOptions);
+  Catcher(
+      rootWidget: root,
+      debugConfig: debugOptions,
+      releaseConfig: releaseOptions);
 }
